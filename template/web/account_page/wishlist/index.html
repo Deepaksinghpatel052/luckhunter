@@ -1,0 +1,204 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ <style type="text/css">
+   .scrollbar
+{
+  margin-top: 8px;
+  float: left;
+  height: 484px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow
+{
+  min-height: 387px;
+}
+#wrapper
+{
+  
+  width: 100%;
+
+}
+ </style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>Wishlist</h1>
+        </div>
+       
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      
+<div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+      <div class="row">
+         <div class="col-lg-4">
+          <aside class="user-info-wrapper">
+            <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
+              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+            </div>
+            <div class="user-info">
+
+              <div class="user-avatar"><a class="edit-avatar" href="#">
+              
+              </a>
+
+            {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+            {% endif %}
+              </div>
+              <div class="user-data">
+                <h4 class="h5">{{get_user_ins.name}}</h4><span>Joined {{get_user_ins.DOJ}}</span>
+                <span><input type="file" name="user_image"   id="id_Image"></span>
+
+              </div>
+            </div>
+          </aside>
+          <nav class="list-group">
+            <a class="list-group-item " href="{{BASE_URL}}user/my-profile">
+              <i class="icon-user"></i>
+              Profile
+            </a>
+            <a class="list-group-item with-badge" href="{{BASE_URL}}user/orders">
+              <i class="icon-shopping-bag"></i>
+              Orders
+              <!-- <span class="badge badge-default badge-pill">6</span> -->
+            </a>
+            
+            <a class="list-group-item" href="{{BASE_URL}}user/address">
+              <i class="icon-map-pin"></i>
+              Addresses
+            </a>
+           
+              <a class="list-group-item with-badge active" href="{{BASE_URL}}user/product-notification">
+              <i class="icon-heart"></i>
+              Product For Notification
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/blog">
+                <i class="icon-tag"></i>
+                Blog             
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/wallet">
+                <i class="icon-tag"></i>
+                My-wallet             
+              </a>
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
+                <i class="icon-tag"></i>
+                Complane/Queryes             
+              </a>
+            </nav>
+        </div>
+        <div class="col-lg-8">
+          <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+          <!-- Wishlist Table-->
+          <div class="table-responsive wishlist-table mb-0">
+            <table>
+              <thead class="table">
+                <tr>
+                  <th>Product Name</th>
+                  <th class="text-right" style="width: 83%"><a class="btn btn-sm btn-outline-danger" href="#" onclick="remove_product('{{BASE_URL}}user/product-notification/remove-all','Do you want to remove all product ?','Productes removed.','Productes not removed.');" >Clear Wishlist</a></th>
+                </tr>
+              </thead>
+            </table>
+           <div id="wrapper">
+  <div class="scrollbar" id="style-default">
+  <div class="force-overflow">
+            <table class="table">
+              <tbody>
+               
+
+
+                {% if wishlist_data %}
+                {% for item in wishlist_data %}
+<tr>
+                  <td>
+                    <div class="product-item"><a class="product-thumb" href="shop-single.html">
+   {% if item.Product.Image %}
+   <img src='{{item.Product.Image.url}}'  alt="{{item.Product_name}}">
+   {% else %}
+    <img src='{% static "web/img/shop/cart/01.jpg" %}'  alt="Product">
+   {% endif %}                
+ 
+</a>
+                      <div class="product-info">
+                        <h4 class="product-title"><a href="shop-single.html">{{item.Product.Product_name}}</a></h4>
+                        <div class="text-lg mb-1">Rs.{{item.Product.Price_pr_ticket}}</div>
+                        {% if item.Product.winner_status %}
+                        {% else %}
+                        <div class="text-sm">Ticket Booking Start:
+                          <div class="d-inline text-success">{{item.Product.Ticket_booking_start}}</div>
+                        </div>
+                        {% endif %}
+                        
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center"><a class="remove-from-cart" href="#" onclick="remove_product('{{BASE_URL}}user/product-notification/remove-product/{{item.id}}','Do you want to remove this product Notification ?','Product removed.','Product not removed.');" data-toggle="tooltip" title="Remove item"><i class="icon-x"></i></a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                 <h1>Product Notification is empty!</h1>
+                {% endif %}
+
+            
+                
+                
+              </tbody>
+            </table>
+             </div>
+   </div>
+ </div>   
+          </div>
+          <hr class="mb-4">
+          
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  $(document).ready(function () {
+          if (!$.browser.webkit) {
+              $('.wrapper').html('<p>Sorry! Non webkit users. :(</p>');
+          }
+      });
+</script>
+{% endblock %}

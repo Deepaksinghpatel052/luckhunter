@@ -1,0 +1,126 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ <style type="text/css">
+   .scrollbar
+{
+  margin-top: 8px;
+  float: left;
+  height: 387px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow
+{
+  min-height: 387px;
+}
+#wrapper
+{
+  
+  width: 100%;
+
+}
+ </style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>Add Blog</h1>
+        </div>
+       <div class="column  text-right">
+          <a href="{{BASE_URL}}user/blog"><button type="button" class="btn btn-primary"> <i class="icon-arrow-left"></i>Back</button></a>
+        </div>
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      
+<div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+    <div class="row">
+      <div class="col-md-10">
+         <form action="{{BASE_URL}}user/add-blog" method="POST">
+          {% csrf_token %}
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                <label for="account-fn">Product Name</label>
+               {{get_blog_form.product}}
+              </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                <label for="account-fn">Blog Title</label>
+                {{get_blog_form.Blog_Title}}
+              </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                <label for="account-fn">Description</label>
+                {{get_blog_form.Blog_Contect}}
+              </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                <label for="account-fn">Media and description</label>
+                <!-- <textarea class="form-control" id="summernote" rows="5">Hello World!</textarea> -->
+                {{get_blog_form.Blog_description}}
+              </div>
+                </div>
+              </div>
+
+               <div class="row">
+                <div class="col-md-12">
+                 <button class="btn btn-primary"  type="submit">Submit</button>
+                </div>
+              </div>
+
+            </form>
+      </div>
+    </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

@@ -1,0 +1,118 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+      <meta name="viewport" content="width=device-width">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="x-apple-disable-message-reformatting">
+      <title>{{get_system_info.Title}} | Order Done</title>
+      <style>html,body{  background-color:#fff!important;margin:0 auto !important;padding:0 !important;height:100% !important;width:100% !important;color:#888!important}.email-container{max-width:600px!important;margin:0 auto!important}*{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}div[style*="margin: 16px 0"]{margin:0 !important}table,td{mso-table-lspace:0pt !important;mso-table-rspace:0pt !important}table{width:100%;border-spacing:0 !important;border-collapse:collapse !important;table-layout:fixed !important;margin:0 auto !important}img{-ms-interpolation-mode:bicubic}a{text-decoration:none!important}*[x-apple-data-detectors], .unstyle-auto-detected-links *,.aBn{border-bottom:0 !important;cursor:default !important;color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-weight:inherit !important;line-height:inherit !important}@media only screen and (min-device-width: 320px) and (max-device-width: 374px){u ~ div .email-container{min-width:320px !important}}@media only screen and (min-device-width: 375px) and (max-device-width: 413px){u ~ div .email-container{min-width:375px !important}}@media only screen and (min-device-width: 414px){u ~ div .email-container{min-width:414px !important}} .set_css_for_success{ background-color: #4caf50; color: #fff;padding: 3px;border-radius: 10px;}.set_css_for_danger{ background-color: #f44336; color: #fff;padding: 3px;border-radius: 10px;}.btn_dsp{    background-color: #05f;color: #fff;padding: 7px;border-radius: 8px;border-color: #0e25ca;}</style>
+   </head>
+   <body>
+      <div class="email-container">
+         <table style="border-bottom: 2px solid #c52241; ">
+            <tr>
+               <td>
+                  <h2 style="color:#c52241; padding-top: 62px; margin-bottom: 0px;">Your Order Summary</h2>
+               </td>
+               <td style="color:#c52241; padding-top: 62px; margin-bottom: 0px;"> <img src="{{BASE_URL}}{{get_system_info.Logo.url}}"></td>
+            </tr>
+         </table>
+         <table style="color: #000;font-size: 20px;">
+            <tr>
+               <td style="padding: 10px 0px;">Dear {{yourname}},</td>
+            </tr>
+            <tr>
+               <td style="padding: 10px 0px;">Welcome to {{get_system_info.Title}}. </td>
+            </tr>
+            <tr>
+               <td style="padding: 10px 5px; background-color: #000; color: #fff;">Congratulations! you purchased your favorite ticket number of your favorite  product. i wish  that you win this product. best of luck.</td>
+            </tr>
+            <tr>
+               <td style="padding: 10px 0px;">There is your order summary.</td>
+            </tr>
+              <tr>
+               <td style="padding: 10px 0px;">
+               
+              <table style="background-color: #000;border: 2px solid;color: #fff;">
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">ORDER ID</td> <td>: {{get_orders.order_id}}</td></tr>
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">No. Of Items</td> <td>: {{get_orders.No_of_item}} Tickets</td></tr>
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Payment</td><td>: Rs. {{get_orders.payment}}</td></tr>
+                {% if get_orders.descount %}
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Descount </td><td>: Rs. {{get_orders.descount_amount}} </td></tr>
+                {% endif %}
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Total Amount  </td><td>: Rs. {{get_orders.total_payment}}</td></tr>
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Payment Status  </td>
+                  <td>: 
+                  {% if get_orders.payment_status %}
+                  Done
+                  {% else %}
+                  Pending
+                  {% endif %}
+                </td></tr>
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Payment Method </td><td>: {{get_orders.payment_method}}</td></tr>
+                <tr style="border-top: 2px solid #fff;"><td style="width: 35%;">Date </td><td>: {{get_orders.create_date}}</td></tr>
+              </table>
+
+                 {% if get_item_of_this_order %}  
+                  
+               <table style="background-color: #000;border: 2px solid;color: #fff;">
+                  {% for item in get_item_of_this_order %}
+                  <tr >
+                     <td >
+                        <img src="{{BASE_URL}}{{item.product_id.Image.url}}" style="width: 100%; height: 24%11;">
+                     </td>
+                     <td style="text-align: right;">
+                        <span style="font-size: 19px;"><b>{{item.product_id.Product_name|slice:"0:30"}}..</b></span>
+                        <hr>
+                         <del class="text-muted">Rs.{{item.product_id.ReyalPrice}}</del>&nbsp; Rs.{{item.product_id.Price_pr_ticket}}
+                         <hr>
+                         Your TIcket No : <span class="set_css_for_success">{{item.Ticket_no}}</span><br>
+                         <hr>
+                         Ticket Open Date : <span class="set_css_for_danger">{{item.product_id.Ticket_open_date}}</span>
+                         <hr>
+                         <a href="{{BASE_URL}}product/{{item.product_id.slug}}/{{item.product_id.Product_id}}" target="_blank"><button type="button" class="btn_dsp">View Product</button></a>
+                     </td>
+                  </tr>
+                    {% endfor %}
+               </table>
+               <br>
+               
+               {% endif %}
+              <br>
+
+                 
+
+               </td>
+            </tr>
+            <tr>
+               <td style="padding: 10px 0px;">Try your luck for your favorite products. <button style="padding: 10px 45px;background-color: #c52241;border-radius: 10px;border: none;font-size:20px;color: #fff;"> <a href="{{BASE_URL}}" target="_blank" style="color: #fff; text-decoration: none;">Explore Site</a></button></td>
+            </tr>
+
+
+            
+
+         </table>
+         <table style="border-top: 1px solid #000; color: #000; font-size: 20px;">
+            <tr>
+               <td>
+                  <h4>MANAGE Your New Account</h4>
+               </td>
+            </tr>
+            <tr>
+               <td><a href="{{BASE_URL}}user/my-profile">My Account</a></td>
+            </tr>
+            <tr>
+               <td style="font-weight: bold; padding-top: 30px;">Thank you for Joining!</td>
+            </tr>
+            <tr>
+               <td style="font-weight: bold;padding-bottom: 30px;">The {{get_system_info.Title}}
+            </tr>
+         </table>
+         <table style="background-color: #f2f2f2; font-size: 20px;">
+            <tr>
+               <td style="padding: 35px 30px; text-align: center;">Notageeks Comunity, Hazira Of India Gwalior, Madhya Pradesh 474005</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

@@ -1,0 +1,94 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{page_title}} </h1> 
+        </div>
+        
+      </div>
+    </div>
+  
+    <!-- Featured Products-->
+    <section class="container padding-bottom-2x mb-2">
+     
+      <br><br>
+      <div class="row">
+
+{% if add_product_ins_in_grid %}
+          {% for adds in add_product_ins_in_grid %}
+          <div class="col-lg-4 col-sm-6">
+            {{adds.Description | safe  }}
+          </div>
+          {% endfor %}
+          {% endif %}
+            
+       {% if get_future_publich_product %}     
+      {% for items in get_future_publich_product %}
+         <div class="col-lg-4 col-sm-6">
+          <div class="card border-0 bg-secondary mb-30">
+            <div class="card-body d-table w-100">
+
+             <div class="row">
+               <div class="col-md-4">
+               
+                 
+                {% if items.Image %}
+                <img style="height: 60px;" class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
+                {% else %}
+                <img style="height: 60px;" class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
+                {% endif %}
+                
+               </div>
+               <div class="col-md-8">
+                 <a href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}"><h5>
+{{items.Product_name|slice:"0:15"}}..
+                 </h5></a>
+                 <p>
+                  {{items.Ticket_booking_start}}
+                  In 
+                  Rs.{{items.Price_pr_ticket}}
+                  </p>
+               </div>
+             </div>
+             
+
+<div class="row">
+               <div class="col-md-12">
+                <br>
+                 <div class="blog-post">
+                <div class="post-body">  
+                 <div class="row">
+                   
+{{items|get_product_other}}
+
+                   
+                 </div>
+                 <br>
+                 <p class="card-text"><span class="badge badge-danger badge-pill">sale</span>. Ticket Cost of  <span class="badge badge-success badge-pill">Rs. {{items.Price_pr_ticket}}.</span> Ticket Booking Start from <span class="badge badge-success badge-pill">{{items.Ticket_booking_start}}</span> and winning date is <span class="badge badge-success badge-pill">{{items.Ticket_open_date}}</span></p>
+                 <a class="" href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}">View Info</a>
+                </div>
+              </div>
+               </div>
+             </div>
+            
+  
+            </div>
+          </div>
+        </div>
+         {% endfor %}
+       {% endif %}
+
+
+      </div>
+    
+    </section>
+
+
+   <!--products-area end-->
+
+{% endblock %}

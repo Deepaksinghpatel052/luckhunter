@@ -1,0 +1,18 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+
+
+
+
+<section class="fw-section margin-top-3x" style="background-image: url({% static 'web/img/404-bg.png' %});">
+      <h1 class="display-404 text-center">500</h1>
+    </section>
+<div class="container padding-bottom-3x mb-1">
+      <div class="text-center">
+        <h2>Page Not Found</h2>
+        <p>It seems we can’t find the page you are looking for. <a href="{{BASE_URL}}">Go back to Homepage</a><br>Or try using navigation at the top corner of the page.</p>
+      </div>
+    </div>
+{% endblock %}

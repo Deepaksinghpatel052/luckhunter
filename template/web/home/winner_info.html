@@ -1,0 +1,41 @@
+{% load static %}
+
+<br>
+<div class="row align-items-end pb-4">
+             <div class="card">
+                <div class="card-body">
+                 <div class="row">
+                   <div class="col-md-7">
+                      <h6 class="card-title">
+
+                   
+                 {% if get_winner_info.user.Image %}
+                    
+               <img class="img-circle" src='{{get_winner_info.user.Image.url}}'  style="height: 50px;
+    width: 50px;" alt="{{get_winner_info.user.name}}">
+            {% else %}
+                <img style="height: 50px;
+    width: 50px;" class="img-circle" src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_winner_info.user.name}}">
+            {% endif %}
+                
+                {% if get_winner_info.user.name %}
+                {{get_winner_info.user.name|slice:"0:10"}}...
+                {% endif %}  
+              </h6>
+                   </div>
+                   <div class="col-md-5 text-right">
+                      <p>Winner Ticket No. <button type="button" class="btn btn-primary btn-sm">{{product_ins.winner_ticket}}</button></p>
+                   </div>
+
+                 </div>
+                 
+                 
+                  <p class="card-text">Hello {{get_winner_info.user.name}}. Congratulations you are win this product. And this product is send to your register address in 7 days.</p>
+                 {% if view_blog %}
+                  <a class="btn btn-primary btn-sm" href="{{BASE_URL}}blog/{{product_ins.slug}}">Check Blog</a>
+                {% else %}
+                <a class="btn btn-success btn-sm" href="{{BASE_URL}}user/add-blog">Create Blog & Get Coupon</a>
+                {% endif %}
+                </div>
+              </div>
+          </div>

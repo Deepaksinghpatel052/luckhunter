@@ -1,0 +1,241 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ <style type="text/css">
+   .scrollbar
+{
+  margin-top: 8px;
+  float: left;
+  height: 495px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow
+{
+  min-height: 387px;
+}
+#wrapper
+{
+  
+  width: 100%;
+
+}
+ </style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>User Blog</h1>
+        </div>
+       
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      
+<div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+      <div class="row">
+         <div class="col-lg-4">
+          <aside class="user-info-wrapper">
+            <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
+              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+            </div>
+            <div class="user-info">
+
+              <div class="user-avatar"><a class="edit-avatar" href="#">
+              
+              </a>
+
+            {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+            {% endif %}
+              </div>
+              <div class="user-data">
+                <h4 class="h5">{{get_user_ins.name}}</h4><span>Joined {{get_user_ins.DOJ}}</span>
+                <span><input type="file" name="user_image"   id="id_Image"></span>
+
+              </div>
+            </div>
+          </aside>
+          <nav class="list-group">
+            <a class="list-group-item " href="{{BASE_URL}}user/my-profile">
+              <i class="icon-user"></i>
+              Profile
+            </a>
+            <a class="list-group-item with-badge " href="{{BASE_URL}}user/orders">
+              <i class="icon-shopping-bag"></i>
+              Orders
+              <!-- <span class="badge badge-default badge-pill">6</span> -->
+            </a>
+            
+            <a class="list-group-item" href="{{BASE_URL}}user/address">
+              <i class="icon-map-pin"></i>
+              Addresses
+            </a>
+           <a class="list-group-item with-badge" href="{{BASE_URL}}user/product-notification">
+              <i class="icon-heart"></i>
+              Product For Notification
+              </a>
+              <a class="list-group-item with-badge active" href="{{BASE_URL}}user/blog">
+                <i class="icon-tag"></i>
+                Blog             
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/wallet">
+                <i class="icon-tag"></i>
+                My-wallet             
+              </a>
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
+                <i class="icon-tag"></i>
+                Complane/Queryes             
+              </a>
+            </nav>
+        </div>
+        <div class="col-lg-8">
+          <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+          <!-- Wishlist Table-->
+          <div class="table-responsive wishlist-table mb-0">
+           <div class="row">
+             <div class="col-md-12 text-right">
+                  <a href="{{BASE_URL}}user/add-blog"><button type="button" class="btn btn-primary">Add Blog</button></a>
+             </div>
+           </div>
+           <div id="wrapper">
+  <div class="scrollbar" id="style-default">
+  <div class="force-overflow">
+            <table class="table">
+               <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Blog Title</th>
+                  <th>Publich Status</th>
+                  <th>Blog Coupon</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+
+
+                {% if get_blogs %}
+                {% for item in get_blogs %}
+<tr>
+                  <td > 
+                    <img src='{{item.product.Image.url}}'  >
+                    {{item.product.Product_name}}
+                  </td>
+                  <td >{{item.Blog_Title}}<br>
+                   <a target="_blank" href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}"><u>View log</u></a>
+                  </td>
+                  <td>
+                  {% if item.Blog_Publish%}
+                  <img src='{% static "web/true_image.jpg" %}' style="width: 20px;" >
+                
+                  {% else %}
+                   <img src='{% static "web/false_image.jpg" %}' style="width: 20px;" >
+               
+                  {% endif %}
+                  </td>
+                  
+                  <td>{{item.Coupon_Code}}</td>
+                  <td>
+                    {% if item.Blog_Publish %}
+                    
+                    {% else %}
+                    <div class="btn-group">
+<a href="{{BASE_URL}}user/edit-blog/{{item.id}}/{{item.slug}}"><button type="button" class="btn btn-primary btn-sm">Edit</button></a>
+              <button onclick="remove_product('{{BASE_URL}}user/remove-blog/{{item.id}}','Do you want to remove this blog ?','Blog removed successfuly.','Blog not removed.');" type="button" class="btn btn-danger btn-sm">Delete</button> 
+
+</div>
+                   
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                
+                {% endif %}
+
+            
+                
+                
+              </tbody>
+            </table>
+             </div>
+   </div>
+ </div>   
+          </div>
+          <hr class="mb-4">
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- Open Ticket Modal-->
+    <div class="modal fade" id="orderDetails" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Order No  - <span id="show_order_id"></span></h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive shopping-cart mb-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th class="text-center">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="show_order_items">
+                  
+                 
+                </tbody>
+              </table>
+            </div>
+            <hr class="mb-3">
+         
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

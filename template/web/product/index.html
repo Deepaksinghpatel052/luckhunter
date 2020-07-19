@@ -1,0 +1,491 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+    <style type="text/css">
+  .set_ticket_select {
+    background-color: #059438;
+    color:#fff;
+  }
+  .set_ticket_select:hover
+   {
+    background-color: #059438;
+    color:#fff; 
+  }
+  .set_class_for_booked_ticked  {
+        background-color: #a7afaa;
+    color: #fff;
+  }
+  .set_class_for_my_booked_ticked{
+      background-color: #ffa000;
+    color: #fff;
+  }
+</style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+
+
+<!-----------Page Content Start------------->
+
+    <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{get_product.Product_name}}</h1>
+        </div>
+        <div class="column">
+       <!--    <ul class="breadcrumbs">
+            <li><a href="index.html">Home</a>
+            </li>
+            <li class="separator">&nbsp;</li>
+            <li><a href="shop-grid-ls.html">Shop</a>
+            </li>
+            <li class="separator">&nbsp;</li>
+            <li>Single Product</li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x">
+      <div class="row">
+        <!-- Poduct Gallery-->
+        <div class="col-md-6">
+          <div class="product-gallery">
+            <div class="gallery-wrapper">
+<!--              <div class="gallery-item video-btn text-center"><a href="#" data-toggle="tooltip" data-type="video" data-video="&lt;div class=&quot;wrapper&quot;&gt;&lt;div class=&quot;video-wrapper&quot;&gt;&lt;iframe class=&quot;pswp__video&quot; width=&quot;960&quot; height=&quot;640&quot; src=_https_/www.youtube.com/embed/CjNjcrQZtd8_.html frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;" title="Watch video"></a></div>-->
+            </div>
+{% if get_product.winner_ticket != 0  %}
+            <span class="product-badge bg-danger">Sale</span>
+        {% endif %}    
+            <div class="product-carousel owl-carousel gallery-wrapper">
+
+              {% if product_image %}
+              {% for item in product_image %}
+               <div class="gallery-item" data-hash="image_{{forloop.counter}}"><a href="{{item.Image.url}}" data-size="1000x667"><img  src="{{item.Image.url}}" alt="Product"></a></div>
+              {% endfor %}
+              {% endif %}
+
+
+            </div>
+            <ul class="product-thumbnails">
+              {% if product_image %}
+              {% for item in product_image %}
+              {% if forloop.counter == 1 %}
+              <li class="active"><a href="#image_{{forloop.counter}}"><img src="{{item.Image.url}}" alt="Product"></a></li>
+               {% else %}
+               <li class=""><a href="#image_{{forloop.counter}}"><img src="{{item.Image.url}}" alt="Product"></a></li>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+<!--              <li><a href="#two"><img src="img/shop/single/th02.jpg" alt="Product"></a></li>-->
+<!--              <li><a href="#three"><img src="img/shop/single/th03.jpg" alt="Product"></a></li>-->
+<!--              <li><a href="#four"><img src="img/shop/single/th04.jpg" alt="Product"></a></li>-->
+<!--              <li><a href="#five"><img src="img/shop/single/th05.jpg" alt="Product"></a></li>-->
+            </ul>
+          </div>
+          <div class="row">
+            <div class="col-md-12" id="show_add_product_info_messsage"></div>
+          </div>
+        </div>
+        <!-- Product Info-->
+        <div class="col-md-6">
+          <div class="padding-top-2x mt-2 hidden-md-up"></div>
+
+          <h2 class="mb-3">{{get_product.Product_name}}</h2>
+
+          
+          <span class="h3 d-block" style="margin-bottom: 0px;">
+            <del class="text-muted">Rs. {{get_product.ReyalPrice}}</del>&nbsp; Rs.{{get_product.Price_pr_ticket}}</span>
+            {% if get_product.winner_ticket == 0  %}
+            <span class="badge badge-success badge-pill">
+            {{get_product.Product_TagLine}}
+          </span><br>
+          {% endif %}
+          <p class="text-muted btn btn-sm"><a href='{{get_product.product_link}}' target="_blank" class='scroll-to'>Product delever from</a></p>
+          <div class="row margin-top-1x">
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="size">Ticket Booking Start</label>
+              <span class="badge badge-success badge-pill">{{get_product.Ticket_booking_start}}</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="color">Ticket Open Date</label>
+                <span class="badge badge-danger badge-pill">{{get_product.Ticket_open_date}}</span>
+              </div>
+            </div>
+          </div>
+          {% if get_product.winner_ticket == 0  %}
+              
+              
+
+            {% if get_product.Ticket_booking_start < today %} 
+            <div class="row align-items-end pb-4" id="set_ticken_button">
+             
+            </div>
+            {% else %}
+            <div class="row align-items-end pb-4" >
+             <h3>Booking Start on : {{get_product.Ticket_booking_start}}</h3>
+            </div>
+            
+            {% endif %}
+          {% else %}
+          <div class="row align-items-end pb-4">
+             <div class="card">
+                <div class="card-body">
+                 <div class="row">
+                   <div class="col-md-6">
+                      <h4 class="card-title">
+
+                   {% if get_winner_info.user.Image %}
+                    
+               <img class="img-circle" src='{{get_winner_info.user.Image.url}}'  style="height: 50px;
+    width: 50px;" alt="{{get_winner_info.user.name}}">
+            {% else %}
+                <img style="height: 50px;
+    width: 50px;" class="img-circle" src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_winner_info.user.name}}">
+            {% endif %}
+                  {{get_winner_info.user}}</h4>
+                  <p>{{get_winner_info.Winner_date}}</p>
+                   </div>
+                   <div class="col-md-6 text-right">
+                      <p>Winner Ticket No. <button type="button" class="btn btn-primary btn-sm">{{get_product.winner_ticket}}</button></p>
+                   </div>
+
+                 </div>
+                 
+                 
+                  <p class="card-text">Hello {{get_winner_info.user.name}}. Congratulations you are win this product. And this product is send to your register address in 7 days.</p>
+                  <a class="btn btn-outline-primary btn-sm" href="#">Check Blog</a>
+                </div>
+              </div>
+          </div>
+          <!-- {{get_product.winner_ticket}} -->
+          {% endif %}
+          <div class="row align-items-end pb-4">
+
+            <div class="col-sm-7">
+               {% if get_product.winner_ticket == 0  %} 
+               {% if get_product.Ticket_booking_start < today %} 
+              <div class="pt-4 hidden-sm-up"></div>
+              <button class="btn btn-primary btn-block m-0 add_to_card" ><i class="icon-bag"></i> Add to Cart</button>
+               {% endif %}
+             {% endif %}
+            </div>
+            <div class="col-sm-5">
+              <span class="text-medium">SKU:</span> #{{get_product.Product_id}}
+              <input type="hidden"  id="product_id_set" value="{{get_product.Product_id}}">
+            </div>
+          </div>
+
+          <hr class="mb-2">
+          <div class="d-flex flex-wrap justify-content-between">
+            <div class="mt-2 mb-2">
+               {% if get_product.winner_ticket == 0  %}
+            <button data-product_id="{{get_product.Product_id}}" class="btn btn-outline-secondary btn-sm  {% if set_wish_list_status %} btn-success {% else %} btn-info {% endif %}  {% if user.username == '' %} click_to_do_login {% else %} add_to_wishlist  {% endif %}"><i class="icon-heart"></i>&nbsp;Get Notification</button>
+              
+             {% endif %}
+            </div>
+
+            <div class="mt-2 mb-2"><span class="text-muted">Share:&nbsp;&nbsp;</span>
+              <div class="d-inline-block">
+          <a target="_blank" class="social-button shape-rounded sb-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="socicon-facebook"></i></a>
+
+          <a target="_blank" class="social-button shape-rounded sb-twitter" href="https://twitter.com/home?status={{get_product.slug}}%20{{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="socicon-twitter"></i></a>
+
+          <a target="_blank" class="social-button shape-rounded sb-google-plus" href="https://plus.google.com/share?url={{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="Google +"><i class="socicon-googleplus"></i></a>
+
+        </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Product Details-->
+    <div class="bg-secondary padding-top-3x padding-bottom-2x mb-3" id="details">
+      <div class="container">
+        {{get_product.description   | safe  }}
+          
+      </div>
+    </div>
+    <!-- Reviews-->
+    <div class="container padding-top-2x">
+      <div class="row">
+        <div class="col-md-12">
+           <h3 class="padding-bottom-1x">Latest Blog</h3>
+
+          <a class="btn btn-success btn-sm" href="{{BASE_URL}}user/add-blog">Create Blog & Get Coupon</a>
+          {% if get_all_blog %}
+     {% for item in get_all_blog %}
+    
+            <div class="row">  
+  <div class="col-md-12">
+    <div class="blog-post">
+                <div class="post-body">
+                  <ul class="post-meta">
+                    <li><i class="icon-clock"></i><a href="#">{{item.Publish_date}}</a></li>
+                    <li><i class="icon-user"></i><a href="#">{{item.user}}</a></li>
+                    <li><i class="icon-tag"></i><a href="#">{{item.product.Product_name}}</a></li>
+                  </ul>
+                  <div class="row">
+                    <div class="col-md-4">
+                    {% if item.product.Image %}
+                    <img src='{{item.product.Image.url}}'>
+                    {% else %}
+                       <img src='{% static "web/img/blog/03.jpg" %}'>
+                    {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                      <h3 class="post-title"><a href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}">{{item.Blog_Title}} ({{item.product}})</a></h3>
+                      <h6></h6>
+                  <p>{{item.Blog_Contect|slice:"0:500"}}..</p>
+                  <a href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}"><button type="button" class="btn btn-primary">Read More</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  </div>
+
+     </div>
+
+          {% endfor %}
+           <a class="btn btn-secondary btn-block" href="#">View All Reviews</a>
+          {% endif %}
+         
+          
+        </div>
+       
+      </div>
+    </div>
+    <div class="container padding-bottom-3x mb-1">
+      <!-- Related Products Carousel-->
+      <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
+      <!-- Carousel-->
+      <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+        <!-- Product-->
+        {% if get_similar_product %}
+        {% for item in get_similar_product %}
+       
+        <div class="product-card">
+          {% if item.Ticket_booking_start < today %}
+         <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
+          {% else %}
+            <div class="product-badge bg-danger">Arivel</div>
+            {% endif %}
+
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
+          <div class="product-card-body">
+            <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
+            <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
+            <h4 class="product-price">
+              <del>Rs.{{item.ReyalPrice}}</del>Rs.{{item.Price_pr_ticket}}
+            </h4>
+            <div class="product-category">Win date :  {{item.Ticket_open_date}} </div>
+          </div>
+          <div class="product-button-group">
+            <a class="product-button btn-wishlist" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><button type="button" class="btn btn-primary btn-block"><i class="icon-shopping-cart"></i> Buy Now</button></a>
+          </div>
+        </div>
+
+
+
+      
+          {% endfor %}
+        {% endif %}
+    
+      </div>
+    </div>
+    <!-- Site Footer-->
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+ {% if user.username == ""  %}
+<script type="text/javascript">
+var set_class = "click_to_do_login";
+</script>
+
+{% else %}
+<script type="text/javascript">
+var set_class = "click_to_select";
+</script>
+
+{% endif %}
+
+<script>
+
+
+ $(document).on("click",".add_to_wishlist",function(){
+
+  $(".se-pre-con").css("display","block");
+var product_id = $(this).data("product_id");
+
+if($(this).hasClass('btn-success')) 
+{
+
+  $(this).removeClass('btn-success');
+
+}
+else{
+
+  $(this).addClass('btn-success');
+}
+
+
+
+ $.ajax({
+                method:"POST",
+               url:"{{BASE_URL}}user/product-notification/add-remove",
+               data:{"product_id":product_id},
+               dataTyep:"json",
+               success:function(data)
+               {
+
+                  $(".se-pre-con").css("display","none");
+                  if(data.status=="0")
+                  {
+                    swal("Cancelled", data.message, "error");
+                    
+                    $("#show_add_product_info_messsage").html('<div class="alert alert-danger"><strong></strong>'+data.message+'</div>');
+                 }
+                 else
+                 {
+                  swal("Good job!", data.message, "success");
+                  $("#show_add_product_info_messsage").html('<div class="alert alert-success"><strong></strong>'+data.message+'</div>');
+                 }
+               }
+ });
+
+
+ }); 
+
+$(document).ready(function(){
+
+var ticket_in_add_to_card = '{{get_card_ticket_no}}';
+var get_ticket_of_orders = '{{get_ticket_of_orders}}';
+var get_my_booked_ticket = '{{get_my_booked_ticket}}';
+var ticket_in_add_to_card_in_array = ticket_in_add_to_card.split(",,");
+var get_ticket_of_orders_in_array = get_ticket_of_orders.split(",,");
+var get_my_booked_ticket_in_array = get_my_booked_ticket.split(",,");
+
+
+  for(var i=1; i<={{get_product.No_of_ticket}}; i++)
+   {
+
+   var set_button_status  = "" ;
+      if(ticket_in_add_to_card_in_array.includes(i.toString()))
+      {
+        set_button_status = "set_ticket_select";
+      }
+   var set_button_disabled_status  = "" ;
+   var set_booked_class  = "" ;
+
+
+   if(get_ticket_of_orders_in_array.includes(i.toString()))
+      {
+        set_button_disabled_status = "disabled";
+        set_booked_class = "set_class_for_booked_ticked";
+      }
+
+   var set_class_for_my_ticket = "" ;
+   var set_word = i;
+  if(get_my_booked_ticket_in_array.includes(i.toString()))
+      {
+              set_word = "{{user_name_first_word}}";
+        set_class_for_my_ticket = "set_class_for_my_booked_ticked";
+      }
+
+
+    $("#set_ticken_button").append('<div class="col-md-2 col-xm-3 col-sm-3"><button type="button " data-ticket_no="'+i+'" '+set_button_disabled_status+' class="btn btn-primary btn-block '+set_class_for_my_ticket+' '+set_booked_class+'  '+set_button_status+' '+set_class+'">'+set_word+'</button></div>');
+    }
+});
+
+
+$(document).on("click",".click_to_do_login",function(){
+
+ $("#set_redirect_url").val(window.location.href);
+
+ $("#modalCentered").modal("show");
+
+});
+
+$(document).on("click",".click_to_select",function(){
+
+var ticket_id = $(this).data("ticket_no");
+
+ if($(this).hasClass("set_ticket_select"))
+ {
+  $(this).removeClass("set_ticket_select");
+ }
+ else
+ {
+  $(this).addClass("set_ticket_select");
+ }
+
+});
+
+// ================== add to cart START===================
+$(document).on("click",".add_to_card",function(){
+
+ var set_count  = 0;
+ var get_ticket_array = new Array()
+ $(".click_to_select").each(function(){
+
+     if($(this).hasClass("set_ticket_select"))
+    {
+      set_count += 1;
+      get_ticket_array.push($(this).data("ticket_no"));
+    }
+
+
+  });
+
+ if(set_count == 0)
+ {
+  alert("Please select at list one ticket.");
+ }
+ else
+ {
+  $(".se-pre-con").css("display","block");
+get_ticket_array = get_ticket_array.join(",,")
+    var product_id = $("#product_id_set").val();
+    $.ajax({
+              method:"POST",
+               url:"{{BASE_URL}}user/orders/add-product",
+               data:{"product_id":product_id,"get_ticket_array":get_ticket_array},
+               dataTyep:"json",
+               success:function(data){
+                $(".se-pre-con").css("display","none");
+
+               swal(data.message);
+                  if(data.status=="0")
+                  {
+                    $("#show_add_product_info_messsage").html('<div class="alert alert-danger"><strong></strong>'+data.message+'</div>');
+                 }
+                 else
+                 {
+                  // $(".set_count_of_add_to_card_product").empty();
+                  // $(".show_product_of_add_to_card").empty();
+                  $(".show_total_amount").empty();
+                  get_all_product_of_add_to_card();
+                  $("#show_add_product_info_messsage").html('<div class="alert alert-success"><strong></strong>'+data.message+'</div>');
+                 }
+
+               }
+    });
+ }
+
+});
+// ================== add to cart END=====================
+
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% if get_product_image %}
+{% for item in get_product_image %}
+
+{% if item.Image %}
+<div class="col-md-3">
+<img style="height: 50px;
+    width: 50px;" class="img-circle" src="{{item.Image.url}}" alt="">
+ </div>
+{% endif %}
+
+{% endfor %}
+{% endif %}

@@ -1,0 +1,32 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<!-----------Page Content Start------------->
+
+<div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{page_title}}</h1>
+        </div>
+        <div class="column">
+        
+        </div>
+      </div>
+    </div>    <!-- Top Categories/Deals-->
+    <section class="container padding-top-3x padding-bottom-2x">
+      <div class="row">
+
+
+        {{get_page_content.Page_Content | safe }}        
+      </div>
+   
+    </section>
+  
+
+
+   <!--products-area end-->
+
+{% endblock %}

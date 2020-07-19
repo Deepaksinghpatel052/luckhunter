@@ -1,0 +1,274 @@
+{% extends 'web/base_template.html' %}
+
+
+{% block styleseet %}
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{get_user_ins.name}} -> Cart</h1>
+        </div>
+        <div class="column">
+         <!--  <ul class="breadcrumbs">
+            <li><a href="index.html">Home</a>
+            </li>
+            <li class="separator">&nbsp;</li>
+            <li>Cart</li>
+          </ul> -->
+        </div>
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-1">
+      <!-- Alert-->
+     {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}  
+    <!--   <div class="alert alert-info alert-dismissible fade show text-center" style="margin-bottom: 30px;"><span class="alert-close" data-dismiss="alert"></span><i class="icon-award"></i>&nbsp;&nbsp;With this purchase you will earn <span class='text-medium'>2,549</span> Reward Points.</div> -->
+      <!-- Shopping Cart-->
+      <div class="table-responsive shopping-cart">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th class="text-center">Tickects</th>
+              <th class="text-center">Price/Ticket</th>
+              <th class="text-center">Subtotal</th>
+              <th class="text-center">
+{% if get_add_to_card_product %}
+                <a class="btn btn-sm btn-outline-danger" href="javascript:;"
+                onclick="remove_product('{{BASE_URL}}user/orders/remove-all-product','Do you want to remove all products ?','Products removed from add to card.','Products not removed.');">Clear Cart</a>
+{% endif %}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if get_add_to_card_product %}
+            {% for item in get_add_to_card_product %}
+          <tr>
+              <td>
+                <div class="product-item"><a class="product-thumb" href="{{BASE_URL}}product/{{item.Product.slug}}/{{item.Product.Product_id}}">
+
+        {% if item.Product.Image %}
+<img src='{{item.Product.Image.url}}'  alt="{{item.Product.Product_name}}">        
+        {% else %}
+<img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{item.Product.Product_name}}">
+        {% endif %}
+
+                 </a>
+                  
+                  <div class="product-info">
+                    <h4 class="product-title">
+                      <a href="{{BASE_URL}}product/{{item.Product.slug}}/{{item.Product.Product_id}}">
+                    {{item.Product.Product_name}}
+                    </a>
+                  </h4>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <button type="button " data-ticket_no="1" class="btn btn-primary btn-sm set_ticket_select click_to_select">{{item.Ticket_no}}</button>
+              </td>
+              <td class="text-center text-lg">Rs. {{item.Product.Price_pr_ticket}}</td>
+              <td class="text-center text-lg">Rs. {{item.Product.Price_pr_ticket}}</td>
+              <td class="text-center"><a class="remove-from-cart" href="javascript:;" data-toggle="tooltip" title="Remove item" onclick="remove_product('{{BASE_URL}}user/orders/remove-product/{{item.id}}','Do you want to remove this product ?','Product removed from add to card.','Product not removed.');"><i class="icon-x"></i></a></td>
+            </tr>
+            {% endfor %}
+             {% else %}
+             <tr>
+               <td class="text-center" colspan="5">
+                <a href="{{BASE_URL}}"><button type="button " class="btn btn-primary" >Your card is empty</button></a>
+              </td>
+             </tr>
+
+            {% endif %}
+            
+          
+            
+          </tbody>
+        </table>
+      </div>
+      {% if get_add_to_card_product %}
+      <div class="shopping-cart-footer">
+        <div class="column coupon-form" id="show_coupon_add_message" style="width: 69%;">
+          <form class="coupon-form" method="post" id="applay_coupon" >
+            <input class="form-control form-control-sm" name="coupne_code" required="" type="text" placeholder="Coupon code" required>
+            <button class="btn btn-outline-primary btn-sm" type="submit">Apply Coupon</button>
+          </form>
+        <div class="row" id="show_coupon_add_error" style="margin-left: 1px;"></div>
+        </div>
+        <div class="column text-lg">
+          <table id="add_cecount"> 
+            <tr>
+              <td><span class="text-muted">Subtotal:&nbsp; </span><span class="text-gray-dark">Rs. {{get_total_amount}}</span></td>
+            </tr>
+             
+          </table>
+        </div>
+      </div>
+     
+      <div class="shopping-cart-footer">
+        <div class="column"><a class="btn btn-outline-secondary" href="{{BASE_URL}}"><i class="icon-arrow-left"></i>&nbsp;Back to Shopping</a></div>
+        <div class="column">
+         <form id="place_oder" action="POST">
+           <input type="hidden" name="total_amount" id="get_total_amount" value="{{get_total_amount}}">
+           <input type="hidden" name="coupon_id" id="coupon_id" value="">
+           <input type="hidden" name="descount_amount" id="descount_amount" value="">
+         
+          <button type="submit" class="btn btn-primary">Pay Rs. <span id="set_grand_total_amount">{{get_total_amount}}</span> & Checkout</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+      <!-- Related Products Carousel-->
+      <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
+      <!-- Carousel-->
+      <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+        <!-- Product-->
+        {% if get_similar_product %}
+        {% for item in get_similar_product %}
+       
+        <div class="product-card">
+          {% if item.Ticket_booking_start < today %}
+         <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
+          {% else %}
+            <div class="product-badge bg-danger">Arivel</div>
+            {% endif %}
+
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
+          <div class="product-card-body">
+            <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
+            <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
+            <h4 class="product-price">
+              <del>Rs.{{item.ReyalPrice}}</del>Rs.{{item.Price_pr_ticket}}
+            </h4>
+            <div class="product-category">Win date :  {{item.Ticket_open_date}} </div>
+          </div>
+          <div class="product-button-group">
+            <a class="product-button btn-wishlist" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><button type="button" class="btn btn-primary btn-block"><i class="icon-shopping-cart"></i> Buy Now</button></a>
+          </div>
+        </div>
+
+
+
+      
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    <!-- Site Footer-->
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+   $(document).ready(function(){
+    $("#applay_coupon").submit(function(event) {
+     $(".se-pre-con").css("display","block");
+        event.preventDefault();
+        $.ajax({
+               method:"POST",
+               url:base_url+"user/orders/get-coupon-code",
+               data:$('#applay_coupon').serializeArray(),
+               dataTyep:"json",
+               success:function(data)
+               {
+
+                $(".se-pre-con").css("display","none");
+               $("#set_sign_up_button").prop("disabled", false);
+                 if(data.status=="0")
+                 {
+
+                    $("#show_coupon_add_error").html('<span class="badge badge-danger badge-pill">'+data.message+'</span>');
+                 }
+                 else
+                 {
+                  
+                 var desco_range = data.coupon_data.descount_range; 
+                 var product_total  = parseInt($("#get_total_amount").val());
+                 var get_descount_amount = (product_total*desco_range)/100;
+                var total_amount_after_descount = product_total - get_descount_amount;
+                console.log(total_amount_after_descount);
+
+                  $("#show_coupon_add_message").html('<span class="badge badge-success badge-pill">'+data.message+'</span>');
+                   
+                   $("#descount_amount").val(get_descount_amount);
+                   $("#coupon_id").val(data.coupon_data.Coupon_code);
+                   $("#get_total_amount").val(total_amount_after_descount);
+                   $("#set_grand_total_amount").text(total_amount_after_descount);
+                  $("#add_cecount").append('<tr style="border-top: 1px solid #5f5858;"><td><span class="text-muted">Descount:&nbsp; </span><span class="text-gray-dark show__descount_ra">Rs. '+get_descount_amount+'</span></td></tr>');
+                   
+                 }
+    
+              
+                }
+              });
+    });
+
+
+
+$("#place_oder").submit(function(event) {
+  $(".se-pre-con").css("display","block");
+event.preventDefault();
+
+   $.ajax({
+               method:"POST",
+               url:base_url+"user/orders/plased-order",
+               data:$('#place_oder').serializeArray(),
+               dataTyep:"json",
+               success:function(data)
+               {
+                $(".se-pre-con").css("display","none");
+                console.log(data)
+                if(data.status=="1")
+                {
+                   
+
+                   $("#do_payments #order_id_set_for_payment").val(data.data.order_id);
+                   $('#do_payments').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                      }); 
+                    do_payment(data.data.order_id);
+                    
+                }
+
+               }
+             });
+
+});
+
+   });
+
+
+</script>
+
+{% endblock %}

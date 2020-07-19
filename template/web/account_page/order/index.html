@@ -1,0 +1,302 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ <style type="text/css">
+   .scrollbar
+{
+  margin-top: 8px;
+  float: left;
+  height: 500px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow
+{
+  min-height: 387px;
+}
+#wrapper
+{
+  
+  width: 100%;
+
+}
+ </style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>Wishlist</h1>
+        </div>
+       
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      
+<div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+      <div class="row">
+         <div class="col-lg-4">
+          <aside class="user-info-wrapper">
+            <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
+              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+            </div>
+            <div class="user-info">
+
+              <div class="user-avatar"><a class="edit-avatar" href="#">
+              
+              </a>
+
+            {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+            {% endif %}
+              </div>
+              <div class="user-data">
+                <h4 class="h5">{{get_user_ins.name}}</h4><span>Joined {{get_user_ins.DOJ}}</span>
+                <span><input type="file" name="user_image"   id="id_Image"></span>
+
+              </div>
+            </div>
+          </aside>
+          <nav class="list-group">
+            <a class="list-group-item " href="{{BASE_URL}}user/my-profile">
+              <i class="icon-user"></i>
+              Profile
+            </a>
+            <a class="list-group-item with-badge active" href="{{BASE_URL}}user/orders">
+              <i class="icon-shopping-bag"></i>
+              Orders
+              <!-- <span class="badge badge-default badge-pill">6</span> -->
+            </a>
+            
+            <a class="list-group-item" href="{{BASE_URL}}user/address">
+              <i class="icon-map-pin"></i>
+              Addresses
+            </a>
+            <a class="list-group-item with-badge" href="{{BASE_URL}}user/product-notification">
+              <i class="icon-heart"></i>
+              Product For Notification
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/blog">
+                <i class="icon-tag"></i>
+                Blog             
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/wallet">
+                <i class="icon-tag"></i>
+                My-wallet             
+              </a>
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
+                <i class="icon-tag"></i>
+                Complane/Queryes             
+              </a>
+            </nav>
+        </div>
+        <div class="col-lg-8">
+          <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+          <!-- Wishlist Table-->
+          <div class="table-responsive wishlist-table mb-0">
+            <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Date Purchased</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Payment Status</th>
+                </tr>
+              </thead>
+            </table>
+           <div id="wrapper">
+  <div class="scrollbar" id="style-default">
+  <div class="force-overflow">
+            <table class="table">
+              <tbody>
+               
+
+
+                {% if my_order_data %}
+                {% for item in my_order_data %}
+<tr>
+                  <td><a class="navi-link show_product" href="#" data-payment_status="{{item.payment_status}}"  data-payment="{{item.payment}}"  data-total_payment="{{item.total_payment}}" data-descount="{{item.descount_amount}}" data-order_id="{{item.order_id}}"><u>{{item.order_id}}</u></a></td>
+                  <td>{{item.create_date}}</td>
+                  <td>
+                  {% if item.order_status.Status_type == "Done" or item.order_status.Status_type == "add_in_wallet" %}
+                    <span class="text-success">{{item.order_status}}</span></td>
+                  {% endif %}
+                  {% if item.order_status.Status_type == "winner" %}
+                  <span class="text-info">{{item.order_status}}</span></td>
+                   {% endif %}
+
+                   {% if item.order_status.Status_type == "Pending" %}
+                  <span class="text-warning">{{item.order_status}}</span></td>
+                   {% endif %}
+                   {% if item.order_status.Status_type == "luser" %}
+                  <span class="text-danger">{{item.order_status}}</span></td>
+                   {% endif %}
+                  <td><span>Rs.{{item.total_payment}}</span></td>
+                  <td>
+                    {% if item.payment_status %}
+                    <span class="badge badge-success badge-pill">Payment Done</span>
+                    {% else %}
+                    <button type="button" onclick="do_payment('{{item.order_id}}');"  class="btn btn-primary btn-sm"> Do payment</button>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                 <h1>OrderList is empty!</h1>
+                {% endif %}
+
+            
+                
+                
+              </tbody>
+            </table>
+             </div>
+   </div>
+ </div>   
+          </div>
+          <hr class="mb-4">
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- Open Ticket Modal-->
+    <div class="modal fade" id="orderDetails" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Order No  - <span id="show_order_id"></span></h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive shopping-cart mb-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th class="text-center">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="show_order_items">
+                  
+                 
+                </tbody>
+              </table>
+            </div>
+            <hr class="mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+              <div class="px-2 py-1"><span class='text-muted'>Subtotal:</span> <span class='text-gray-dark' id="show_payments">Rs. 0</span></div>
+              <div class="px-2 py-1"><span class='text-muted'>Descount:</span> <span class='text-gray-dark' id="show_descount_amount">Rs. Total</span></div>
+              <div class="px-2 py-1"><span class='text-muted'>Total Payment:</span> <span class='text-gray-dark' id="show_total_payment">Rs. 0</span></div>
+              <div class="text-lg px-2 py-1" id="show_payment_status"><span class='text-muted'>Total:</span> <span class='text-gray-dark'>$2,584.72</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+
+$(document).on("click",".show_product",function(){
+
+  var order_id = $(this).data("order_id");
+  var total_payment = $(this).data("total_payment");
+  var payment = $(this).data("payment");
+  var descount = $(this).data("descount");
+  var payment_status = $(this).data("payment_status");
+
+
+$.ajax({
+            method:"POST",
+            url:base_url+"user/orders/get_order_item",
+            data:{"order_id":order_id},
+            dataTyep:"json",
+            success:function(data)
+            {
+              $("#show_order_items").empty();
+
+              // console.log(data.data);
+              for(var i=0; i<data.data.length; i++)
+              {
+                var set_booked_status = '<span class="badge badge-warning badge-pill">Pending</span>';
+                if(data.data[i].Book_status == true)
+                {
+                    set_booked_status = '<span class="badge badge-success badge-pill">Done</span>';
+                }
+
+                var set_for_book_status = '<img src='+"'"+'{% static "web/false_image.jpg" %}'+"'"+' style="width: 20px;" >';
+                var set_for_winner_status = '<img src='+"'"+'{% static "web/false_image.jpg" %}'+"'"+' style="width: 20px;" >';
+                if(data.data[i].Winner == true)
+                {
+                  set_for_winner_status = '<img src='+"'"+'{% static "web/true_image.jpg" %}'+"'"+' style="width: 20px;" >'
+                }
+
+                
+                if(data.data[i].Book_status == true)
+                {
+                 
+             
+                  set_for_book_status = '<img src='+"'"+'{% static "web/true_image.jpg" %}'+"'"+' style="width: 20px;" >'
+                }    
+
+                $("#show_order_items").append('<tr><td><div class="product-item"><a class="product-thumb" href="{{BASE_URL}}product/'+data.data[i].product_id.slug+'/'+data.data[i].product_id.Product_id+'"><img src="'+data.data[i].product_id.Image+'" alt="Product"></a><div class="product-info"><h4 class="product-title"><a href="{{BASE_URL}}product/'+data.data[i].product_id.slug+'/'+data.data[i].product_id.Product_id+'">'+data.data[i].product_id.Product_name+'</a></h4><span><em>Ticket No:</em><span class="badge badge-success badge-pill" style="width: 24px;">'+data.data[i].Ticket_no+'</span></span><span><em>Booked Status:</em> '+set_for_book_status+' </span><span><em>Winner:</em> '+set_for_winner_status+'</span></div></div></td><td class="text-center text-lg">Rs. '+data.data[i].product_id.Price_pr_ticket+'</td></tr>');
+              }
+            }
+});
+
+var set_payment_status = '<button type="button" onclick="do_payment('+"'"+order_id+"'"+');" class="btn btn-primary btn-sm"> Do payment</button>';
+if(payment_status == "True")
+{
+  set_payment_status = '<span class="badge badge-success badge-pill">Payment Done</span>';
+}
+
+$("#orderDetails #show_payment_status").html(set_payment_status);
+$("#orderDetails #show_order_id").text(order_id);
+$("#orderDetails #show_payments").text("Rs. "+payment);
+$("#orderDetails #show_descount_amount").text("Rs. "+descount);
+$("#orderDetails #show_total_payment").text("Rs. "+total_payment);
+  $("#orderDetails").modal("show");
+
+});
+
+</script>
+{% endblock %}

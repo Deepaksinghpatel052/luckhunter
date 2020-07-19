@@ -1,0 +1,81 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{page_title}} </h1> 
+        </div>
+        
+      </div>
+    </div>
+  
+    <!-- Featured Products-->
+    <section class="container padding-bottom-2x mb-2">
+     
+      <br><br>
+      <div class="row">
+{% if add_product_ins_in_grid %}
+          {% for adds in add_product_ins_in_grid %}
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            {{adds.Description | safe  }}
+          </div>
+          {% endfor %}
+          {% endif %} 
+  
+
+
+        
+        {% if get_product %}
+        {% for item in get_product %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="product-card mb-30">
+             
+        {% if item.winner_status %}
+              <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-success">Shold</div></a>
+        {% else %}
+        
+{% if item.Ticket_booking_start < today %}
+         <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
+          {% else %}
+            <div class="product-badge bg-danger">Arivel</div>
+            {% endif %}
+
+        {% endif %}
+
+            
+            
+
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src='{{item.Image.url}}'  style="width:100%; height:215px;" alt="Product"></a>
+            <div class="product-card-body">
+              <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
+              <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
+              <h4 class="product-price">
+                <del>Rs.{{item.ReyalPrice}}</del>Rs.{{item.Price_pr_ticket}}
+              </h4>
+              <div class="product-category">Win date :  {{item.Ticket_open_date}} </div>
+
+            </div>
+            <div class="product-button-group">
+<a class="product-button" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">
+             <button type="button" class="btn btn-primary btn-block"><i class="icon-shopping-cart"></i> Buy Now</button>
+              </a>
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+  
+
+      </div>
+    
+    </section>
+
+
+   <!--products-area end-->
+
+{% endblock %}

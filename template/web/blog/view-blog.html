@@ -1,0 +1,132 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+    <style type="text/css">
+  .set_ticket_select {
+    background-color: #059438;
+    color:#fff;
+  }
+  .set_ticket_select:hover
+   {
+    background-color: #059438;
+    color:#fff; 
+  }
+  .set_class_for_booked_ticked  {
+        background-color: #a7afaa;
+    color: #fff;
+  }
+  .set_class_for_my_booked_ticked{
+      background-color: #ffa000;
+    color: #fff;
+  }
+</style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+
+
+<!-----------Page Content Start------------->
+
+    <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{page_title}}</h1>
+        </div>
+        <div class="column text-right">
+         <div class="mt-2 mb-2"><span class="text-muted">Share:&nbsp;&nbsp;</span>
+              <div class="d-inline-block">
+
+          <a target="_blank" class="social-button shape-rounded sb-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook"><i class="socicon-facebook"></i></a>
+
+          <a target="_blank" class="social-button shape-rounded sb-twitter" href="https://twitter.com/home?status={{get_blog.slug}}%20{{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter"><i class="socicon-twitter"></i></a>
+
+          <a target="_blank" class="social-button shape-rounded sb-google-plus" href="https://plus.google.com/share?url={{request.build_absolute_uri}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google +"><i class="socicon-googleplus"></i></a>
+
+        </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x">
+
+
+
+<div class="row"> 
+        <!-- Content-->
+        <div class="col-xl-12 col-lg-12">
+          <!-- Post Meta-->
+          <ul class="post-meta mb-4">
+            <li><i class="icon-clock"></i><a href="#">{{get_blog.Create_date}}</a></li>
+            <li><i class="icon-user"></i><a href="#">{{get_blog.user}}</a></li>
+            <li><i class="icon-tag"></i><a href="#">{{get_blog.product.Product_name}}</a></li>
+            <!-- <li><i class="icon-message-square"></i><a class="scroll-to" href="#comments">12</a></li> -->
+          </ul>
+          <!-- Gallery-->
+        
+         <div class="row">
+           <div class="col-md-4">
+              {% if get_blog.product.Image %}
+                    <img src='{{get_blog.product.Image.url}}'>
+                    {% else %}
+                       <img src='{% static "web/img/blog/03.jpg" %}'>
+                    {% endif %}
+           </div>
+           <div class="col-md-8">
+             <h2 class="pt-4">{{get_blog.Blog_Title}}</h2>
+          <p>{{get_blog.Blog_Contect}}</p>
+         
+          
+           </div>
+         </div>
+         
+         {% if add_product_ins_in_grid %}
+         {{add_product_ins_in_grid.Description | safe }}
+         {% endif %}
+
+          <p class="mt-2">{{get_blog.Blog_description | safe }}</p>
+          
+          <!-- Post Tags + Share-->
+         <!--  <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 pb-4">
+            <div class="pb-2"><a class="text-sm text-muted navi-link" href="#">#electronics,</a><a class="text-sm text-muted navi-link" href="#">&nbsp;#gadgets&nbsp;</a></div>
+            <div class="pb-2"><span class="d-inline-block align-middle text-sm text-muted">Share post:&nbsp;&nbsp;&nbsp;</span><a class="social-button shape-rounded sb-facebook" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook"><i class="socicon-facebook"></i></a><a class="social-button shape-rounded sb-twitter" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter"><i class="socicon-twitter"></i></a><a class="social-button shape-rounded sb-instagram" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram"><i class="socicon-instagram"></i></a><a class="social-button shape-rounded sb-google-plus" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google +"><i class="socicon-googleplus"></i></a></div>
+          </div> -->
+          <!-- Post Navigation-->
+
+          <div class="entry-navigation">
+            <div class="column text-left">
+              {%  if prev_blog %}
+              <a class="btn btn-outline-secondary btn-sm" href="{{BASE_URL}}blog/view-blog/{{prev_blog.id}}/{{prev_blog.slug}}"><i class="icon-arrow-left"></i>&nbsp;Prev</a>
+              {% endif %}
+            </div>
+            <div class="column"><a class="btn btn-outline-secondary view-all" href="{{BASE_URL}}blog" data-toggle="tooltip" data-placement="top" title="" data-original-title="All posts"><i class="icon-menu"></i></a></div>
+            <div class="column text-right">
+            {% if next_blog %}
+              <a class="btn btn-outline-secondary btn-sm" href="{{BASE_URL}}blog/view-blog/{{next_blog.id}}/{{next_blog.slug}}">Next&nbsp;<i class="icon-arrow-right"></i></a>
+            {% endif %}
+            </div>
+          </div>
+          <!-- Relevant Posts-->
+
+         
+        </div>
+        <!-- Sidebar          -->
+     
+      </div>
+
+    </div>
+    <!-- Product Details-->
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+
+{% endblock %}

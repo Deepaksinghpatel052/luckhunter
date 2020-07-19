@@ -1,0 +1,6 @@
+{% if get_all_page %}
+ {% for item in get_all_page %}
+ <li><a href="{{BASE_URL}}page/{{item.keyword}}">{{item.Title}}</a></li>
+ {% endfor %}
+{% endif %}
+              

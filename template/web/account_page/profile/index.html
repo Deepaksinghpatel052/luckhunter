@@ -1,0 +1,228 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ 
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>My Profile</h1>
+        </div>
+        <div class="column">
+          <ul class="breadcrumbs">
+            <li><a href="index.html">Home</a>
+            </li>
+            <li class="separator">&nbsp;</li>
+            <li><a href="account-orders.html">Account</a>
+            </li>
+            <li class="separator">&nbsp;</li>
+            <li>My Profile</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      <div class="row">
+        <div class="col-md-12">
+           {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+        </div>
+        <div class="col-lg-4">
+          <aside class="user-info-wrapper">
+            <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
+              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+            </div>
+            <div class="user-info">
+
+              <div class="user-avatar"><a class="edit-avatar" href="#">
+              
+              </a>
+
+            {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+            {% endif %}
+              </div>
+              <div class="user-data">
+                <h4 class="h5">{{get_user_ins.name}}</h4><span>Joined {{get_user_ins.DOJ}}</span>
+                <span><input type="file" name="user_image"   id="id_Image"></span>
+
+              </div>
+            </div>
+          </aside>
+          <nav class="list-group">
+            <a class="list-group-item active" href="{{BASE_URL}}user/my-profile">
+              <i class="icon-user"></i>
+              Profile
+            </a>
+            <a class="list-group-item with-badge" href="{{BASE_URL}}user/orders">
+              <i class="icon-shopping-bag"></i>
+              Orders
+              <!-- <span class="badge badge-default badge-pill">6</span> -->
+            </a>
+            
+            <a class="list-group-item" href="{{BASE_URL}}user/address">
+              <i class="icon-map-pin"></i>
+              Addresses
+            </a>
+           <a class="list-group-item with-badge" href="{{BASE_URL}}user/product-notification">
+              <i class="icon-heart"></i>
+              Product For Notification
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/blog">
+                <i class="icon-tag"></i>
+                Blog             
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/wallet">
+                <i class="icon-tag"></i>
+                My-wallet             
+              </a>
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
+                <i class="icon-tag"></i>
+                Complane/Queryes             
+              </a>
+            </nav>
+        </div>
+        <div class="col-lg-8">
+          <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+          <form class="row" action="{{BASE_URL}}user/my-profile" method="POST"> 
+            {% csrf_token %}
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="account-fn">First Name</label>
+                <input class="form-control" type="text" name="first_name" id="account-fn" value="{{get_user_ins.user.first_name}}" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="account-ln">Last Name</label>
+                <input class="form-control" type="text" name="last_name" id="account-ln" value="{{get_user_ins.user.last_name}}" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="account-email">E-mail Address</label>
+                <input class="form-control" type="email" name="email" readonly="true" id="account-email" value="{{get_user_ins.user.username}}" >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="account-phone">Phone Number</label>
+                <input class="form-control" type="text" name="number" id="account-phone" value="{{get_user_ins.Contact_no}}" required>
+              </div>
+            </div>
+           
+            <div class="col-12">
+              <hr class="mt-2 mb-3">
+              <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="custom-control custom-checkbox d-block">
+                  <a href="#" data-toggle="modal" data-target="#update_password"><u>Change Password</u></a>
+                </div>
+                <button class="btn btn-primary margin-right-none" type="submit" >Update Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="update_password" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+            <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+            
+            <form id="update_password_form">
+              <div class="row">
+                <div class="col-md-12" id="update_password_form_error"></div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                <label for="account-fn">New Password</label>
+                <input class="form-control" type="Password" name="pass_1" placeholder="New Password" id="account-fn" required="">
+              </div>
+                </div>
+                <div class="col-md-12">
+                   <div class="form-group">
+                <label for="account-fn">Confirm Password</label>
+                <input class="form-control" type="Password" name="pass_2" placeholder="Confirm Password" required="">
+              </div>
+                </div>
+                <div class="col-md-12">
+                  <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                </div>
+                
+              </div>
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+ $("#update_password_form").submit(function(event) {
+     $(".se-pre-con").css("display","block");
+      event.preventDefault();
+       $.ajax({
+              method:"POST",
+               url:base_url+"user/my-profile/update_password",
+               data:$('#update_password_form').serializeArray(),
+               dataTyep:"json",
+               success:function(data)
+               {
+                $(".se-pre-con").css("display","none");
+                console.log(data);
+                if(data.status=="0")
+                 {
+                    $("#update_password_form_error").html('<div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a><strong>'+data.message+'</strong></div>');
+                 }
+                 else
+                 {
+                   location.reload();
+                 }
+               }
+       });
+
+ });
+
+  });
+</script>
+{% endblock %}

@@ -25,8 +25,8 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = '4ak8qr3f_ok91vbh2fwam_-fqmv&7ramg0b@ce&o_=p@$2c&13'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'queryes',
     'manage_adds',
     'send_email',
+    'referral_user',
     # required  app for allauth
     'django.contrib.sites',
     'allauth',

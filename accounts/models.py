@@ -1,20 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
 import django
+from luckhunter.utils import refrral_code_generator
+from django.db.models.signals import pre_save
 # Create your models here.
 
 class LsUser(models.Model):
+    my_refrral_code = models.CharField(max_length=120, blank=True)
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=20, null=True, blank=True)
+    name = models.CharField(max_length=120, null=True, blank=True)
     Image  = models.FileField(upload_to="user_imsge/%Y/%m/%d",null=True,blank=True)
+    UserImage  = models.CharField(max_length=500, null=True, blank=True)
     DOJ  = models.DateField(default=django.utils.timezone.now)
     status = models.BooleanField(default=True)
     Mail_status = models.BooleanField(default=False)
     Contact_no = models.IntegerField()
+    User_referral_code = models.CharField(max_length=120, null=True, blank=True)
+    Point = models.IntegerField(default=0)
     def __str__(self):
         return self.name
     class Meta:
         verbose_name_plural = "LS User"
+
+def pre_save_create_my_refrral_code(sender, instance, *args, **kwargs):
+    if not instance.my_refrral_code:
+        instance.my_refrral_code= refrral_code_generator(instance)
+pre_save.connect(pre_save_create_my_refrral_code, sender=LsUser)
 
 class LsBanner(models.Model):
     banner_pogition  = models.CharField(max_length=20)

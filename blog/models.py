@@ -3,6 +3,7 @@ from accounts.models import LsUser
 from products.models import LsProduct,LsCoupons
 from luckhunter.utils import slug_generator_for_blog
 from django.db.models.signals import pre_save
+from autoslug import AutoSlugField
 import django
 # Create your models here.
 
@@ -10,9 +11,12 @@ class LsBlog(models.Model):
     user = models.ForeignKey(LsUser, related_name='LsBlog_user', on_delete=models.SET_NULL, null=True,blank=True)
     product = models.ForeignKey(LsProduct, related_name='LsBlog_LsProduct', on_delete=models.SET_NULL,null=True, blank=True)
     Blog_Title = models.CharField(max_length=150,null=True,blank=True)
-    slug = models.SlugField(max_length=120, null=True, blank=True)
+    slug = AutoSlugField(populate_from='Blog_Title', always_update=True,unique_with='Create_date__month',max_length=120, null=True, blank=True)
     Blog_Contect = models.TextField(null=True,blank=True)
     Blog_description = models.TextField(null=True,blank=True)
+    Meta_Title = models.CharField(max_length=120, null=True, blank=True)
+    Meta_Keyword = models.TextField(null=True, blank=True)
+    Meta_Description = models.TextField(null=True, blank=True)
     Blog_Publish = models.BooleanField(default=False)
     Coupon_Code = models.ForeignKey(LsCoupons, related_name='LsBlog_LsCoupons', on_delete=models.SET_NULL,null=True, blank=True)
     Create_date = models.DateTimeField(default=django.utils.timezone.now)

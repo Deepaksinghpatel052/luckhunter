@@ -78,7 +78,11 @@
             {% if get_user_ins.Image %}
                <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
             {% else %}
+               {% if get_user_ins.UserImage %}
+               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
+               {% else %}
                 <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+                {% endif %}
             {% endif %}
               </div>
               <div class="user-data">
@@ -132,8 +136,9 @@
                   <ul class="post-meta">
                     <li><i class="icon-clock"></i><a href="#">{{get_my_wallet.Create_date}}</a></li>
                     <li><i class="icon-user"></i><a href="#">{{get_user_ins.name}}</a></li>
-                    <li><i class="icon-lock"></i><a href="#">Your Wallet Code : <span class="badge badge-success badge-pill">{{get_my_wallet.Wallet_code}}</span></a></li>
+                    <li style="border-radius: 9px;border: 1px solid !important;"><i class="icon-lock"></i><a href="#"  >Your Wallet Code : <span class="badge badge-success badge-pill" style="font-size: 100%;" >{{get_my_wallet.Wallet_code}} </span></a></li>
                   </ul>
+                  
                   {% if get_my_wallet.Wallet_id %}
                   <div class="row">
                     <div class="col-md-4">
@@ -389,7 +394,7 @@ var add_amount=$("#add_amount").val();
 var add_amount_in_int = parseInt($("#add_amount").val());
  if (add_amount_in_int < 100)
  {
-  $("#show_error_message").html('<span class="badge badge-danger badge-pill">You can not add 100 less then .</span>');
+  $("#show_error_message").html('<span class="badge badge-danger badge-pill">You can not add less then 100.</span>');
  }
  else
  {

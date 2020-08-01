@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User,auth
 from django.http import HttpResponse, JsonResponse
@@ -11,9 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def test(request):
-    get_data = LsSettings.objects.all()
-    print(get_data[0].Wallet_commition)
-    return HttpResponse("test")
+    return HttpResponse(request.user.username)
 
 @csrf_exempt
 def system_info(request):

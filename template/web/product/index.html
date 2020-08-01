@@ -147,8 +147,17 @@
                <img class="img-circle" src='{{get_winner_info.user.Image.url}}'  style="height: 50px;
     width: 50px;" alt="{{get_winner_info.user.name}}">
             {% else %}
+                 
+                {% if get_winner_info.user.UserImage %}
+                <img style="height: 50px;
+    width: 50px;" class="img-circle" src='{{get_winner_info.user.UserImage}}'  alt="{{get_winner_info.user.name}}">
+                {% else %}
                 <img style="height: 50px;
     width: 50px;" class="img-circle" src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_winner_info.user.name}}">
+                {% endif %}
+
+                    
+                
             {% endif %}
                   {{get_winner_info.user}}</h4>
                   <p>{{get_winner_info.Winner_date}}</p>
@@ -161,7 +170,13 @@
                  
                  
                   <p class="card-text">Hello {{get_winner_info.user.name}}. Congratulations you are win this product. And this product is send to your register address in 7 days.</p>
-                  <a class="btn btn-outline-primary btn-sm" href="#">Check Blog</a>
+                  
+                  {% if view_blog %}
+                  <a class="btn btn-primary btn-sm" href="{{BASE_URL}}blog/{{get_product.slug}}">Check Blog</a>
+                {% else %}
+                <a class="btn btn-success btn-sm" href="{{BASE_URL}}user/add-blog">Create Blog & Get Coupon</a>
+                {% endif %}
+                  
                 </div>
               </div>
           </div>

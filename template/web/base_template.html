@@ -11,10 +11,10 @@
     <!-- SEO Meta Tags-->
    {% load socialaccount %}
 {% providers_media_js %}
-    <meta name="description" content="{{get_product.Meta_Description}}" />
-    <meta name="title" content="{{get_product.Meta_Title}}" />
+    <meta name="description" content="{{get_product.Meta_Description}}{{get_blog.Meta_Description}}" />
+    <meta name="title" content="{{get_product.Meta_Title}}{{get_blog.Meta_Title}}" />
 
-    <meta name="keywords" content="{{get_product.Meta_Keyword}}" />
+    <meta name="keywords" content="{{get_product.Meta_Keyword}}{{get_blog.Meta_Keyword}}" />
     <!-- Mobile Specific Meta Tag-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
@@ -25,8 +25,13 @@
 
     <link rel="stylesheet" media="screen" href='{% static "web/customizer/customizer.min.css" %}'>
 <link href='{% static "web/summernote/summernote.min.css" %}' rel="stylesheet">
-<!--<link rel="stylesheet" href='{% static "web/cropme/croppie.css" %}'  type="text/css">-->
+<link rel="stylesheet" href='{% static "web/cropme/croppie.css" %}'  type="text/css">
+<link rel="stylesheet" href='{% static "web/dist/css/lightbox.min.css" %}'>
     <script src='{% static "web/js/modernizr.min.js" %}'></script>
+
+
+
+
     {% block styleseet %}
     {% endblock %}
 <style type="text/css">
@@ -568,7 +573,7 @@
               </form>
               </div>
             </div>
-           
+           <a href="{{BASE_URL}}user/wallet" target="_blank">Go to wallet <img style="height: 25px; width: 25px;" src="/static/web/img/user-wallet.png" alt="deepak singh patel"></a>
           </div>
           <div class="modal-footer">
             <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
@@ -634,10 +639,11 @@
     <script src='{% static "web/customizer/customizer.min.js" %}'></script>
       <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
-<!-- <script src='{% static "web/cropme/croppie.js" %}' ></script>-->
-<!--  <script src='{% static "web/cropme/croppie_user_image.js" %}' ></script>-->
+ <script src='{% static "web/cropme/croppie.js" %}' ></script>
+  <script src='{% static "web/cropme/croppie_user_image.js" %}' ></script>
 <script src='{% static "web/summernote/summernote.min.js" %}'></script>
 <script src='{% static "web/custom.js" %}'></script>
+<script src='{% static "web/dist/js/lightbox.js" %}'></script>
 {% if set_login == "do_login" %}
 <script type="text/javascript">
   $(document).ready(function(){
@@ -654,6 +660,10 @@ $(document).ready(function() {
   });
 });
 
+
+// ----------------copy to clipbord start----------
+
+// ----------------copy to clipbord end----------
 
 
 var handler = StripeCheckout.configure({

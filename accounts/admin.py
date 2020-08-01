@@ -6,7 +6,7 @@ from django_summernote.admin import SummernoteModelAdmin
 
 class LsUserAdmin(ImportExportModelAdmin):
     search_fields = ['user','name']
-    list_display = ('user','name','DOJ','Mail_status','Contact_no')
+    list_display = ('user','my_refrral_code','name','DOJ','Mail_status','Contact_no','User_referral_code','Point')
     list_filter = ('user',)
 
 class LsBannerAdmin(SummernoteModelAdmin):

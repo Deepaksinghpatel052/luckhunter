@@ -78,7 +78,11 @@
             {% if get_user_ins.Image %}
                <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
             {% else %}
+               {% if get_user_ins.UserImage %}
+               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
+               {% else %}
                 <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+                {% endif %}
             {% endif %}
               </div>
               <div class="user-data">
@@ -150,7 +154,7 @@
                   <td><a class="navi-link show_product" href="#" data-payment_status="{{item.payment_status}}"  data-payment="{{item.payment}}"  data-total_payment="{{item.total_payment}}" data-descount="{{item.descount_amount}}" data-order_id="{{item.order_id}}"><u>{{item.order_id}}</u></a></td>
                   <td>{{item.create_date}}</td>
                   <td>
-                  {% if item.order_status.Status_type == "Done" or item.order_status.Status_type == "add_in_wallet" %}
+                  {% if item.order_status.Status_type == "Done" or item.order_status.Status_type == "add_in_wallet" or item.order_status.Status_type == "order_by_wallet" %}
                     <span class="text-success">{{item.order_status}}</span></td>
                   {% endif %}
                   {% if item.order_status.Status_type == "winner" %}

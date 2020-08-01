@@ -1,0 +1,434 @@
+{% extends 'web/base_template.html' %}
+    {% block styleseet %}
+ <style type="text/css">
+   .scrollbar
+{
+  margin-top: 8px;
+  float: left;
+  height: 255px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow
+{
+  min-height: 210px;
+}
+#wrapper
+{
+  
+  width: 100%;
+
+}
+ </style>
+    {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+ <!-- Page Title-->
+    <div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>My-Wallet</h1>
+        </div>
+       
+      </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container padding-bottom-3x mb-2">
+      
+<div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+      <div class="row">
+         <div class="col-lg-4">
+          <aside class="user-info-wrapper">
+            <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
+              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+            </div>
+            <div class="user-info">
+
+              <div class="user-avatar"><a class="edit-avatar" href="#">
+              
+              </a>
+
+            {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+               {% if get_user_ins.UserImage %}
+               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
+               {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+                {% endif %}
+            {% endif %}
+              </div>
+              <div class="user-data">
+                <h4 class="h5">{{get_user_ins.name}}</h4><span>Joined {{get_user_ins.DOJ}}</span>
+                <span><input type="file" name="user_image"   id="id_Image"></span>
+
+              </div>
+            </div>
+          </aside>
+          <nav class="list-group">
+            <a class="list-group-item " href="{{BASE_URL}}user/my-profile">
+              <i class="icon-user"></i>
+              Profile
+            </a>
+            <a class="list-group-item with-badge" href="{{BASE_URL}}user/orders">
+              <i class="icon-shopping-bag"></i>
+              Orders
+              <!-- <span class="badge badge-default badge-pill">6</span> -->
+            </a>
+            
+            <a class="list-group-item" href="{{BASE_URL}}user/address">
+              <i class="icon-map-pin"></i>
+              Addresses
+            </a>
+            <a class="list-group-item with-badge" href="{{BASE_URL}}user/product-notification">
+              <i class="icon-heart"></i>
+              Product For Notification
+              </a>
+              <a class="list-group-item with-badge" href="{{BASE_URL}}user/blog">
+                <i class="icon-tag"></i>
+                Blog             
+              </a>
+              <a class="list-group-item with-badge active" href="{{BASE_URL}}user/wallet">
+                <i class="icon-tag"></i>
+                My-wallet             
+              </a>
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
+                <i class="icon-tag"></i>
+                Complane/Queryes             
+              </a>
+            </nav>
+        </div>
+        <div class="col-lg-8">
+          <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+          <!-- Wishlist Table-->
+          <div class="table-responsive wishlist-table mb-0">
+            
+<div class="grid-item" >
+              <div class="blog-post">
+                <div class="post-body">
+                  <ul class="post-meta">
+                    <li><i class="icon-clock"></i><a href="#">{{get_user_ins.DOJ}}</a></li>
+                    <li><i class="icon-user"></i><a href="#">{{get_user_ins.name}}</a></li>
+                    <li style="border-radius: 9px;border: 1px solid !important;"><i class="icon-lock"></i><a href="#"  >Your Refrral Code : <span class="badge badge-success badge-pill" style="font-size: 100%;" >{{get_user_ins.my_refrral_code}} </span></a></li>
+                  </ul>
+                  
+                  {% if get_user_ins.my_refrral_code %}
+                  <div class="row">
+                    <div class="col-md-4">
+                      <u >Your Refrral Code :{{get_user_ins.my_refrral_code}}</u>
+                     <img style="height: 170px;" src='{% static "web/img/user-wallet.png" %}'  alt="{{get_user_ins.name}}">
+
+                    </div>
+                    <div class="col-md-1">
+                      
+                      <img style="height: 170px;" src='{% static "web/img/black-line-png-transparent.png" %}'  alt="{{get_user_ins.name}}">
+
+                    </div>
+                    <div class="col-md-7 text-right">
+                     
+
+
+                      <h1> 
+                       Points:{{get_user_ins.Point}}
+                    </h1>
+                    
+                      
+                      <span class="badge badge-success badge-pill">1 Point  =  Rs. 1</span>
+                      <p>{{get_my_wallet.Update_date}}   Last Refrral User</p>
+                      <span id="show_error_message"></span>
+                      <div id="set_amount_for_wallet">
+{% if get_user_ins.User_referral_code == None %}
+<button type="button" class="btn btn-info btn-sm" id="add_refrral_code_set" >Add Refrall Code</button>
+{% endif %}
+                       <button type="button" class="btn btn-primary btn-sm" id="add_amount_in_wallet" >Get Refrral Link</button>
+                      {% if get_user_ins.Point >= 200 %}
+                      <button type="button" class="btn btn-success btn-sm" id="share_amount_in_wallet">Convard Point into Rs.</button>
+                      {% endif %}  
+                      </div>
+                     
+                    </div>
+                  </div>
+
+                   {% endif %}
+
+
+                </div>
+              </div>
+            </div>
+
+{% if get_statement %}
+           <div id="wrapper">
+  <div class="scrollbar" id="style-default">
+  <div class="force-overflow">
+    
+
+    {% for item in get_statement %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="blog-post">
+                <div class="post-body">
+                  <ul class="post-meta">
+                    <li><i class="icon-locak"></i><a href="#">Trs. ID : #{{item.Transaction_Id}}</a></li>
+                    <li><i class="icon-clock"></i><a href="#">Date : {{item.Date}}</a></li>
+                    <li><i class="icon-tag"></i><a href="#">Status : {{item.Status}}</a></li>
+                  </ul>
+                  
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p>Source : {{item.Source}} 
+                             {% if item.Source == 'Stripe' or item.Source == 'PayTm' or item.Source == 'Share' %}
+                              {% if item.Tra_Type %}
+                              - Add In Wallet
+                              {% else %}
+                              - Remove From Wallet
+                              {% endif %}
+                             {% endif %}
+                        <br> Source ID : {{item.Source_id}} <br>Status : {{item.Status}}</p>
+                  
+                    </div>
+                    <div class="col-md-4 text-right">
+                      <p> <span style="color: #072eef;">Rs {{item.Amount|floatformat:2}} </span> 
+                     {% if item.Tra_Type %}
+                       <img src='{% static "web/down.png" %}' style="width: 50px;" >
+                     {% else %}
+                     <img src='{% static "web/up.png" %}' style="width: 23px;" >
+                     {% endif %}  
+                       <br>Rs {{item.After_Transaction_amount|floatformat:2}} :  Balance</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    
+
+
+           
+    </div>
+   </div>
+ </div>   
+     {% endif %}
+          </div>
+          <hr class="mb-4">
+          
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+$(document).on("click","#add_refrral_code_set",function(){
+
+$("#set_amount_for_wallet").html('<form class="input-group form-group" id="add_refrral_code_for_set_refrral" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="text" placeholder="Enter Refrral Code" name="other_user_refrral_code" id="add_refrral_code"></form>');
+});
+
+
+// =========================== payment sahre to wallet id start-------------------------
+
+
+$(document).on("click","#share_amount_in_wallet",function(){
+
+  $("#set_amount_for_wallet").html('<form class="input-group form-group" id="share_amount" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="number" placeholder="Enter-admont" name="add_amount" id="add_amount"></form>');
+
+});
+
+$(document).on('submit',"#share_amount",function(){
+   event.preventDefault();
+$("#show_error_message").html('');
+var add_amount=$("#add_amount").val();
+var add_amount_in_int = parseInt($("#add_amount").val());
+ if (add_amount_in_int < 100)
+ {
+  $("#show_error_message").html('<span class="badge badge-danger badge-pill">You can not share 100 less then .</span>');
+ }
+ else
+ {
+
+   $.ajax({
+       method:"POST",
+        url:base_url+"user/wallet/check-amount",
+        data:{"add_amount_in_int":add_amount_in_int},
+        dataTyep:"json",
+        success:function(data)
+        {
+          
+          console.log()
+          if(data.status=="0")
+          {
+             $("#show_error_message").html('<h5<span class="badge badge-danger badge-pill">'+data.message+'.</span></h5>');
+          }
+          else{
+             $("#share_payment").val(add_amount_in_int);
+            $(".se-pre-con").css("display","none");
+            $("#show_amount").text("Rs. "+add_amount_in_int.toString());
+            $("#share_payments #show_input_box_wallet_id").html('<form id="check_cradencial_for_wallet_id" class="input-group form-group" method="get"><span class="input-group-btn"><button type="submit"><i class="icon-send"></i></button></span><input class="form-control" type="text" required="true"  id="resaver_wallet_id" name="walet_id" placeholder="Add reciver user wallet id"></form>');
+            $("#share_payments").modal('show');
+          }
+        }
+   });
+  
+}
+
+});
+
+$(document).on('submit',"#check_cradencial_for_wallet_id",function(){
+ event.preventDefault();
+$("#show_message").html('');
+ var share_amount = $("#share_payment").val();
+ $.ajax({
+        method:"POST",
+        url:base_url+"user/wallet/check-wallet-id",
+        data:$('#check_cradencial_for_wallet_id').serializeArray(),
+        dataTyep:"json",
+        success:function(data)
+        {
+          console.log(data);
+          if(data.status=="0")
+          {
+             $("#show_message_for_share_payment").html('<h5<span class="badge badge-danger badge-pill">'+data.message+'.</span></h5>');
+          }
+          else
+          {
+
+            $("#walet_id").val(data.data.Wallet_id);
+            var set_user_image = '{% static "web/img/account/user-ava.jpg" %}' ;
+            if(data.data.user.Image)
+            {
+              set_user_image = data.data.user.Image;
+            }
+            $("#show_input_box_wallet_id").html('<div class="card"><div class="card-body"><div class="row"><div class="col-md-2"><img style="width:30px" src="'+set_user_image+'" alt="deepak patel"></div><div class="col-md-10">'+data.data.user.name+'<p class="card-text">Amount Rs.'+share_amount+' send to '+data.data.Wallet_id+'</p></div></div><div class="row"><div class="col-md-12"><form id="check_cradencial_for_wallet_code" class="input-group form-group" method="get"><span class="input-group-btn"><button type="submit"><i class="icon-send"></i></button></span><input class="form-control" type="text" required="true"  id="your_wallet_code" name="your_wallet_code" placeholder="Enter your wallet code"></form></div></div></div></div>');
+
+            $("#show_message_for_share_payment").html('<span class="badge badge-success badge-pill">'+data.message+'.</span>');
+          }
+        }
+   });
+
+});
+
+$(document).on("submit","#check_cradencial_for_wallet_code",function(){
+  $(".se-pre-con").css("display","block");
+ event.preventDefault();
+$("#show_message").html('');
+var wallet_code = $("#your_wallet_code").val();
+var wallet_id = $("#walet_id").val();
+var share_payment = $("#share_payment").val();
+check_wallet_code(wallet_code,wallet_id,share_payment);
+
+
+});
+
+function check_wallet_code(walet_code,wallet_id,share_payment)
+{
+
+  $("#show_message_for_share_payment").html('');
+  var set_status = false;
+   $.ajax({
+        method:"POST",
+        url:base_url+"user/wallet/check-wallet-code",
+        data:{"wallet_code":walet_code,"wallet_id":wallet_id,'share_payment':share_payment},
+        dataTyep:"json",
+        success:function(data)
+        {
+            $(".se-pre-con").css("display","none");
+          if(data.status=="0")
+          {
+             $("#show_message_for_share_payment").html('<h5<span class="badge badge-danger badge-pill">'+data.message+'.</span></h5>');
+          }
+          else
+          {
+            window.location.href = "{{BASE_URL}}user/wallet";
+          }
+        }
+      });
+}
+// =========================== payment sahre to wallet id start-------------------------
+
+$(document).on('submit',"#add_refrral_code_for_set_refrral",function(){
+ event.preventDefault();
+$("#show_error_message").html('');
+
+  $(".se-pre-con").css("display","block");
+
+    $.ajax({
+        method:"POST",
+        url:base_url+"user/referral/add-referral-code",
+        data:$('#add_refrral_code_for_set_refrral').serializeArray(),
+        dataTyep:"json",
+        success:function(data){
+           $(".se-pre-con").css("display","none");
+
+           if(data.status=="0")
+           {
+             $("#show_error_message").html('<span class="badge badge-danger badge-pill">'+data.message+'.</span>');
+           }
+           else
+           {
+       
+
+       swal({
+            title: data.message,
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            window.location.href = "{{BASE_URL}}user/referral";
+          });
+            
+              $("#set_amount_for_wallet").html('<button type="button" class="btn btn-primary btn-sm" id="add_amount_in_wallet" >Get Refrral Link</button>');   
+             
+             // $("#do_payments #order_id_set_for_payment").val(data.data.order_id);
+             //       $('#do_payments').modal({
+             //            backdrop: 'static',
+             //            keyboard: false
+             //          }); 
+             //        do_payment(data.data.order_id);
+             //        $("#do_payments #add_wallet_button").html('');
+           }
+
+        }
+  });
+
+ 
+  
+
+});
+
+
+
+</script>
+{% endblock %}

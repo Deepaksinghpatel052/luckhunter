@@ -14,8 +14,16 @@
                <img class="img-circle" src='{{get_winner_info.user.Image.url}}'  style="height: 50px;
     width: 50px;" alt="{{get_winner_info.user.name}}">
             {% else %}
-                <img style="height: 50px;
+
+                   {% if get_winner_info.user.UserImage %}
+                  <img style="height: 50px;
+    width: 50px;" class="img-circle" src='{{get_winner_info.user.UserImage}}'  alt="{{get_winner_info.user.name}}">
+                   {% else %}
+<img style="height: 50px;
     width: 50px;" class="img-circle" src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_winner_info.user.name}}">
+                   {% endif %}
+
+                
             {% endif %}
                 
                 {% if get_winner_info.user.name %}

@@ -15,6 +15,76 @@ from .serializear import LsUserWalletSerializers
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
+
+def get_bonus_payment(login_user_id,wallet_id,wallet_code,share_payment,pay_user_id,new_user_wallet_id):
+    status = False
+    #  pay_user_id -> noit a geek
+    if LsUser.objects.filter(id=pay_user_id).exists():    # pay_user_id  not a geeks user id
+        get_user_ins = get_object_or_404(LsUser, id=pay_user_id)
+        wallet_id = wallet_id
+        wallet_code = wallet_code
+        share_payment = share_payment
+        wallet_admont = int(share_payment)
+        if LsUserWallet.objects.filter(Wallet_code=wallet_code).filter(user=get_user_ins).exists():
+            wallet_code = ''.join([random.choice(string.digits + string.ascii_letters) for i in range(0, 10)])
+            all_wallet = get_object_or_404(LsUserWallet, user=get_user_ins)
+            notageeks_user_wallet_id = all_wallet.Wallet_id
+
+            get_old_amount = all_wallet.wallet_admont
+            get_amount = get_old_amount - wallet_admont
+            all_wallet.Wallet_code = wallet_code
+            all_wallet.wallet_admont = get_amount
+            all_wallet.save()
+            Payment_Method = "Share"
+            Status_set = "succeeded"
+            add_statement = LsStatements(
+                wallet_id=all_wallet,
+                Source=Payment_Method,
+                Source_id=wallet_id,
+                Tra_Type=False,
+                user=get_user_ins,
+                Befouer_Transaction_amount=get_old_amount,
+                Amount=wallet_admont,
+                Status=Status_set,
+                After_Transaction_amount=get_amount,
+            );
+            add_statement.save()
+            #  pay_user_id -> noit a geek CODE END FOR NOT A GEEKS account
+
+            # ==========CODE FOR RECIVER START
+            wallet_code = ''.join([random.choice(string.digits + string.ascii_letters) for i in range(0, 10)])
+            # pay_user_id  not a geeks user id
+            if LsUser.objects.filter(id=login_user_id).exists():
+                get_user_ins = get_object_or_404(LsUser, id=login_user_id)
+                all_wallet = get_object_or_404(LsUserWallet, Wallet_id=new_user_wallet_id)
+
+                login_user_wallet_id = all_wallet.Wallet_id
+
+                get_old_amount = all_wallet.wallet_admont
+                get_amount = get_old_amount + wallet_admont
+                all_wallet.Wallet_code = wallet_code
+                all_wallet.wallet_admont = get_amount
+                all_wallet.save()
+                Status_set = "succeeded"
+                Payment_Method = "Share"
+                add_statement = LsStatements(
+                    wallet_id=all_wallet,
+                    Source=Payment_Method,
+                    Source_id=login_user_wallet_id,
+                    Tra_Type=True,
+                    user=all_wallet.user,
+                    Befouer_Transaction_amount=get_old_amount,
+                    Amount=wallet_admont,
+                    Status=Status_set,
+                    After_Transaction_amount=get_amount,
+                );
+                add_statement.save()
+                status = True
+    return status
+
+
+
 def index(request):
     if "user_id" in request.session:
         if LsUser.objects.filter(id=request.session['user_id']).exists():
@@ -47,7 +117,23 @@ def create_wallet(request):
                     wallet_admont=get_amount
                 )
                 all_wallet.save()
-            message = "Your wallet create successfully.."
+                new_user_wallet_id = all_wallet.Wallet_id
+                wallet_id = '529BT7BKJW'
+                if LsUserWallet.objects.filter(Wallet_id=wallet_id).exists():
+                    get_not_a_geek_wallet_data = get_object_or_404(LsUserWallet,Wallet_id=wallet_id)
+                    wallet_code = get_not_a_geek_wallet_data.Wallet_code
+                    share_payment = 100
+                    if LsUser.objects.filter(user__id=6).exists():
+                        get_not_a_geek_data = get_object_or_404(LsUser,user__id=6)
+                        pay_user_id = get_not_a_geek_data.id
+                        login_user_id = request.session['user_id']
+                        res =  get_bonus_payment(login_user_id, wallet_id, wallet_code, share_payment, pay_user_id, new_user_wallet_id)
+                        if res:
+                            message = "Wallet create successfully and 100Rs. bonus add in your wallet injoy biding."
+                        else:
+                            message = "Wallet create successfully."
+                    else:
+                        message = "Wallet create successfully."
             messages.info(request, message)
     else:
         message = "User is not login."
@@ -335,7 +421,7 @@ def order_by_wallet(request):
                                             LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
                                                 product_id=item.product_id).filter(order_id=get_order_ins).update(
                                                 Book_status=True)
-                                            get_status_ins = get_object_or_404(LsOrderStatus, Status_type="add_in_wallet")
+                                            get_status_ins = get_object_or_404(LsOrderStatus, Status_type="order_by_wallet")
                                             LsOrder.objects.filter(order_id=get_order_ins.order_id).update(
                                                 payment_status=True,descount=True,
                                                 order_status=get_status_ins,total_payment=amount_after_descount,descount_amount=get_total_descount,payment_method="PayTm")

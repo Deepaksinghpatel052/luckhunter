@@ -8,8 +8,8 @@ class LsUserWallet(models.Model):
     Wallet_id = models.CharField(max_length=120, blank=True)
     Wallet_code = models.CharField(max_length=120, blank=True)
     user = models.ForeignKey(LsUser, related_name='LsUserWallet_user', on_delete=models.SET_NULL, null=True, blank=True)
-    wallet_admont = models.FloatField(default=0)
-    Wallet_status = models.BooleanField(default=False)
+    wallet_admont = models.FloatField(default=1000)
+    Wallet_status = models.BooleanField(default=True)
     Create_date = models.DateTimeField(default=django.utils.timezone.now)
     Update_date = models.DateTimeField(default=django.utils.timezone.now)
 

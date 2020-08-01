@@ -69,11 +69,14 @@
         
          <div class="row">
            <div class="col-md-4">
+             <a href="{{BASE_URL}}product/{{get_blog.product.slug}}/{{get_blog.product.Product_id}}">
               {% if get_blog.product.Image %}
                     <img src='{{get_blog.product.Image.url}}'>
                     {% else %}
                        <img src='{% static "web/img/blog/03.jpg" %}'>
                     {% endif %}
+
+                 </a>   
            </div>
            <div class="col-md-8">
              <h2 class="pt-4">{{get_blog.Blog_Title}}</h2>

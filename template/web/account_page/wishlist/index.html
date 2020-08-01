@@ -75,10 +75,14 @@
               
               </a>
 
-            {% if get_user_ins.Image %}
+           {% if get_user_ins.Image %}
                <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
             {% else %}
+               {% if get_user_ins.UserImage %}
+               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
+               {% else %}
                 <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+                {% endif %}
             {% endif %}
               </div>
               <div class="user-data">

@@ -52,6 +52,9 @@ urlpatterns = [
     path('user/address', include('user_address.urls')),
     path('user/address/', include('user_address.urls')),
 
+    path('user/referral', include('referral_user.urls')),
+    path('user/referral/', include('referral_user.urls')),
+
 
 
 

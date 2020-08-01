@@ -68,11 +68,15 @@
               <td>
                 <div class="product-item"><a class="product-thumb" href="{{BASE_URL}}product/{{item.Product.slug}}/{{item.Product.Product_id}}">
 
-        {% if item.Product.Image %}
-<img src='{{item.Product.Image.url}}'  alt="{{item.Product.Product_name}}">        
-        {% else %}
-<img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{item.Product.Product_name}}">
-        {% endif %}
+    {% if get_user_ins.Image %}
+               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
+            {% else %}
+               {% if get_user_ins.UserImage %}
+               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
+               {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
+                {% endif %}
+            {% endif %}
 
                  </a>
                   

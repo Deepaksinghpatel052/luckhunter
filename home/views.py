@@ -17,6 +17,16 @@ from .models import LsCMSPageContent
 
 
 
+def set_cookes(request,rerfrral_code):
+    response = HttpResponse("continue")
+    coocki_id = rerfrral_code
+    response.set_cookie('refrral-code', coocki_id)
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return response
 
 
 def handler404(request,exception):
@@ -135,7 +145,7 @@ def index(request):
     get_future_publich_product = None
     if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).exists():
         get_future_publich_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).order_by("Publich_date")[0:get_add_length]
-    return render(request, 'web/home/index.html',{'add_product_ins_in_grid':add_product_ins_in_grid, 'get_add_list_data_in_grid':get_add_list_data_in_grid,"today":date.today(),'get_future_publich_product':get_future_publich_product, 'get_winner_list':get_winner_list,"get_list_data":get_list_data, 'get_product':get_product, 'page_title':page_title, 'get_banners':get_banners, 'BASE_URL': settings.BASE_URL})
+    return render(request, 'web/home/index.html',{ 'add_product_ins_in_grid':add_product_ins_in_grid, 'get_add_list_data_in_grid':get_add_list_data_in_grid,"today":date.today(),'get_future_publich_product':get_future_publich_product, 'get_winner_list':get_winner_list,"get_list_data":get_list_data, 'get_product':get_product, 'page_title':page_title, 'get_banners':get_banners, 'BASE_URL': settings.BASE_URL})
 
 
 def all_products(request,slug=""):

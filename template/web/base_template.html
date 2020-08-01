@@ -653,6 +653,29 @@
 {% endif %}
 
 <script type="text/javascript">
+  $(document).ready(function(){
+   var url  = window.location.href;
+
+   if(url.indexOf('refrral-code') != -1){
+    var url_split = url.split('=');
+         $.ajax({
+          method:"GET",
+          url:"{{BASE_URL}}set_cookes/"+url_split[1],
+          dataType:"htnml",
+          success:function(data)
+          {
+
+            console.log(data);
+          }
+        });
+         $("#modalCentered").modal("show");
+    }
+
+
+  });
+</script>
+
+<script type="text/javascript">
 
 $(document).ready(function() {
   $('#id_Blog_description').summernote({

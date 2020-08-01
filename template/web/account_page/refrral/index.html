@@ -5,7 +5,7 @@
 {
   margin-top: 8px;
   float: left;
-  height: 255px;
+  height: 299px;;
   width: 100%;
   overflow-y: scroll;
   margin-bottom: 25px;
@@ -115,9 +115,14 @@
                 <i class="icon-tag"></i>
                 Blog             
               </a>
-              <a class="list-group-item with-badge active" href="{{BASE_URL}}user/wallet">
+              <a class="list-group-item with-badge " href="{{BASE_URL}}user/wallet">
                 <i class="icon-tag"></i>
                 My-wallet             
+              </a>
+
+              <a class="list-group-item with-badge active" href="{{BASE_URL}}user/referral">
+                <i class="icon-tag"></i>
+                My-Refrral             
               </a>
               <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
                 <i class="icon-tag"></i>
@@ -130,6 +135,11 @@
           <!-- Wishlist Table-->
           <div class="table-responsive wishlist-table mb-0">
             
+
+
+
+
+
 <div class="grid-item" >
               <div class="blog-post">
                 <div class="post-body">
@@ -137,6 +147,7 @@
                     <li><i class="icon-clock"></i><a href="#">{{get_user_ins.DOJ}}</a></li>
                     <li><i class="icon-user"></i><a href="#">{{get_user_ins.name}}</a></li>
                     <li style="border-radius: 9px;border: 1px solid !important;"><i class="icon-lock"></i><a href="#"  >Your Refrral Code : <span class="badge badge-success badge-pill" style="font-size: 100%;" >{{get_user_ins.my_refrral_code}} </span></a></li>
+                  <li><a href="javascript:;" data-toggle="modal" data-target="#myrefrraluser" class="btn btn-primary btn-sm" style="color: #fff;">My Refrral User</a></li>
                   </ul>
                   
                   {% if get_user_ins.my_refrral_code %}
@@ -167,9 +178,9 @@
 {% if get_user_ins.User_referral_code == None %}
 <button type="button" class="btn btn-info btn-sm" id="add_refrral_code_set" >Add Refrall Code</button>
 {% endif %}
-                       <button type="button" class="btn btn-primary btn-sm" id="add_amount_in_wallet" >Get Refrral Link</button>
+                       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#get_refrral_link" >Get Refrral Link</button>
                       {% if get_user_ins.Point >= 200 %}
-                      <button type="button" class="btn btn-success btn-sm" id="share_amount_in_wallet">Convard Point into Rs.</button>
+                      <button type="button" class="btn btn-success btn-sm" id="convard_amount_in_wallet">Convard Point into Rs.</button>
                       {% endif %}  
                       </div>
                      
@@ -183,51 +194,36 @@
               </div>
             </div>
 
-{% if get_statement %}
+{% if my_refrral_user %}
            <div id="wrapper">
   <div class="scrollbar" id="style-default">
   <div class="force-overflow">
     
 
-    {% for item in get_statement %}
+    
     <div class="row">
-      <div class="col-md-12">
-        <div class="blog-post">
-                <div class="post-body">
-                  <ul class="post-meta">
-                    <li><i class="icon-locak"></i><a href="#">Trs. ID : #{{item.Transaction_Id}}</a></li>
-                    <li><i class="icon-clock"></i><a href="#">Date : {{item.Date}}</a></li>
-                    <li><i class="icon-tag"></i><a href="#">Status : {{item.Status}}</a></li>
-                  </ul>
+      {% for item in my_refrral_user %}
+      <div class="col-md-4">
+        <div class="blog-post" style="margin-bottom: 8px;color: #fff;
+    background-color: #2a2020;">
+                <div class="post-body" style="padding: 6px;">
+                
                   
                   <div class="row">
-                    <div class="col-md-8">
-                      <p>Source : {{item.Source}} 
-                             {% if item.Source == 'Stripe' or item.Source == 'PayTm' or item.Source == 'Share' %}
-                              {% if item.Tra_Type %}
-                              - Add In Wallet
-                              {% else %}
-                              - Remove From Wallet
-                              {% endif %}
-                             {% endif %}
-                        <br> Source ID : {{item.Source_id}} <br>Status : {{item.Status}}</p>
+                    <div class="col-md-12">
+                      <p>User : {{item.name|slice:"0:15"}}...   
+                        <br> Refrral Code : {{item.my_refrral_code}}
+                        <br> Your Code : {{item.User_referral_code}} </p>
                   
                     </div>
-                    <div class="col-md-4 text-right">
-                      <p> <span style="color: #072eef;">Rs {{item.Amount|floatformat:2}} </span> 
-                     {% if item.Tra_Type %}
-                       <img src='{% static "web/down.png" %}' style="width: 50px;" >
-                     {% else %}
-                     <img src='{% static "web/up.png" %}' style="width: 23px;" >
-                     {% endif %}  
-                       <br>Rs {{item.After_Transaction_amount|floatformat:2}} :  Balance</p>
-                    </div>
+                    
                   </div>
                 </div>
               </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+    
 
     
 
@@ -246,10 +242,107 @@
 
 
 
+<!-- Modal -->
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="myrefrraluser" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">My Refrral User</h4>
+            <a href="#"><button class="close " type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+           <div class="row">
+             <div class="col-md-12">
+               <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>E-mail</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in my_all_refrrar_user %}
+                    <tr>
+                      <td>{{item.Email}}</td>
+                      <td>{{item.Create_Dates}}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                   
+                  </tbody>
+                </table>
+             </div>
+           </div>
+
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}user/referral"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="get_refrral_link" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">My Refrral link</h4>
+            <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+           <form action="" method="POST" onsubmit="doSomething();">
+            {%csrf_token%}
+         <div class="row">
+           <div class="col-md-12">
+             <input type="text" name="reffral_code" value="{{BASE_URL}}?refrral-code={{get_user_ins.my_refrral_code}}" class="form-control" readonly="" required="">
+           </div>
+         </div>
+         <br>
+           <div class="row">
+             <div class="col-md-12">
+               <div class="form-group">
+                <label for="usr">Emails:</label>
+                <input type="text" name="emails" class="form-control" placeholder="add emails for send refrral link" required="" />
+                <p>You can add multipal email by ' , ' seprated</p>
+              </div>
+             </div>
+           </div> 
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          </div>
+        </div>
+         </form>
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript">
+
+
+  function doSomething() {
+            $(".se-pre-con").css("display","block");
+         }
 
 $(document).on("click","#add_refrral_code_set",function(){
 
@@ -260,27 +353,27 @@ $("#set_amount_for_wallet").html('<form class="input-group form-group" id="add_r
 // =========================== payment sahre to wallet id start-------------------------
 
 
-$(document).on("click","#share_amount_in_wallet",function(){
+$(document).on("click","#convard_amount_in_wallet",function(){
 
-  $("#set_amount_for_wallet").html('<form class="input-group form-group" id="share_amount" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="number" placeholder="Enter-admont" name="add_amount" id="add_amount"></form>');
+  $("#set_amount_for_wallet").html('<form class="input-group form-group" id="convard_amount" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="number" placeholder="Enter-Point" name="add_amount" id="add_amount"></form>');
 
 });
 
-$(document).on('submit',"#share_amount",function(){
+$(document).on('submit',"#convard_amount",function(){
    event.preventDefault();
 $("#show_error_message").html('');
 var add_amount=$("#add_amount").val();
 var add_amount_in_int = parseInt($("#add_amount").val());
- if (add_amount_in_int < 100)
+ if (add_amount_in_int < 200)
  {
-  $("#show_error_message").html('<span class="badge badge-danger badge-pill">You can not share 100 less then .</span>');
+  $("#show_error_message").html('<span class="badge badge-danger badge-pill">You can not convard less then 200 points.</span>');
  }
  else
  {
 
    $.ajax({
        method:"POST",
-        url:base_url+"user/wallet/check-amount",
+        url:base_url+"user/referral/check-point",
         data:{"add_amount_in_int":add_amount_in_int},
         dataTyep:"json",
         success:function(data)
@@ -289,14 +382,21 @@ var add_amount_in_int = parseInt($("#add_amount").val());
           console.log()
           if(data.status=="0")
           {
+
              $("#show_error_message").html('<h5<span class="badge badge-danger badge-pill">'+data.message+'.</span></h5>');
           }
           else{
-             $("#share_payment").val(add_amount_in_int);
-            $(".se-pre-con").css("display","none");
-            $("#show_amount").text("Rs. "+add_amount_in_int.toString());
-            $("#share_payments #show_input_box_wallet_id").html('<form id="check_cradencial_for_wallet_id" class="input-group form-group" method="get"><span class="input-group-btn"><button type="submit"><i class="icon-send"></i></button></span><input class="form-control" type="text" required="true"  id="resaver_wallet_id" name="walet_id" placeholder="Add reciver user wallet id"></form>');
-            $("#share_payments").modal('show');
+
+             swal({
+            title: data.message,
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            window.location.href = "{{BASE_URL}}user/referral";
+          });
+            
           }
         }
    });

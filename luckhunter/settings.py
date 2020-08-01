@@ -25,8 +25,8 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = '4ak8qr3f_ok91vbh2fwam_-fqmv&7ramg0b@ce&o_=p@$2c&13'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -181,8 +181,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mohit.chack@digimonk.in'
-EMAIL_HOST_PASSWORD = 'mohit@digimonk'
+EMAIL_HOST_USER = 'deepakpatel@digimonk.in'
+EMAIL_HOST_PASSWORD = 'Deepak@123'
 
 
 SITE_ID = 1

@@ -2,8 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns= [
- path('', views.under_construction, name='under_construction'),
- path('home', views.index, name='index'),
+ path('home', views.under_construction, name='under_construction'),
+ path('', views.index, name='index'),
+ path('set_cookes/<slug:rerfrral_code>', views.set_cookes, name='set_cookes'),
  path('winners', views.winners, name='winners'),
  path('page/<slug:keyword>', views.page_content, name='page_content'),
  path('get_categoryes', views.get_categoryes, name='get_categoryes'),

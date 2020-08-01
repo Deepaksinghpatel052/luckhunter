@@ -3,15 +3,22 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User,auth
 from django.http import HttpResponse, JsonResponse
 from  .models import LsUser,LsSettings
+from referral_user.models import LsRefrralCodeEmails
 from django.shortcuts import render,redirect
 from django.conf import settings
 from .serializear import LsSettingsSerializers
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from datetime import date
+from django.db.models import F
 # Create your views here.
 
 
 def test(request):
-    return HttpResponse(request.user.username)
+    coocki_id = "deepak"
+
+    return HttpResponse(coocki_id)
+
 
 @csrf_exempt
 def system_info(request):
@@ -64,7 +71,13 @@ def set_session_for_socila_login(request):
         lsuser.save()
         get_user_info = LsUser.objects.get(user=request.user)
         request.session['user_id'] = get_user_info.id
-        request.session['user_name'] = get_user_info.name   
+        request.session['user_name'] = get_user_info.name
+        if request.COOKIES.get('refrral-code'):
+            coocki_id = request.COOKIES.get('refrral-code')
+            LsUser.objects.filter(id=lsuser.id).update(User_referral_code=coocki_id, Point=F('Point') + 5)
+            LsUser.objects.filter(my_refrral_code=coocki_id).update(Point=F('Point') + 5)
+            # LsRefrralCodeEmails.objects.filter(Email=user_email).update(Account_Create_Status=True,
+            #                                                             Account_Create_Dates=datetime.now())
     return redirect(settings.BASE_URL+"user/my-profile")
 
 @csrf_exempt
@@ -86,7 +99,7 @@ def register(request):
             if LsUser.objects.filter(Contact_no=phone_no).exists():
                 # msg = get_object_or_404(Notification, page_name="Phone", notification_key="Exists")
                 # msg_data = msg.notification_desc
-                msg_data = "Cpntact no is already exists."
+                msg_data = "Contact no is already exists."
 
             else:
                 user = User.objects.create_user(username=user_email ,first_name=first_name,last_name=last_name, email=user_email, password=password)
@@ -96,8 +109,13 @@ def register(request):
                 lsuser.save()
                 # msg = get_object_or_404(Notification, page_name="Registration", notification_key="Done")
                 # msg_data = msg.notification_desc
-                msg_data = "User Registration is done now you can login with"
-                return JsonResponse({"status": "1", "message": msg_data + " " + user_email + "' !"})
+                if request.COOKIES.get('refrral-code'):
+                    coocki_id = request.COOKIES.get('refrral-code')
+                    LsUser.objects.filter(id=lsuser.id).update(User_referral_code=coocki_id,Point=F('Point') + 5)
+                    LsUser.objects.filter(my_refrral_code=coocki_id).update(Point=F('Point') + 5)
+                    LsRefrralCodeEmails.objects.filter(Email=user_email).update(Account_Create_Status=True,Account_Create_Dates=datetime.now())
+                msg_data = "User Registration is done now you can login with "
+    return JsonResponse({"status": "1", "message": msg_data + " " + user_email + "' !"})
 
 @login_required(login_url='/do-login-first/')
 def logout(request):

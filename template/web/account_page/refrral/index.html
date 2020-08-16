@@ -122,11 +122,11 @@
 
               <a class="list-group-item with-badge active" href="{{BASE_URL}}user/referral">
                 <i class="icon-tag"></i>
-                My-Refrral             
+                My-Referral             
               </a>
               <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
                 <i class="icon-tag"></i>
-                Complane/Queryes             
+                Complains/Queries           
               </a>
             </nav>
         </div>
@@ -146,14 +146,14 @@
                   <ul class="post-meta">
                     <li><i class="icon-clock"></i><a href="#">{{get_user_ins.DOJ}}</a></li>
                     <li><i class="icon-user"></i><a href="#">{{get_user_ins.name}}</a></li>
-                    <li style="border-radius: 9px;border: 1px solid !important;"><i class="icon-lock"></i><a href="#"  >Your Refrral Code : <span class="badge badge-success badge-pill" style="font-size: 100%;" >{{get_user_ins.my_refrral_code}} </span></a></li>
-                  <li><a href="javascript:;" data-toggle="modal" data-target="#myrefrraluser" class="btn btn-primary btn-sm" style="color: #fff;">My Refrral User</a></li>
+                    <li style="border-radius: 9px;border: 1px solid !important;"><i class="icon-lock"></i><a href="#"  >Your Referral Code : <span class="badge badge-success badge-pill" style="font-size: 100%;" >{{get_user_ins.my_refrral_code}} </span></a></li>
+                  <li><a href="javascript:;" data-toggle="modal" data-target="#myrefrraluser" class="btn btn-primary btn-sm" style="color: #fff;">My Referral User</a></li>
                   </ul>
                   
                   {% if get_user_ins.my_refrral_code %}
                   <div class="row">
                     <div class="col-md-4">
-                      <u >Your Refrral Code :{{get_user_ins.my_refrral_code}}</u>
+                      <u >Your Referral Code :{{get_user_ins.my_refrral_code}}</u>
                      <img style="height: 170px;" src='{% static "web/img/user-wallet.png" %}'  alt="{{get_user_ins.name}}">
 
                     </div>
@@ -172,13 +172,13 @@
                     
                       
                       <span class="badge badge-success badge-pill">1 Point  =  Rs. 1</span>
-                      <p>{{get_my_wallet.Update_date}}   Last Refrral User</p>
+                      <p>{{get_my_wallet.Update_date}}   Last Referral User</p>
                       <span id="show_error_message"></span>
                       <div id="set_amount_for_wallet">
 {% if get_user_ins.User_referral_code == None %}
-<button type="button" class="btn btn-info btn-sm" id="add_refrral_code_set" >Add Refrall Code</button>
+<button type="button" class="btn btn-info btn-sm" id="add_refrral_code_set" >Add Referral Code</button>
 {% endif %}
-                       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#get_refrral_link" >Get Refrral Link</button>
+                       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#get_refrral_link" >Get Referral Link</button>
                       {% if get_user_ins.Point >= 200 %}
                       <button type="button" class="btn btn-success btn-sm" id="convard_amount_in_wallet">Convard Point into Rs.</button>
                       {% endif %}  
@@ -212,7 +212,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <p>User : {{item.name|slice:"0:15"}}...   
-                        <br> Refrral Code : {{item.my_refrral_code}}
+                        <br> Referral Code : {{item.my_refrral_code}}
                         <br> Your Code : {{item.User_referral_code}} </p>
                   
                     </div>
@@ -249,7 +249,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">My Refrral User</h4>
+            <h4 class="modal-title">My Referral User</h4>
             <a href="#"><button class="close " type="button" ><span aria-hidden="true">&times;</span></button></a>
           </div>
           <div class="modal-body">
@@ -294,7 +294,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">My Refrral link</h4>
+            <h4 class="modal-title">My Referral link</h4>
             <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
           </div>
           <div class="modal-body">
@@ -310,8 +310,8 @@
              <div class="col-md-12">
                <div class="form-group">
                 <label for="usr">Emails:</label>
-                <input type="text" name="emails" class="form-control" placeholder="add emails for send refrral link" required="" />
-                <p>You can add multipal email by ' , ' seprated</p>
+                <input type="text" name="emails" class="form-control" placeholder="add emails for send referral link" required="" />
+                <p>You can add multiple email by ' , ' seprated</p>
               </div>
              </div>
            </div> 
@@ -346,7 +346,7 @@
 
 $(document).on("click","#add_refrral_code_set",function(){
 
-$("#set_amount_for_wallet").html('<form class="input-group form-group" id="add_refrral_code_for_set_refrral" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="text" placeholder="Enter Refrral Code" name="other_user_refrral_code" id="add_refrral_code"></form>');
+$("#set_amount_for_wallet").html('<form class="input-group form-group" id="add_refrral_code_for_set_refrral" method="post"><span class="input-group-btn"><button type="submit" class="btn btn-primary btn-sm"><i class="icon-plus"></i></button></span><input class="form-control" required="true" type="text" placeholder="Enter Referral Code" name="other_user_refrral_code" id="add_refrral_code"></form>');
 });
 
 
@@ -509,7 +509,7 @@ $("#show_error_message").html('');
             window.location.href = "{{BASE_URL}}user/referral";
           });
             
-              $("#set_amount_for_wallet").html('<button type="button" class="btn btn-primary btn-sm" id="add_amount_in_wallet" >Get Refrral Link</button>');   
+              $("#set_amount_for_wallet").html('<button type="button" class="btn btn-primary btn-sm" id="add_amount_in_wallet" >Get Referral Link</button>');   
              
              // $("#do_payments #order_id_set_for_payment").val(data.data.order_id);
              //       $('#do_payments').modal({

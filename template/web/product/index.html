@@ -58,7 +58,7 @@
 <!--              <div class="gallery-item video-btn text-center"><a href="#" data-toggle="tooltip" data-type="video" data-video="&lt;div class=&quot;wrapper&quot;&gt;&lt;div class=&quot;video-wrapper&quot;&gt;&lt;iframe class=&quot;pswp__video&quot; width=&quot;960&quot; height=&quot;640&quot; src=_https_/www.youtube.com/embed/CjNjcrQZtd8_.html frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;" title="Watch video"></a></div>-->
             </div>
 {% if get_product.winner_ticket != 0  %}
-            <span class="product-badge bg-danger">Sale</span>
+            <span class="product-badge bg-danger">Sold</span>
         {% endif %}    
             <div class="product-carousel owl-carousel gallery-wrapper">
 
@@ -228,7 +228,47 @@
           
       </div>
     </div>
-    <!-- Reviews-->
+    
+    <div class="container padding-bottom-3x mb-1">
+      <!-- Related Products Carousel-->
+      <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
+      <!-- Carousel-->
+      <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+        <!-- Product-->
+        {% if get_similar_product %}
+        {% for item in get_similar_product %}
+       
+        <div class="product-card">
+          {% if item.Ticket_booking_start < today %}
+         <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
+          {% else %}
+            <div class="product-badge bg-danger">Arrival</div>
+            {% endif %}
+
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
+          <div class="product-card-body">
+            <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
+            <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
+            <h4 class="product-price">
+              <del>Rs.{{item.ReyalPrice}}</del>Rs.{{item.Price_pr_ticket}}
+            </h4>
+            <div class="product-category">Win date :  {{item.Ticket_open_date}} </div>
+          </div>
+          <div class="product-button-group">
+            <a class="product-button btn-wishlist" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><button type="button" class="btn btn-primary btn-block"><i class="icon-shopping-cart"></i> Buy Now</button></a>
+          </div>
+        </div>
+
+
+
+      
+          {% endfor %}
+        {% endif %}
+    
+      </div>
+    </div>
+    <!-- Site Footer-->
+<!-- Reviews-->
     <div class="container padding-top-2x">
       <div class="row">
         <div class="col-md-12">
@@ -277,46 +317,6 @@
        
       </div>
     </div>
-    <div class="container padding-bottom-3x mb-1">
-      <!-- Related Products Carousel-->
-      <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
-      <!-- Carousel-->
-      <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
-        <!-- Product-->
-        {% if get_similar_product %}
-        {% for item in get_similar_product %}
-       
-        <div class="product-card">
-          {% if item.Ticket_booking_start < today %}
-         <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
-          {% else %}
-            <div class="product-badge bg-danger">Arivel</div>
-            {% endif %}
-
-            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
-          <div class="product-card-body">
-            <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
-            <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
-            <h4 class="product-price">
-              <del>Rs.{{item.ReyalPrice}}</del>Rs.{{item.Price_pr_ticket}}
-            </h4>
-            <div class="product-category">Win date :  {{item.Ticket_open_date}} </div>
-          </div>
-          <div class="product-button-group">
-            <a class="product-button btn-wishlist" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><button type="button" class="btn btn-primary btn-block"><i class="icon-shopping-cart"></i> Buy Now</button></a>
-          </div>
-        </div>
-
-
-
-      
-          {% endfor %}
-        {% endif %}
-    
-      </div>
-    </div>
-    <!-- Site Footer-->
-
 
 
 
@@ -451,7 +451,29 @@ var ticket_id = $(this).data("ticket_no");
 // ================== add to cart START===================
 $(document).on("click",".add_to_card",function(){
 
- var set_count  = 0;
+var user_id =  "{{user.id}}";
+if(user_id=="None")
+{
+  $("#set_redirect_url").val(window.location.href);
+
+ $("#modalCentered").modal("show");
+}
+ 
+
+$.ajax({
+      method:"POST",
+          url:"https://luckhunter.in/account/check_condition_status",
+          data:{"user_id":user_id},
+          dataType:"json",
+          success:function(data)
+          {
+            if(data.status == "False")
+             {
+              $("#term_and_condition_model").modal('show');
+             }
+             else
+             {
+               var set_count  = 0;
  var get_ticket_array = new Array()
  $(".click_to_select").each(function(){
 
@@ -499,6 +521,12 @@ get_ticket_array = get_ticket_array.join(",,")
     });
  }
 
+             }
+
+          }
+   });
+
+ 
 });
 // ================== add to cart END=====================
 

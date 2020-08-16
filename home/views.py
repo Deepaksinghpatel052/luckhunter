@@ -72,10 +72,13 @@ def login_page(request):
 def page_content(request,keyword):
     page_titl = "Page"
     get_page_content = None
+    ls_user =None
+    if LsUser.objects.filter(user=request.user).exists():
+        ls_user = get_object_or_404(LsUser,user=request.user)
     if LsCMSPageContent.objects.filter(keyword=keyword):
         get_page_content = get_object_or_404(LsCMSPageContent,keyword=keyword)
         page_titl = get_page_content.Title
-    return render(request, 'web/home/page_content.html',{'get_page_content':get_page_content, 'page_title': page_titl,'BASE_URL': settings.BASE_URL,})
+    return render(request, 'web/home/page_content.html',{'get_page_content':get_page_content, 'page_title': page_titl,'BASE_URL': settings.BASE_URL,'ls_user':ls_user})
 
 @register.filter(name='get_winner_info')
 def get_winner_info(product_ins,ticket_no):

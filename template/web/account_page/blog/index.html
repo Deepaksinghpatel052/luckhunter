@@ -121,7 +121,7 @@
               </a>
               <a class="list-group-item with-badge" href="{{BASE_URL}}user/referral">
                 <i class="icon-tag"></i>
-                My-Refrral             
+                My-Referral             
               </a>
               <a class="list-group-item with-badge " href="{{BASE_URL}}user/complanes">
                 <i class="icon-tag"></i>
@@ -144,11 +144,9 @@
             <table class="table">
                <thead>
                 <tr>
-                  <th>Product</th>
-                  <th>Blog Title</th>
-                  <th>Publich Status</th>
-                  <th>Blog Coupon</th>
-                  <th>Action</th>
+                  <th style="width: 200px;">Product</th>
+                  <th>Blog</th>
+                  <!-- <th>Action</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -158,26 +156,26 @@
                 {% if get_blogs %}
                 {% for item in get_blogs %}
 <tr>
-                  <td > 
-                    <img src='{{item.product.Image.url}}'  >
-                    {{item.product.Product_name}}
-                  </td>
-                  <td >{{item.Blog_Title}}<br>
-                   <a target="_blank" href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}"><u>View log</u></a>
+                  <td style="width: 200px;"> 
+                    <img src='{{item.product.Image.url}}'  style="width: 100px;">
+                    
                   </td>
                   <td>
-                  {% if item.Blog_Publish%}
+                    <p>{{item.product.Product_name}}</p>
+             
+                <hr>
+                    <ul class="post-meta">
+                    <li><a href="#">Publish Status : {% if item.Blog_Publish%}
                   <img src='{% static "web/true_image.jpg" %}' style="width: 20px;" >
                 
                   {% else %}
                    <img src='{% static "web/false_image.jpg" %}' style="width: 20px;" >
                
-                  {% endif %}
-                  </td>
-                  
-                  <td>{{item.Coupon_Code}}</td>
-                  <td>
-                    {% if item.Blog_Publish %}
+                  {% endif %}</a>
+                </li>
+                    <li><a href="#">Blog Coupon :{{item.Coupon_Code}}</a></li>
+                    <li><a target="_blank" href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}"><u>View log</u></a></li>
+<li> {% if item.Blog_Publish %}
                     
                     {% else %}
                     <div class="btn-group">
@@ -186,8 +184,12 @@
 
 </div>
                    
-                    {% endif %}
+                    {% endif %}</li>
+                  </ul>
                   </td>
+                  
+                 
+
                 </tr>
                 {% endfor %}
                 {% else %}

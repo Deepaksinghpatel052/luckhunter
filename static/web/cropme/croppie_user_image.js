@@ -56,7 +56,7 @@ var set_status = true;
           else
           {
             set_status = false;
-            alert("Please select image grater that 300*169px");
+            alert("Please select image greater than 300*169px");
           }
          }
 

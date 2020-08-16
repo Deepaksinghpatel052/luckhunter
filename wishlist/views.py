@@ -18,7 +18,7 @@ def remove_all(request):
             get_user_ins = get_object_or_404(LsUser,id=request.session['user_id'])
             if LsWishlist.objects.filter(user=get_user_ins).exists():
                 LsWishlist.objects.filter(user=get_user_ins).delete()
-        msg_data = "All product removerd."
+        msg_data = "All product removed."
         messages.info(request, msg_data)
         return redirect(settings.BASE_URL + 'user/product-notification')
     except:
@@ -32,7 +32,7 @@ def remove_product(request,id):
         LsWishlist.objects.get(id=id).delete()
         # msg = get_object_or_404(Notification, page_name="Product_remove_from_wishlist", notification_key="Remove")
         # msg_data = msg.notification_desc
-        msg_data = "Product removerd."
+        msg_data = "Product removed."
         messages.info(request, msg_data)
         return redirect(settings.BASE_URL + 'user/product-notification')
     except(TypeError, OverflowError):
@@ -88,11 +88,11 @@ def add_remove(request):
                     )
                     add_wishlist.save()
                     status = "1"
-                    message = "Notification Activate For This Product.."
+                    message = "Notification Activate For This Product."
             else:
                 status = "0"
-                message = "Product_id is in correct"
+                message = "Product_id is incorrect"
         else:
             status = "0"
-            message = "Maybe Your accounr is removed and deactiveted."
+            message = "Maybe Your account has removed and deactiveted."
     return JsonResponse({"status": status, "message": message})

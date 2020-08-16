@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from django.contrib.auth import views as auth_login
 
 urlpatterns= [
 
@@ -10,6 +10,12 @@ urlpatterns= [
  path('login-user', views.login_user, name='login_user'),
  path('login-user/', views.login_user, name='login_user'),
 
+ path('check_condition_status', views.check_condition_status, name='check_condition_status'),
+ path('check_condition_status/', views.check_condition_status, name='check_condition_status'),
+
+ path('update_condition_status', views.update_condition_status, name='update_condition_status'),
+ path('update_condition_status/', views.update_condition_status, name='update_condition_status'),
+
  path('system-info', views.system_info, name='system_info'),
  path('test', views.test, name='test'),
 
@@ -17,5 +23,8 @@ urlpatterns= [
 
  path('logout', views.logout, name='logout'),
  path('logout/', views.logout, name='logout'),
+
+ 
+
 
 ]

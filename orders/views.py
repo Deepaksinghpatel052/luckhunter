@@ -53,7 +53,7 @@ def get_order_item(request):
     if request.method == "POST":
         order_id = request.POST["order_id"]
         status = "0"
-        message = "get order items."
+        message = "Get Order Items."
         get_all_items = {}
         if LsOrder.objects.filter(order_id=order_id).exists():
             get_order_ins =  get_object_or_404(LsOrder,order_id=order_id)
@@ -98,13 +98,13 @@ def index(request):
                     )
                     add_to_card.save()
                 status = "1"
-                message = "Product Ticket add to card."
+                message = "Product Ticket add to cart."
             else:
                 status = "0"
-                message = "product_id is in correct."
+                message = "product_id is incorrect."
         else:
             status = "0"
-            message = "User_id is in correct."
+            message = "User_id is incorrect."
     return JsonResponse({"status": status, "message": message})
 
 @csrf_exempt
@@ -118,13 +118,13 @@ def get_add_to_card_product(request):
                 get_all_add_to_card_product_sri = AddToCardSerializers(add_to_card_product,many=True)
                 get_all_add_to_card_product = get_all_add_to_card_product_sri.data
             status = "1"
-            message = "Add to card product."
+            message = "Add to cart product."
         else:
             status = "0"
-            message = "User_id is in correct."
+            message = "User_id is incorrect."
     else:
         status = "0"
-        message = "User_id is in correct."
+        message = "User_id is incorrect."
     return JsonResponse({"status": status, "message": message,"data":get_all_add_to_card_product})
 
 
@@ -135,7 +135,7 @@ def remove_all_product(request):
             get_user_ins = get_object_or_404(LsUser, id=request.session['user_id'])
             if LsAddToCard.objects.filter(user=get_user_ins).exists():
                 LsAddToCard.objects.filter(user=get_user_ins).delete()
-        msg_data = "Products removerd from card"
+        msg_data = "Products removerd from cart."
         messages.info(request, msg_data)
         return redirect(settings.BASE_URL+"user/orders/my-card")
     except(TypeError, OverflowError):
@@ -151,7 +151,7 @@ def remove_product(request,id):
         LsAddToCard.objects.get(id=id).delete()
         # msg = get_object_or_404(Notification, page_name="Product_remove_from_wishlist", notification_key="Remove")
         # msg_data = msg.notification_desc
-        msg_data = "Product removerd from card"
+        msg_data = "Product removerd from cart."
         messages.info(request, msg_data)
         return redirect(settings.BASE_URL+"user/orders/my-card")
     except(TypeError, OverflowError):
@@ -201,19 +201,19 @@ def get_coupon_code(request):
                         coupon_cod_sri = Couponerializers(get_coupon_ins)
                         coupon_data = coupon_cod_sri.data
                         status = "1"
-                        message = "Coupon coe add successfuly."
+                        message = "Coupon code added successfuly."
                     else:
                         status = "0"
-                        message = "Coupne code use limit is expir."
+                        message = "Coupne code limit has expired."
                 else:
                     status = "0"
-                    message = "Coupne code is expir."
+                    message = "Coupne code has expired."
             else:
                 status = "0"
                 message = "Coupne code is not activate."
         else:
             status = "0"
-            message = "Coupne code is invalide."
+            message = "Coupne code is invalid."
         return JsonResponse({"status": status, "message": message,"coupon_data":coupon_data})
 
 
@@ -270,15 +270,15 @@ def plased_order(request):
                             LsCoupons.objects.filter(Coupon_code=coupon_id).update(No_of_used=F('No_of_used') + 1)
                     LsAddToCard.objects.filter(user=get_user_ins).delete()
                     status = "1"
-                    message = "Order plased successfully."
+                    message = "Order placed successfully."
                     get_data["order_id"] = add_order.order_id
                     get_data["order_payment"] = add_order.total_payment
                 else:
                     status = "0"
-                    message = "No any product in ad to card."
+                    message = "No product in the cart."
             else:
                 status = "0"
-                message = "Your account is not avelabel."
+                message = "Your account is not available."
         else:
             status = "0"
             message = "Please login."
@@ -295,10 +295,10 @@ def get_order_info(request):
             get_order_sri = LsOrderSerializers(get_order)
             get_data = get_order_sri.data
             status = "1"
-            message = "get order info"
+            message = "get order info."
         else:
             status = "0"
-            message = "order_id is incorrect"
+            message = "order_id is incorrect."
     else:
         status = "0"
         message = "order_id is incorrect"

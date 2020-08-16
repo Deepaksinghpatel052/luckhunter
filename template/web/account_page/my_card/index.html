@@ -50,7 +50,7 @@
           <thead>
             <tr>
               <th>Product Name</th>
-              <th class="text-center">Tickects</th>
+              <th class="text-center">Tickets</th>
               <th class="text-center">Price/Ticket</th>
               <th class="text-center">Subtotal</th>
               <th class="text-center">
@@ -68,15 +68,11 @@
               <td>
                 <div class="product-item"><a class="product-thumb" href="{{BASE_URL}}product/{{item.Product.slug}}/{{item.Product.Product_id}}">
 
-    {% if get_user_ins.Image %}
-               <img src='{{get_user_ins.Image.url}}'  alt="{{get_user_ins.name}}">
-            {% else %}
-               {% if get_user_ins.UserImage %}
-               <img src='{{get_user_ins.UserImage}}'  alt="{{get_user_ins.name}}">
-               {% else %}
-                <img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{get_user_ins.name}}">
-                {% endif %}
-            {% endif %}
+		   {% if item.Product.Image %}
+		<img src='{{item.Product.Image.url}}'  alt="{{item.Product.Product_name}}">        
+		        {% else %}
+		<img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{item.Product.Product_name}}">
+		        {% endif %}
 
                  </a>
                   
@@ -228,7 +224,7 @@
                    $("#coupon_id").val(data.coupon_data.Coupon_code);
                    $("#get_total_amount").val(total_amount_after_descount);
                    $("#set_grand_total_amount").text(total_amount_after_descount);
-                  $("#add_cecount").append('<tr style="border-top: 1px solid #5f5858;"><td><span class="text-muted">Descount:&nbsp; </span><span class="text-gray-dark show__descount_ra">Rs. '+get_descount_amount+'</span></td></tr>');
+                  $("#add_cecount").append('<tr style="border-top: 1px solid #5f5858;"><td><span class="text-muted">Discount:&nbsp; </span><span class="text-gray-dark show__descount_ra">Rs. '+get_descount_amount+'</span></td></tr>');
                    
                  }
     

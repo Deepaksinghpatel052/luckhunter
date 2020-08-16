@@ -14,9 +14,11 @@ class LsUser(models.Model):
     DOJ  = models.DateField(default=django.utils.timezone.now)
     status = models.BooleanField(default=True)
     Mail_status = models.BooleanField(default=False)
+    Term_and_condition = models.BooleanField(default=False)
     Contact_no = models.IntegerField()
     User_referral_code = models.CharField(max_length=120, null=True, blank=True)
     Point = models.IntegerField(default=0)
+
     def __str__(self):
         return self.name
     class Meta:

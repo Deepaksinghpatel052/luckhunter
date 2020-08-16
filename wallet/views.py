@@ -66,7 +66,7 @@ def get_bonus_payment(login_user_id,wallet_id,wallet_code,share_payment,pay_user
                 all_wallet.Wallet_code = wallet_code
                 all_wallet.wallet_admont = get_amount
                 all_wallet.save()
-                Status_set = "succeeded"
+                Status_set = "succeed"
                 Payment_Method = "Share"
                 add_statement = LsStatements(
                     wallet_id=all_wallet,
@@ -129,11 +129,11 @@ def create_wallet(request):
                         login_user_id = request.session['user_id']
                         res =  get_bonus_payment(login_user_id, wallet_id, wallet_code, share_payment, pay_user_id, new_user_wallet_id)
                         if res:
-                            message = "Wallet create successfully and 100Rs. bonus add in your wallet injoy biding."
+                            message = "Wallet created successfully and 100Rs. bonus add in your wallet enjoy biding."
                         else:
-                            message = "Wallet create successfully."
+                            message = "Wallet created successfully."
                     else:
-                        message = "Wallet create successfully."
+                        message = "Wallet created successfully."
             messages.info(request, message)
     else:
         message = "User is not login."
@@ -167,7 +167,7 @@ def check_amount(request):
             message = "Login user is incorrect."
     else:
         status = "0"
-        message = "Trangection fail."
+        message = "Transaction fail."
     return JsonResponse({"status": status, "message": message})
 
 @csrf_exempt
@@ -196,7 +196,7 @@ def check_wallet_code(request):
                     all_wallet.wallet_admont = get_amount
                     all_wallet.save()
                     Payment_Method = "Share"
-                    Status_set = "succeeded"
+                    Status_set = "succeed"
                     add_statement = LsStatements(
                         wallet_id=all_wallet,
                         Source=Payment_Method,
@@ -220,7 +220,7 @@ def check_wallet_code(request):
                     all_wallet.Wallet_code = wallet_code
                     all_wallet.wallet_admont = get_amount
                     all_wallet.save()
-                    Status_set = "succeeded"
+                    Status_set = "succeed"
                     Payment_Method = "Share"
                     add_statement = LsStatements(
                         wallet_id=all_wallet,
@@ -248,7 +248,7 @@ def check_wallet_code(request):
             message = "Login user is incorrect."
     else:
         status = "0"
-        message = "Trangection fail."
+        message = "Transaction fail."
     return JsonResponse({"status": status, "message": message})
 @csrf_exempt
 @login_required(login_url='/do-login-first/')
@@ -265,7 +265,7 @@ def check_wallet_id(request):
                         get_user_wallet_data_sri = LsUserWalletSerializers(get_user_wallet_data)
                         get_data = get_user_wallet_data_sri.data
                         status = "1"
-                        message = "Payment share successfully."
+                        message = "Payment shared successfully."
                     else:
                         status = "0"
                         message = "User wallet is not activate."
@@ -280,13 +280,13 @@ def check_wallet_id(request):
             message = "Login user is incorrect."
     else:
         status = "0"
-        message = "Trangection fail."
+        message = "Transaction fail."
     return JsonResponse({"status": status, "message": message, "data": get_data})
 
 @csrf_exempt
 def add_amount(request):
     status = "0"
-    message = "Trangection fail."
+    message = "Transaction fail."
     get_data = {}
     if request.method == "POST":
         add_amount = request.POST["add_amount"]
@@ -303,12 +303,12 @@ def add_amount(request):
                 )
                 add_order.save()
                 status = "1"
-                message = "Order plased successfully."
+                message = "Order placed successfully."
                 get_data["order_id"] = add_order.order_id
                 get_data["order_payment"] = add_order.total_payment
             else:
                 status = "0"
-                message = "Your account is not avelabel."
+                message = "Your account is not available."
         else:
             status = "0"
             message = "Please login."
@@ -338,7 +338,7 @@ def fake_payment(request):
                                 get_status_ins = get_object_or_404(LsOrderStatus, Status_type="add_in_wallet")
                                 LsOrder.objects.filter(order_id=get_order_ins.order_id).update(payment_status=True, descount=False,order_status=get_status_ins, total_payment=amount_after_descount,descount_amount=get_total_descount, payment_method="Dummy Payment")
                     status = "1"
-                    message = "Order palsed successfully."
+                    message = "Order placed successfully."
                     msg_data = "payment done of " + get_order_ins.order_id + " order"
                     messages.info(request, msg_data)
                 else:
@@ -395,7 +395,7 @@ def order_by_wallet(request):
                                 get_user_wallet_data.wallet_admont = get_amount
                                 get_user_wallet_data.save()
                                 Payment_Method = "Order"
-                                Status_set = "succeeded"
+                                Status_set = "succeed"
                                 add_statement = LsStatements(
                                     wallet_id=get_user_wallet_data,
                                     Source=Payment_Method,
@@ -426,7 +426,7 @@ def order_by_wallet(request):
                                                 payment_status=True,descount=True,
                                                 order_status=get_status_ins,total_payment=amount_after_descount,descount_amount=get_total_descount,payment_method="PayTm")
                                 status = "1"
-                                message = "Order palsed successfully."
+                                message = "Order placed successfully."
                                 msg_data = "payment done of " + get_order_ins.order_id + " order"
                                 messages.info(request, msg_data)
                             else:

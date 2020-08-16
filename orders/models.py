@@ -66,6 +66,8 @@ class LsOrderItems(models.Model):
     Book_status = models.BooleanField(default=False)
     Winner = models.BooleanField(default=False)
     Winner_date =models.DateTimeField(null=True,blank=True)
+    Nite = models.TextField(null=True,blank=True)
+    update_date = models.DateTimeField(default=django.utils.timezone.now)
     create_date = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):

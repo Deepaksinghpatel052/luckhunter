@@ -9,19 +9,33 @@
 <div class="page-title">
       <div class="container">
         <div class="column">
-          <h1>{{page_title}}</h1>
+          <h1>{{page_title}} </h1>
         </div>
         <div class="column">
-        
+            {% if get_page_content.keyword == 'term-and-condition' %}
+                
+                {% if user.username %}
+         <div class="checkbox">
+                  <label>
+        <input type="checkbox" {% if ls_user.Term_and_condition %} checked="trrue" disabled="trrue"  {% endif %}  value="" class="condition_accept"> I accept the all <a href="https://luckhunter.in/page/term-and-condition" target="_blank">Terms & Conditions.</a></label>
+                </div>
+                {% endif %} 
+
+
+              
+
+            {% endif %}
         </div>
       </div>
     </div>    <!-- Top Categories/Deals-->
-    <section class="container padding-top-3x padding-bottom-2x">
-      <div class="row">
+    <section class=" padding-top-3x padding-bottom-2x">
+<div class="container">
+      <div class="cdbox">
 
 
         {{get_page_content.Page_Content | safe }}        
       </div>
+    </div>
    
     </section>
   

@@ -18,6 +18,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from home import views
+from django.contrib.auth import views as auth_login
 
 handler404 = views.handler404
 handler500 = views.handler500
@@ -25,7 +26,7 @@ handler500 = views.handler500
 urlpatterns = [
     path('superadmin/', admin.site.urls),
 
-    path('', include('home.urls')),
+    path('', include(('home.urls','home'),namespace='home')),
     path('account', include('accounts.urls')),
     path('account/', include('accounts.urls')),
     
@@ -75,5 +76,14 @@ urlpatterns = [
 
     path('send-email', include('send_email.urls')),
     path('send-email/', include('send_email.urls')),
+
+
+    path('password_reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_done.html'),name='password_reset_done'),
+    path('password_reset/', auth_login.PasswordResetView.as_view(template_name='web/forgot_password/password_reset_form.html'), name='password_reset'),
+
+    path('reset/<uidb64>/<token>/', auth_login.PasswordResetConfirmView.as_view(template_name='web/forgot_password/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_complete.html'),
+                       name='password_reset_complete'),
+
 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

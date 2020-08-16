@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 @login_required(login_url='/do-login-first/')
 def get_info(request):
     status = "0"
-    message = "Invaled request"
+    message = "Invalid request"
     data = {}
     if request.method == "POST":
         complane_id = request.POST["complane_id"]
@@ -23,7 +23,7 @@ def get_info(request):
             get_data_sri = LsQeruesSerializers(get_data)
             data = get_data_sri.data
         else:
-            message = "Invaled conplane id."
+            message = "Invalid complain id."
     else:
         message = "Request is incorrect."
     return JsonResponse({"status": status, "message": message,'data':data})
@@ -34,15 +34,15 @@ def index(request):
     if "user_id" in request.session:
         if LsUser.objects.filter(id=request.session['user_id']).exists():
             get_user_ins = get_object_or_404(LsUser,id=request.session['user_id'])
-            page_title  = get_user_ins.name+" queryes-complane"
+            page_title  = get_user_ins.name+" queries-complain"
             if request.method == "POST":
                 get_form_data  = LsQeruesForm(request.POST)
                 if get_form_data.is_valid():
                     data = get_form_data.save(commit=False)
-                    data.Type = "Complane"
+                    data.Type = "Complain"
                     data.Create_by = get_user_ins
                     data.save()
-                    messages.info(request, "Complane add sucessfilly.")
+                    messages.info(request, "Complain added successfully.")
                 else:
                     messages.error(request, get_form_data.errors)
                 return redirect(settings.BASE_URL + 'user/complanes')

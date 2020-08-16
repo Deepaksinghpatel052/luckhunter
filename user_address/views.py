@@ -23,7 +23,7 @@ def index(request):
                     data = ls_user_adress_data.save(commit=False)
                     data.user = get_user_ins
                     data.save()
-                    msg_data = "Your address is upodated successfully."
+                    msg_data = "Your address has updated successfully."
                     messages.info(request, msg_data)
                 else:
                     messages.error(request, ls_user_adress_data.errors)
@@ -34,7 +34,7 @@ def index(request):
                     data = ls_address_form_data.save(commit=False)
                     data.Last_Update = datetime.now()
                     ls_address_form_data.save()
-                    msg_data = "Your address is upodated successfully."
+                    msg_data = "Your address has updated successfully."
                     messages.info(request, msg_data)
                 else:
                     messages.error(request, ls_address_form_data.errors)

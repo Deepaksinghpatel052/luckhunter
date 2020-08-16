@@ -45,24 +45,24 @@ def check_point(request):
                                 if res:
                                     LsUser.objects.filter(id=get_user_ins.id).update(Point=F('Point') - share_amount)
                                     status = "1"
-                                    message = "Your points is convard into wallet successfull."
+                                    message = "Your points has converted into wallet amount successfully."
                                 else:
                                     status = "0"
-                                    message = "The system is can not convard this point into aamount please try after some time."
+                                    message = "The system can not convert these points into aamount please try later."
                             else:
                                 status = "0"
-                                message = "The system is can not convard this point into aamount please try after some time."
+                                message = "The system can not convert these points into aamount please try later."
                         else:
                             status = "0"
-                            message = "The system is can not convard this point into aamount please try after some time."
+                            message = "The system can not convert these points into aamount please try later."
                     else:
                         status = "0"
-                        message = "The system is can not convard this point into aamount please try after some time."
+                        message = "The system can not convert these points into aamount please try later."
                     #===============================================================================
 
                 else:
                     status = "0"
-                    message = "You can not convard this point."
+                    message = "You can not convert these points."
             else:
                 status = "0"
                 message = "Request method is incorrect."
@@ -71,7 +71,7 @@ def check_point(request):
             message = "Login user is incorrect."
     else:
         status = "0"
-        message = "Trangection fail."
+        message = "Transaction fail."
     return JsonResponse({"status": status, "message": message})
 
 def send_refrral_link_mail(to_email,user_objects,refrral_link):
@@ -79,7 +79,7 @@ def send_refrral_link_mail(to_email,user_objects,refrral_link):
     content = {'get_system_info': get_system_info, "yourname": user_objects.name, "BASE_URL": settings.BASE_URL,"refrral_link":refrral_link}
     email_content = render_to_string('email_template/email_template_for_send_refrral_link.html',content)
     msg = email.message.Message()
-    msg['Subject'] = 'Refrral-account' + get_system_info.Title
+    msg['Subject'] = 'Referral-account' + get_system_info.Title
     msg['From'] = settings.EMAIL_HOST_USER
     msg['To'] = to_email
     password = settings.EMAIL_HOST_PASSWORD
@@ -101,16 +101,16 @@ def index(request):
                 emails = request.POST['emails'].split(",")
                 for item in emails:
                     if User.objects.filter(email=item).exists():
-                        messages.error(request,item+" email is already exists.")
+                        messages.error(request,item+" email already exists.")
                     else:
                         add_email_for_ref = LsRefrralCodeEmails(user=get_user_ins,refrral_link=reffral_code,Email=item)
                         add_email_for_ref.save()
                         res = send_refrral_link_mail(item, get_user_ins, reffral_code)
                         if res:
                             LsRefrralCodeEmails.objects.filter(id=add_email_for_ref.id).update(Mail_Send_Status=True)
-                        messages.info(request, "Refrral link send to "+item+" email.")
+                        messages.info(request, "Referral link sends to "+item+" email.")
                 return redirect(settings.BASE_URL+"user/referral")
-        page_title = get_user_ins.name + "-refrral-code"
+        page_title = get_user_ins.name + "-referral-code"
         get_my_wallet = None
         my_refrral_user = None
         my_all_refrrar_user = None
@@ -126,7 +126,7 @@ def index(request):
 @csrf_exempt
 def add_referral_code(request):
     status = "0"
-    message = "Trangection fail."
+    message = "Transaction fail."
     get_data = {}
     if request.method == "POST":
         other_user_refrral_code = request.POST["other_user_refrral_code"]
@@ -137,7 +137,7 @@ def add_referral_code(request):
                     get_refrral_user = get_object_or_404(LsUser,my_refrral_code=other_user_refrral_code)
                     if get_refrral_user.my_refrral_code == get_user_ins.my_refrral_code:
                         status = "0"
-                        message = "You can not use your refrral code."
+                        message = "You can not use your referral code."
                     else:
                         LsUser.objects.filter(id=request.session['user_id']).update(User_referral_code=get_refrral_user.my_refrral_code,Point=F('Point') + 5)
                         LsUser.objects.filter(my_refrral_code=other_user_refrral_code).update(Point=F('Point') + 5)
@@ -156,13 +156,13 @@ def add_referral_code(request):
                         #             login_user_id = request.session['user_id']
                         #             res = get_bonus_payment(login_user_id, wallet_id, wallet_code, share_payment, pay_user_id,new_user_wallet_id)
                         status = "1"
-                        message = "Refrral Code Add successfully."
+                        message = "Referral Code Added successfully."
                 else:
                     status = "0"
-                    message = "Reffral Code is incorrect."
+                    message = "Referral Code is incorrect."
             else:
                 status = "0"
-                message = "Your account is not avelabel."
+                message = "Your account is not available."
         else:
             status = "0"
             message = "Please login."

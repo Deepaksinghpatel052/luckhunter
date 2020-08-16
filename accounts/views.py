@@ -11,12 +11,26 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from datetime import date
 from django.db.models import F
+from allauth.socialaccount.models import SocialAccount
 # Create your views here.
 
 
+
+def update_condition_status(request):
+    LsUser.objects.filter(user=request.user).update(Term_and_condition=True)
+    return HttpResponse("Done")
+
+
+@csrf_exempt
+def check_condition_status(request):
+    user_id = request.POST['user_id']
+    if LsUser.objects.filter(user__id=user_id).filter(Term_and_condition=True).exists():
+        return JsonResponse({"status":"True"})
+    else:
+        return JsonResponse({"status": "False"})
+
 def test(request):
     coocki_id = "deepak"
-
     return HttpResponse(coocki_id)
 
 
@@ -54,9 +68,10 @@ def login_user(request):
             status = "0"
             # msg = get_object_or_404(Notification, page_name="Login", notification_key="Not_Active")
             # msg_data = msg.notification_desc
-            msg_data = "Email and password is incorrect."
+            msg_data = "Email and password are incorrect."
             message = msg_data
     return JsonResponse({"status": status, "message": message})
+
 
 
 
@@ -78,7 +93,18 @@ def set_session_for_socila_login(request):
             LsUser.objects.filter(my_refrral_code=coocki_id).update(Point=F('Point') + 5)
             # LsRefrralCodeEmails.objects.filter(Email=user_email).update(Account_Create_Status=True,
             #                                                             Account_Create_Dates=datetime.now())
-    return redirect(settings.BASE_URL+"user/my-profile")
+    set_social_image = ""
+    get_data = get_object_or_404(SocialAccount, user=request.user)
+    extra_data = get_data.extra_data
+    if get_data.provider == "google":
+        set_social_image = extra_data['picture']
+    if get_data.provider == "facebook":
+        set_social_image = ""
+    if get_data.provider == "twitter":
+        set_social_image = extra_data["profile_image_url_https"]
+    if set_social_image:
+        LsUser.objects.filter(user=request.user).update(UserImage=set_social_image)
+    return redirect(settings.BASE_URL+"products")
 
 @csrf_exempt
 def register(request):
@@ -92,14 +118,14 @@ def register(request):
         if User.objects.filter(email=user_email).exists():
             # msg = get_object_or_404(Notification, page_name="E mail", notification_key="Exists")
             # msg_data = msg.notification_desc
-            msg_data = "This email is already exists."
+            msg_data = "This email already exists."
             # messages.error(request, title + " " + msg_data)
             return JsonResponse({"status":"0","message":user_email + " , " + msg_data})
         else:
             if LsUser.objects.filter(Contact_no=phone_no).exists():
                 # msg = get_object_or_404(Notification, page_name="Phone", notification_key="Exists")
                 # msg_data = msg.notification_desc
-                msg_data = "Contact no is already exists."
+                msg_data = "Contact no. already exists."
 
             else:
                 user = User.objects.create_user(username=user_email ,first_name=first_name,last_name=last_name, email=user_email, password=password)
@@ -115,7 +141,7 @@ def register(request):
                     LsUser.objects.filter(my_refrral_code=coocki_id).update(Point=F('Point') + 5)
                     LsRefrralCodeEmails.objects.filter(Email=user_email).update(Account_Create_Status=True,Account_Create_Dates=datetime.now())
                 msg_data = "User Registration is done now you can login with "
-    return JsonResponse({"status": "1", "message": msg_data + " " + user_email + "' !"})
+    return JsonResponse({"status": "1", "message": msg_data + " " + user_email + "'."})
 
 @login_required(login_url='/do-login-first/')
 def logout(request):

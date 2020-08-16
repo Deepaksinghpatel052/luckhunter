@@ -81,7 +81,7 @@ def add_blog(request):
                 data = ls_blog_form.save(commit=False)
                 data.user = get_user_ins
                 data.save()
-                msg_data = "Blog inserted successfully."
+                msg_data = "Blog added successfully."
                 messages.info(request, msg_data)
             else:
                 messages.error(request, ls_blog_form.errors)
@@ -105,7 +105,7 @@ def edit_blog(request,blog_id,blog_slug):
                     data = ls_blog_form_data.save(commit=False)
                     data.Update_date = datetime.now()
                     data.save()
-                    msg_data = "Blog update successfully."
+                    msg_data = "Blog updated successfully."
                     messages.info(request, msg_data)
                 else:
                     messages.error(request, ls_blog_form.errors)
@@ -123,7 +123,7 @@ def remove_blog(request,blog_id):
             get_user_ins = get_object_or_404(LsUser, id=request.session['user_id'])
             if LsBlog.objects.filter(id=blog_id).filter(user=get_user_ins).exists():
                 LsBlog.objects.filter(id=blog_id).filter(user=get_user_ins).delete()
-                msg_data = "Blog removed successfuly.."
+                msg_data = "Blog removed successfully."
                 messages.info(request, msg_data)
             else:
                 msg_data = "Blog not found."

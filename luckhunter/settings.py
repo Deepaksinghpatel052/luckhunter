@@ -80,6 +80,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'luckhunter.urls'
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -134,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 
@@ -163,6 +169,16 @@ STATICFILES_DIRS = [
 
 ]
 
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook':
+       {'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'https'},
+        'METHOD': 'oauth2',
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.3'}
+    }
 
 
 

@@ -26,15 +26,15 @@ def update_password(request):
             user.set_password(pass_2)
             user.save()
             status = "1"
-            message = "Password updated successfuly"
+            message = "Password updated successfuly."
             msg_data = message
             messages.info(request, msg_data)
         else:
             status = "0"
-            message = "Confirm password not match"
+            message = "Password is not matched."
     else:
         status = "0"
-        message = "function get only input method"
+        message = "Function get only post method."
     return JsonResponse({"status":status, "message":message})
 
 @csrf_exempt
@@ -66,13 +66,13 @@ def index(request):
             email = request.POST["email"]
             print(request.POST)
             if LsUser.objects.filter(Contact_no=number).filter(~Q(id=request.session['user_id'])).exists():
-                msg_data = "Cpntact no is already exists."
+                msg_data = "Contact no. already exists."
                 messages.error(request, msg_data)
             else:
                 if User.objects.filter(username=email).exists():
                     User.objects.filter(username=email).update(first_name=first_name,last_name=last_name)
                     LsUser.objects.filter(id=request.session['user_id']).update(name=first_name+" "+last_name, Contact_no=number)
-                    msg_data = "Profile updated successfully.."
+                    msg_data = "Profile updated successfully."
                     messages.info(request, msg_data)
                 else:
                     msg_data = "E-mail is incorrect."

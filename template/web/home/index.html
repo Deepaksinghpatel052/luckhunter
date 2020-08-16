@@ -56,7 +56,7 @@
 
              <div class="row">
                <div class="col-md-4">
-                <div class="product-badge bg-danger">Sale</div>
+                <div class="product-badge bg-danger">Sold</div>
                  {% if items.Image %}
                 <img style="" class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
                 {% else %}
@@ -124,7 +124,7 @@
                    
                  </div>
                  <br>
-                 <p class="card-text"><span class="badge badge-danger badge-pill">sale</span>. Ticket Cost of  <span class="badge badge-success badge-pill">Rs. {{items.Price_pr_ticket}}.</span> Ticket Booking Start from <span class="badge badge-success badge-pill">{{items.Ticket_booking_start}}</span> and winning date is <span class="badge badge-success badge-pill">{{items.Ticket_open_date}}</span></p>
+                 <p class="card-text"><span class="badge badge-danger badge-pill">sale</span>. Ticket Cost is  <span class="badge badge-success badge-pill">Rs. {{items.Price_pr_ticket}}.</span> Ticket Booking Will Start From <span class="badge badge-success badge-pill">{{items.Ticket_booking_start}}</span> and winner will announced on <span class="badge badge-success badge-pill">{{items.Ticket_open_date}}</span></p>
                  <a class="" href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}">View Info</a>
                 </div>
               </div>
@@ -153,7 +153,7 @@
             {% if item.Ticket_booking_start < today %}
          <a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><div class="product-badge bg-warning">Booking Start</div></a>
           {% else %}
-            <div class="product-badge bg-danger">Arivel</div>
+            <div class="product-badge bg-danger">Arrival</div>
             {% endif %}
             
 

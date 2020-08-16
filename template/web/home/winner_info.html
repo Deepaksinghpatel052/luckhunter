@@ -32,13 +32,13 @@
               </h6>
                    </div>
                    <div class="col-md-5 text-right">
-                      <p>Winner Ticket No. <button type="button" class="btn btn-primary btn-sm">{{product_ins.winner_ticket}}</button></p>
+                      <p>Winner Ticket No. <button disabled="true" type="button" class="btn btn-primary btn-sm">{{product_ins.winner_ticket}}</button></p>
                    </div>
 
                  </div>
                  
                  
-                  <p class="card-text">Hello {{get_winner_info.user.name}}. Congratulations you are win this product. And this product is send to your register address in 7 days.</p>
+                  <p class="card-text">Hello {{get_winner_info.user.name}}. Congratulation.You have won that product. And the product will deliver to your registered address in 7 days.</p>
                  {% if view_blog %}
                   <a class="btn btn-primary btn-sm" href="{{BASE_URL}}blog/{{product_ins.slug}}">Check Blog</a>
                 {% else %}

@@ -460,6 +460,12 @@ if(user_id=="None")
 }
  
 
+ if("{{user.email}}" == "" && "{{user.id}}" != "None" )
+  {
+    $("#enter_email_model").modal('show');
+  }
+  else{
+
 $.ajax({
       method:"POST",
           url:"https://luckhunter.in/account/check_condition_status",
@@ -526,6 +532,7 @@ get_ticket_array = get_ticket_array.join(",,")
           }
    });
 
+}
  
 });
 // ================== add to cart END=====================

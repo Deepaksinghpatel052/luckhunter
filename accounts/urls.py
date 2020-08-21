@@ -12,6 +12,7 @@ urlpatterns= [
 
  path('check_condition_status', views.check_condition_status, name='check_condition_status'),
  path('check_condition_status/', views.check_condition_status, name='check_condition_status'),
+ path('check_and_update_user_emai/', views.check_and_update_user_emai, name='check_and_update_user_emai'),
 
  path('update_condition_status', views.update_condition_status, name='update_condition_status'),
  path('update_condition_status/', views.update_condition_status, name='update_condition_status'),

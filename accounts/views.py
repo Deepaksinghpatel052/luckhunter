@@ -12,9 +12,26 @@ from datetime import datetime
 from datetime import date
 from django.db.models import F
 from allauth.socialaccount.models import SocialAccount
+from django.db.models import Q
 # Create your views here.
 
 
+
+
+def check_and_update_user_emai(request):
+    message = ""
+    status = "0"
+    if request.method == 'POST':
+        post_email = request.POST['user_email']
+        if User.objects.filter(email=post_email).filter(~Q(id =request.user.id)).exists():
+            message="This email is already exists. please try to other email."
+        else:
+            User.objects.filter(id =request.user.id).update(email=post_email)
+            message = "Your email is update successfully. thank You for provide us your email."
+            status = "1"
+    else:
+        message = "Only Post method is required."
+    return JsonResponse({"status": status,"message":message})
 
 def update_condition_status(request):
     LsUser.objects.filter(user=request.user).update(Term_and_condition=True)

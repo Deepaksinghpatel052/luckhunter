@@ -104,6 +104,11 @@
 .footer-menu li a:hover {
     color: rgba(255, 255, 255, 0.5);
 }
+
+
+.set_image_size_dsp{
+	width: 35px;
+}
   </style>
   </head>
   <!-- Body-->
@@ -167,7 +172,10 @@
           </div>
           {% else %}
           <div class="toolbar-item hidden-on-mobile"><a href="https://luckhunter.in/user/my-profile">
-              <div><i class="icon-user"></i><span class="text-label">{{user.first_name}}</span></div></a>
+              <div>
+              	<img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  >
+		
+              	<span class="text-label">{{user.first_name}}</span></div></a>
             <div class="toolbar-dropdown text-center px-3">
              
               <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="https://luckhunter.in/user/my-profile">Dasktop</a></p>
@@ -212,7 +220,7 @@
                 <div><i class="icon-user"></i><span class="text-label">Sign Up</span></div></a></div>
               {% else %}
               <div class="toolbar-item"><a href="https://luckhunter.in/user/my-profile" >
-                <div><i class="icon-user"></i><span class="text-label">{{user.first_name}}</span></div></a></div>
+                <div><img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  ><span class="text-label">{{user.first_name}}</span></div></a></div>
                 <div class="toolbar-item"><a href="https://luckhunter.in/account/logout" >
                 <div><i class="icon-log-out"></i><span class="text-label">Logout</span></div></a></div>
                 {% endif %}
@@ -224,8 +232,8 @@
               <li class="has-submenu page_Home" >
     <a href="{% url 'home:index' %}">Home</a></li>
             <li class="has-submenu page_Products"  data-page=""><a href="{% url 'home:all_products' %}">Products</a></li>
-            <li class="has-submenu page_Running"><a href="{% url 'home:running_bid' %}">Running Bid</a></li>
-            <li class="has-submenu page_This_Month" ><a href="{% url 'home:this_month_bid' %}">This Month Bid</a></li>
+            <li class="has-submenu page_Running"><a href="{% url 'home:running_bid' %}">Running Bids</a></li>
+            <li class="has-submenu page_This_Month" ><a href="{% url 'home:this_month_bid' %}">This Month Bids</a></li>
             <li class="has-submenu page_Winners" ><a href="{% url 'home:winners' %}">Winners</a></li>
              {% if user.username == ""  %}
               <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
@@ -258,8 +266,8 @@
           <ul>
             <li class="has-submenu page_Home" ><a href="{% url 'home:index' %}">Home</a></li>
             <li class="has-submenu page_Products"data-page=""><a href="{% url 'home:all_products' %}">Products</a></li>
-            <li class="has-submenu page_Running" ><a href="{% url 'home:running_bid' %}">Running Bid</a></li>
-            <li class="has-submenu page_This_Month"><a href="{% url 'home:this_month_bid' %}">This Month Bid</a></li>
+            <li class="has-submenu page_Running" ><a href="{% url 'home:running_bid' %}">Running Bids</a></li>
+            <li class="has-submenu page_This_Month"><a href="{% url 'home:this_month_bid' %}">This Month Bids</a></li>
             <li class="has-submenu page_Winners" ><a href="{% url 'home:winners' %}">Winners</a></li>
              {% if user.username == ""  %}
               <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
@@ -280,7 +288,10 @@
           <div class="toolbar-inner">
              {% if user.username == ""  %}
           <div class="toolbar-item hidden-on-mobile"><a href="#" data-toggle="modal" data-target="#modalCentered">
-              <div><i class="icon-user"></i><span class="text-label">Sign In / Up</span></div></a>
+              <div>
+              	<i class="icon-user"></i>
+
+              	<span class="text-label">Sign In / Up</span></div></a>
             <div class="toolbar-dropdown text-center px-3">
               <p class="text-xs mb-3 pt-2">Sign in to your account or register new one to have full control on your orders, receive bonus and more.</p><a class="btn btn-primary btn-sm btn-block" href="#" data-toggle="modal" data-target="#modalCentered">Sign In</a>
               <p class="text-xs text-muted mb-2">New customer?&nbsp;<a href="#" data-toggle="modal" data-target="#modalCenteredRegistration">Register</a></p>
@@ -288,7 +299,10 @@
           </div>
           {% else %}
           <div class="toolbar-item hidden-on-mobile"><a href="https://luckhunter.in/user/my-profile">
-              <div><i class="icon-user"></i><span class="text-label">{{user.first_name}}</span></div></a>
+              <div>
+				<img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  >
+
+              	<span class="text-label">{{user.first_name}}</span></div></a>
             <div class="toolbar-dropdown text-center px-3">
              
               <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="https://luckhunter.in/user/my-profile">Dasktop</a></p>
@@ -327,7 +341,8 @@
         <!-- Copyright-->
         <div class="row">
           <div class="col-md-6">
-            <p class="footer-copyright">© <span id="title_of_footer"></span>, LLC All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <span id="domein_of_footer"></span></p>
+            <p class="footer-copyright">© <span id="title_of_footer"></span>, LLC All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <a href="http://notageeks.com/" target="_blank"><u>Not A Geeks</u></a></p>
+             <!-- <span id="domein_of_footer"></span> -->
           </div>
           <div class="col-md-6 text-right">
             <ul class="footer-menu">
@@ -1154,12 +1169,103 @@ $(document).on("click","a",function(){
     </div>
 
 
+
+
+
+
+
+
+
+
+
+
+ <div class="modal fade" id="enter_email_model" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Valid Email</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body ">
+            
+            <div class="row text-center">
+            	<div class="col-md-12">
+
+				<div class="post-body">
+			<p><b>Please provide me your valid email so we can send you  information about your dream product and upcoming product. So please don’t miss this opportunity.</b></p>
+                <div class="row">
+              <div class="col-md-12" id="show_error_for_email_id_"></div>
+            </div>
+  <form class="input-group form-group" id="add_email_id" method="get"><span class="input-group-btn">
+                {% csrf_token %}
+                <input type="hidden" name="user_id"  value="{{user.id}}">
+                <button type="submit"><i class="icon-send"></i></button></span>
+                <input class="form-control" required="" type="text" name="user_email" placeholder="Enter your Email-id">
+              </form>
+                </div>
+
+            	</div>
+            	<div class="col-md-12">
+            		<div class="checkbox">
+					  <label>
+	                
+					</div>
+            	</div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary btn-sm" type="button">Close</button>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
 <script type="text/javascript">
 	
+
+$(document).on("submit","#add_email_id",function(){
+   event.preventDefault();
+     $(".se-pre-con").css("display","block");
+     
+     $("#show_error_for_email_id_").html('');
+     $.ajax({
+      method:"POST",
+               url:base_url+"account/check_and_update_user_emai/",
+               data:$('#add_email_id').serializeArray(),
+               dataTyep:"json",
+               success:function(data){
+                  $(".se-pre-con").css("display","none");
+                 if(data.status=="0")
+                 {
+                     $("#show_error_for_email_id_").html('<span class="badge badge-danger badge-pill">'+data.message+'.</span>');
+                 }
+                 else
+                 {
+                      swal(data.message, {
+			            icon: "success",
+			          }).then((value) => {
+			                   location.reload();
+			                  });
+                 }
+               }
+});
+
+
+});
+
 function check_tern_and_condition(user_id)
 {
    var user_id = user_id;
-   $.ajax({
+  
+  if("{{user.email}}" == "")
+  {
+  	$("#enter_email_model").modal('show');
+  }
+  else{
+
+  	$.ajax({
       method:"POST",
           url:"https://luckhunter.in/account/check_condition_status",
           data:{"user_id":user_id},
@@ -1173,6 +1279,9 @@ function check_tern_and_condition(user_id)
 
           }
    });
+  }
+ 
+   
 }
 
 
@@ -1201,7 +1310,13 @@ $(".condition_accept").change(function(){
 
  });
 
-check_tern_and_condition('{{user.id}}'); 
+
+if('{{user.id}}' != 'None')
+{
+	check_tern_and_condition('{{user.id}}'); 
+}
+
+
 });
 </script>
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from accounts.models import LsUser
+from accounts.models import LsUser,LsSettings
 from products.models import LsProduct,LsCoupons
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -19,11 +19,41 @@ from datetime import date
 import random
 # Create your views here.
 
+
+def get_coines_of_order(order_id,user_ins):
+    """
+    This function is use for get some coines according to order
+    This function id required the order_id
+    """
+    status = False
+
+    get_settings_info = LsSettings.objects.all().first()
+    get_coines_in_one_rs = get_settings_info.Coines_rate
+    if LsUser.objects.filter(user=user_ins).exists():
+        ls_user_ins = get_object_or_404(LsUser,user=user_ins)
+        if LsOrder.objects.filter(order_id=order_id).exists():
+            get_order_ins = get_object_or_404(LsOrder,order_id=order_id)
+            order_amount = get_order_ins.total_payment
+            five_persent_of_amount = round((order_amount * 5)/100)
+            if five_persent_of_amount > 0:
+                coines_for_this_order = five_persent_of_amount*get_coines_in_one_rs
+                LsOrder.objects.filter(order_id=order_id).update(coines=coines_for_this_order)
+                LsUser.objects.filter(user=user_ins).update(my_coines=F('my_coines')+coines_for_this_order)
+    return True
+
+
+def test_order(request):
+    order_id = "ZDLBGYD423"
+    res = get_coines_of_order(order_id,request.user)
+    return HttpResponse(res)
+
+
+
 @csrf_exempt
 def set_winner(request):
     status = "1"
     message = "done"
-    get_product = LsProduct.objects.filter(winner_status=False).filter(Ticket_open_date__lte=datetime.today())
+    get_product = LsProduct.objects.filter(winner_status=False).filter(Status=True).filter(Ticket_open_date__lte=datetime.today())
     order_status_for_winner = get_object_or_404(LsOrderStatus,Status_type='winner')
     order_status_for_loser = get_object_or_404(LsOrderStatus,Status_type='luser')
     for item in get_product:

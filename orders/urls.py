@@ -15,6 +15,7 @@ urlpatterns= [
   path('get_order_item', views.get_order_item, name='get_order_item'),
   path('get-order-info', views.get_order_info, name='get_order_info'),
   path('set-winner', views.set_winner, name='set_winner'),
+  path('test_order', views.test_order, name='test_order'),
 
 
 ]

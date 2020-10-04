@@ -74,6 +74,10 @@ urlpatterns = [
     path('get-adds/', include('manage_adds.urls')),
     path('get-adds', include('manage_adds.urls')),
 
+
+    path('sale/', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
+    path('sale', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
+
     path('send-email', include('send_email.urls')),
     path('send-email/', include('send_email.urls')),
 

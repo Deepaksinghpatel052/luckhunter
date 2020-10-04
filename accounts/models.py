@@ -18,6 +18,7 @@ class LsUser(models.Model):
     Contact_no = models.IntegerField()
     User_referral_code = models.CharField(max_length=120, null=True, blank=True)
     Point = models.IntegerField(default=0)
+    my_coines = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -59,6 +60,7 @@ class LsSettings(models.Model):
     Create_date = models.DateTimeField(default=django.utils.timezone.now)
     created_by = models.ForeignKey(LsUser, related_name='LsSettings_create_by', on_delete=models.SET_NULL, null=True,
                                    blank=True)
+    Coines_rate = models.IntegerField(default=1,verbose_name = "Coines in 1 Rs.")
     Update_date = models.DateTimeField(default=django.utils.timezone.now)
     Update_by = models.ForeignKey(LsUser, related_name='LsSettings_update_by', on_delete=models.SET_NULL, null=True,
                                   blank=True)

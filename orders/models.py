@@ -43,6 +43,7 @@ class LsOrder(models.Model):
     order_status = models.ForeignKey(LsOrderStatus, null=True,blank=True, default=DEFAULT_EXAM_ID,on_delete=models.SET_NULL)
     payment_method = models.CharField(max_length=30,null=True,blank=True)
     payment_for = models.CharField(max_length=30,null=True,blank=True)
+    coines = models.IntegerField(default=0)
     create_date = models.DateTimeField(default=django.utils.timezone.now)
     update_date = models.DateTimeField(default=django.utils.timezone.now)
 

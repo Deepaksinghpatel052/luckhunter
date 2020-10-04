@@ -13,6 +13,7 @@ import random
 from accounts.models import LsSettings
 from .serializear import LsUserWalletSerializers
 from django.contrib.auth.decorators import login_required
+from orders.views import get_coines_of_order
 # Create your views here.
 
 
@@ -424,7 +425,9 @@ def order_by_wallet(request):
                                             get_status_ins = get_object_or_404(LsOrderStatus, Status_type="order_by_wallet")
                                             LsOrder.objects.filter(order_id=get_order_ins.order_id).update(
                                                 payment_status=True,descount=True,
-                                                order_status=get_status_ins,total_payment=amount_after_descount,descount_amount=get_total_descount,payment_method="PayTm")
+                                                order_status=get_status_ins,total_payment=amount_after_descount,descount_amount=get_total_descount,payment_method="Wallet")
+                                    get_coines_of_order(get_order_ins.order_id, request.user)
+
                                 status = "1"
                                 message = "Order placed successfully."
                                 msg_data = "payment done of " + get_order_ins.order_id + " order"

@@ -21,7 +21,7 @@ def update_order_update_order(request):
         order_ins = get_object_or_404(LsOrder, order_id=order_id)
         Currenct_Type = "INR"
         STATUS = "succeeded"
-        Payment_Method = "Stripe"
+        Payment_Method = "PayPal"
         Payment_status = "payment is done."
         if "trans_id" in request.POST:
             TXNID = request.POST["trans_id"]
@@ -115,9 +115,11 @@ def do_payments(request):
 
     login_data = ""
     # key = StripeAccount_ins.STRIPE_PUBLISHABLE_KEY
-    key = 'pk_test_tZXpspfm9G7Mp99iMRpS7qNv00gClY03dl'
+    # key = 'pk_test_51HN2PqH6hHDHhJZuKS19qsR1fITVxFrIKhpQS6jazfv7o0dvTnvMKoIkC8Vle3WPdyZTBwfJlJBzwH57QCvRaMO200QCtwtrBf'
+    key = 'pk_live_51HN2PqH6hHDHhJZuSfBhpm2U2fUuIkgaLkLHde7qRMKEvE8HSYstgHlme42PGpQYIAZNrJuqzrsgXVdC7VafKVv600CkRezgxf'
     # key1 = StripeAccount_ins.STRIPE_SECRET_KEY
-    key1 = 'sk_test_dfPhVGb4S7oxXqe40GK0CW4100bfkrPUDe'
+    # key1 = 'sk_test_51HN2PqH6hHDHhJZuCta4TmpFlXZDpqRHVMyLum4kWLH94w3Ge8AqCvl7MA4uMAihIxiDjA4vz23cfPb1v2s6046d00bs2b5jwW'
+    key1 = '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'
     stripe.api_key = key1
 
     # -----------------Stripe Payment Gateway code After Payment Process---------------
@@ -135,7 +137,7 @@ def do_payments(request):
                 description=description,
                 source=token,
             )
-            return JsonResponse({"status": charge.status, "order_id": order_id, "trans_id": charge.id})
+            return JsonResponse({"status": charge.status, "order_id": order_id, "trans_id": charge.id,'data':charge})
             # if charge.status == "succeeded":
             #     trans_id = charge.id
             #     org_ins = get_object_or_404(AR_organization, id=request.session['org_id'])

@@ -43,6 +43,12 @@ if(jQuery.inArray("blog", url_in_array) != -1)
 	page_name = "Blog";
 }
 
+if(jQuery.inArray("sale", url_in_array) != -1)
+{
+	$(".page_Sale").addClass("active");
+	page_name = "Sale";
+}
+
 if(jQuery.inArray("user", url_in_array) != -1)
 {
 	$(".page_Account").addClass("active");

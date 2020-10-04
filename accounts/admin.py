@@ -16,7 +16,7 @@ class LsBannerAdmin(SummernoteModelAdmin):
     list_filter = ('banner_pogition',)
 
 class LsSettingsAdmin(SummernoteModelAdmin):
-    list_display = ('Project_name','Title','Logo','favicon_icon','Domain','Wallet_commition','Wallet_descount','System_email','System_email_Password','Create_date','created_by','Update_date','Update_by')
+    list_display = ('Project_name','Title','Logo','favicon_icon','Domain','Wallet_commition','Wallet_descount','System_email','System_email_Password','Coines_rate','Create_date','created_by','Update_date','Update_by')
 
 
 admin.site.register(LsBanner,LsBannerAdmin)

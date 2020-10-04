@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User,auth
 from django.http import HttpResponse, JsonResponse
 from  .models import LsUser,LsSettings
+from  orders.models import LsOrder
+from  manage_sale.models import LsUserApplayInSale
 from referral_user.models import LsRefrralCodeEmails
 from django.shortcuts import render,redirect
 from django.conf import settings
@@ -17,6 +19,17 @@ from django.db.models import Q
 
 
 
+def coins_history(request):
+    user_info = None
+    order_info = None
+    sale_bid_info = None
+    if LsUser.objects.filter(user=request.user).exists():
+        user_info = get_object_or_404(LsUser,user=request.user)
+        if LsOrder.objects.filter(user=user_info).exists():
+            order_info = LsOrder.objects.filter(user=user_info).order_by("-id")
+        if LsUserApplayInSale.objects.filter(user_Info=user_info).exists():
+            sale_bid_info  = LsUserApplayInSale.objects.filter(user_Info=user_info).order_by("-id")
+    return render(request, 'web/account_page/coins_history.html', {'BASE_URL':settings.BASE_URL,"user_info":user_info,'order_info':order_info,'sale_bid_info':sale_bid_info})
 
 def check_and_update_user_emai(request):
     message = ""

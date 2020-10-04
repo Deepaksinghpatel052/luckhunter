@@ -17,6 +17,7 @@ from .models import LsCMSPageContent
 
 
 
+
 def set_cookes(request,rerfrral_code):
     response = HttpResponse("continue")
     coocki_id = rerfrral_code
@@ -90,8 +91,9 @@ def page_content(request,keyword):
     page_titl = "Page"
     get_page_content = None
     ls_user =None
-    if LsUser.objects.filter(user=request.user).exists():
-        ls_user = get_object_or_404(LsUser,user=request.user)
+    if request.user.is_authenticated:
+        if LsUser.objects.filter(user=request.user).exists():
+            ls_user = get_object_or_404(LsUser,user=request.user)
     if LsCMSPageContent.objects.filter(keyword=keyword):
         get_page_content = get_object_or_404(LsCMSPageContent,keyword=keyword)
         page_titl = get_page_content.Title
@@ -180,7 +182,7 @@ def all_products(request,slug=""):
                     "-Ticket_booking_start")
     else:
        if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).exists():
-        get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).order_by("-Publich_date")
+        get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).order_by("-Ticket_booking_start")
 
     get_len = len(get_product) % 4
     if get_len == 0:

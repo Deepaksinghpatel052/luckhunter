@@ -1,0 +1,215 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{sale_info.Sale_Title}} {{page_title}}</h1> 
+        </div>
+        
+      </div>
+    </div>
+  
+    <!-- Featured Products-->
+    <section class="container padding-bottom-2x mb-2">
+     
+      <br><br>
+      <div class="row">
+
+{% if add_product_ins_in_grid %}
+          {% for adds in add_product_ins_in_grid %}
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            {{adds.Description | safe  }}
+          </div>
+          {% endfor %}
+          {% endif %} 
+        
+        {% if get_product %}
+        {% for item in get_product %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="product-card mb-30">      
+            <img src='{{item.Image.url}}'  style="width:100%; height:215px;" alt="Product">
+            <div class="product-card-body">
+              <div class="product-category"><a href="#">{{item.Category}}</a></div>
+              <h3 class="product-title"><a href="#">{{item.Product_name|slice:"0:20"}}..</a></h3>
+              <h4 class="product-price">
+                <img src="{% static 'web/img/coins.png' %}" style="width: 20px;height: 20px;">{{item.Max_Coins}} Coins
+              </h4>
+             <!--  {{sale_info.id|get_winner_of_product_in_sale:item.id}} -->
+            </div>
+            <div class="product-button-group">
+<a class="product-button " href="#">
+          {% if item.Product_id|get_product_coins_status:sale_info.id %}
+             <button type="button"  data-user_name="{{user.username}}" class="add_coins_in_this_product btn btn-primary btn-block" data-product_id="{{item.Product_id}}" data-get_coupon_info_url="{% url 'manage_sale:get_product_coin_info' item.Product_id sale_info.id %}"><i class="icon-award"></i> Add Coins for bid</button>
+             {% else %}
+             <button type="button" style="background-color: #9da2ac;" class="btn btn-primary btn-block" ><i class="icon-award"></i> Bid Closed</button>
+             {% endif %}
+              </a>
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+     
+
+
+      </div>
+    
+    </section>
+
+
+
+<div class="modal fade" id="add_coins_in_product" tabindex="-1" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Coins</h4>
+           <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+            	<table class="table table-bordered">
+            		<thead>
+            		<tr>
+            			<th colspan="2">Hello {{user.username}}</th>
+            		</tr>
+            		</thead>
+            		<tbody>
+            			<tr>
+            				<th style="width:70%;" id="show_product_pane_for_coin_window"></th>
+            				<th id="show_product_image_for_coin_window"></th>
+            			</tr>
+            			<tr>
+            				<th style="width:70%;">You Have:</th>
+            				<th><img src="{% static 'web/img/coins.png' %}" style="width: 20px;height: 20px;"> <span id="you_have_coine">0</span></th>
+            			</tr>
+            			<tr>
+            				<th style="width:70%;">Product Max Limit:</th>
+            				<th><img src="{% static 'web/img/coins.png' %}" style="width: 20px;height: 20px;"> <span id="product_max_coin">0</span></th>
+            			</tr>
+            			<tr>
+            				<th style="width:70%;">You Can Add max:</th>
+            				<th><img src="{% static 'web/img/coins.png' %}" style="width: 20px;height: 20px;"> <span id="youcan_add">0</span></th>
+            			</tr>
+            			<tr>
+            				<th colspan="2">
+            					<form action="#" method="" id="coins_add_form">
+                  <input type="hidden" name="" id="coins_add_url" value="{% url 'manage_sale:AddCoinsForProductSale' %}">
+                  <input type="hidden" name="" id="sale_id_set" value="{{sale_info.id}}">
+                  <input type="hidden" name="" id="product_id" value="">
+                <div class="input-group">
+                  <input type="number" required="" id="user_coins_want_to_add" name="user_coins_want_to_add" class="form-control"  placeholder="How Much Coin You Want To Add">
+                  <div class="input-group-btn">
+                    <button class="btn btn-primary btn-block" type="submit" style="background-color: #05f !important;color: #fff!important;">
+                      Apply
+                    </button>
+                  </div>
+                </div>
+       				</form>
+            				</th>
+            			</tr>
+            		</tbody>
+
+            	</table>
+            </div>
+          </div>
+          <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <!--products-area end-->
+
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+$(document).on('click',".add_coins_in_this_product",function(){
+   var user_name = $(this).data("user_name");
+   var product_id = $(this).data("product_id");
+   var url_get = $(this).data("get_coupon_info_url");
+   if(user_name)
+   {   	 
+   
+   $("#product_id").val(product_id);
+
+   $.ajax({
+      method:"GET",
+      url:url_get,
+      dataType:"JSON",
+      success:function(data)
+      {
+
+      	$("#you_have_coine").text(data.you_have_coine);
+      	$("#product_max_coin").text(data.product_max_coin);
+      	$("#youcan_add").text(data.youcan_add);
+      	$("#show_product_pane_for_coin_window").text(data.product_name);
+      	$("#show_product_image_for_coin_window").html('<img src="'+data.Product_image+'" style="width:70px; height:70px;">');
+      	$("#add_coins_in_product").modal('show');
+      }
+   });
+
+
+   	 
+   }
+   else
+   {
+   	 $("#modalCentered").modal('show');
+   }
+});
+
+
+$("#coins_add_form").submit(function(event) {
+event.preventDefault();
+  $(".se-pre-con").css("display","block");
+
+var coins_add_url = $("#coins_add_url").val();
+var product_id = $("#product_id").val();
+var user_coins_want_to_add = $("#user_coins_want_to_add").val();
+var sale_id_get = $("#sale_id_set").val();
+
+// alert(coins_add_url);
+// alert(product_id);
+// alert(user_coins_want_to_add);
+
+$.ajax({
+	method:"POST",
+	url:coins_add_url,
+	data:{"product_id":product_id,"user_coins_want_to_add":user_coins_want_to_add,'sale_id_get':sale_id_get},
+	dataType:"JSON",
+	success:function(data){
+		$(".se-pre-con").css("display","none");
+		if(data.status=="0")
+		{
+          swal({
+            title: data.message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          });
+		}
+		else{
+
+         swal({
+            title: data.message,
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            location.reload();
+          });
+		}
+	}
+})
+
+});
+
+</script>
+{% endblock %}

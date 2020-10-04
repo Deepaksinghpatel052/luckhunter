@@ -64,7 +64,7 @@
 
               {% if product_image %}
               {% for item in product_image %}
-               <div class="gallery-item" data-hash="image_{{forloop.counter}}"><a href="{{item.Image.url}}" data-size="1000x667"><img  src="{{item.Image.url}}" alt="Product"></a></div>
+               <div class="gallery-item" data-hash="image_{{forloop.counter}}"><a href="{{item.Image.url}}" data-set_data="stop_loading" data-size="1000x667"><img  src="{{item.Image.url}}" alt="Product"></a></div>
               {% endfor %}
               {% endif %}
 
@@ -74,9 +74,9 @@
               {% if product_image %}
               {% for item in product_image %}
               {% if forloop.counter == 1 %}
-              <li class="active"><a href="#image_{{forloop.counter}}"><img src="{{item.Image.url}}" alt="Product"></a></li>
+              <li class="active"><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" alt="Product"></a></li>
                {% else %}
-               <li class=""><a href="#image_{{forloop.counter}}"><img src="{{item.Image.url}}" alt="Product"></a></li>
+               <li class=""><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" alt="Product"></a></li>
               {% endif %}
               {% endfor %}
               {% endif %}

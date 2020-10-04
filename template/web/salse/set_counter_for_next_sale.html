@@ -1,0 +1,143 @@
+{% extends 'web/base_template.html' %}
+{% block content %}
+{% load static %}
+
+<style type="text/css">
+  
+</style>
+
+<div class="page-title">
+      <div class="container">
+        <div class="column">
+          <h1>{{page_title}}</h1> 
+        </div>
+        {% if next_sale %}
+        <div class="column">
+          <h3>Next sale :{{next_sale.Sale_Title}} on {{next_sale.Start_date}}</h3> 
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  
+    <!-- Featured Products-->
+    <section class="container padding-bottom-2x mb-2">
+     
+      <br><br>
+      <div class="row">
+
+{% if add_product_ins_in_grid %}
+          {% for adds in add_product_ins_in_grid %}
+          <div class="col-lg-4 col-sm-6">
+            {{adds.Description | safe  }}
+          </div>
+          {% endfor %}
+          {% endif %} 
+        
+        {% if get_all_sale_product %}
+        {% for item in get_all_sale_product %}
+          <div class="col-lg-4 col-sm-6">
+          <div class="card border-0 bg-secondary mb-30">
+            <div class="card-body d-table w-100">
+
+             <div class="row">
+               <div class="col-md-4">
+                <div class="product-badge bg-danger">Winner</div>
+                 
+                <img class="d-block w-100" style="width: 86px; height: 86px;" src="{{item.product_id.Image.url}}" alt="Image">
+                
+               </div>
+               <div class="col-md-8">
+                 <a target="blank_" href="{{BASE_URL}}product/{{item.product_id.slug}}/{{item.product_id.Product_id}}"><h5>{{item.product_id.Product_name|slice:"0:15"}}..</h5></a>
+                <p>
+                  {{item.Sale.Winner_date}}
+                  
+                  </p>
+               </div>
+             </div>
+             
+
+<br>
+<div class="row align-items-end pb-4">
+             <div class="card">
+                <div class="card-body">
+                 <div class="row">
+                   <div class="col-md-7">
+                      <h6 class="card-title">
+
+ {% if item.user_Info.Image %}
+               <img src='{{item.user_Info.Image.url}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
+            {% else %}
+               {% if item.user_Info.UserImage %}
+               <img src='{{item.user_Info.UserImage}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
+               {% else %}
+                <img src='{% static "web/img/account/user-ava.jpg" %}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
+                {% endif %}
+            {% endif %}
+                {{item.user_Info.name|slice:"0:10"}}  
+              </h6>
+                   </div>
+                   <div class="col-md-5 text-right">
+                      <p>Winner With. <button disabled="true" type="button" class="btn btn-primary btn-sm"><img src="{% static 'web/img/coins.png' %}" style="width: 20px;height: 20px;">{{item.Coins}} Coins</button></p>
+                   </div>
+
+                 </div>
+                 
+                 <p class="card-text">Hello {{item.user_Info.name|slice:"0:10"}}. Congratulation.You have won that product. And the product will deliver to your registered address in 7 days.</p>
+                 
+                
+                </div>
+              </div>
+          </div>
+            
+  
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+     
+
+
+      </div>
+    
+    </section>
+
+
+
+   <!--products-area end-->
+
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
+console.log("{{next_sale.Start_date}}".toHHMMSS());
+
+var date1 = new Date();
+var date2 = '{{next_sale.Start_date}}';
+console.log(date1);
+console.log(date2);
+
+function get_time(date1,date2){
+  let distance = Math.abs(date1 - date2);
+  const hours = Math.floor(distance / 3600000);
+  distance -= hours * 3600000;
+  const minutes = Math.floor(distance / 60000);
+  distance -= minutes * 60000;
+  const seconds = Math.floor(distance / 1000);
+  return `${hours}:${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`;
+}
+
+</script>
+{% endblock %}

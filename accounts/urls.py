@@ -21,6 +21,8 @@ urlpatterns= [
  path('test', views.test, name='test'),
 
  path('profile/', views.set_session_for_socila_login, name='set_session_for_socila_login'),
+ 
+ path('coins-history', views.coins_history, name='coins_history'),
 
  path('logout', views.logout, name='logout'),
  path('logout/', views.logout, name='logout'),

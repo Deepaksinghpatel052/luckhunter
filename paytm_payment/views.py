@@ -11,6 +11,7 @@ from .models import LsPayments,LsPaytm_credentials
 from accounts.models import LsSettings
 import string
 import random
+from orders.views import get_coines_of_order
 # Create your views here.
 
 get_data = get_object_or_404(LsPaytm_credentials,Type='PayTm')
@@ -141,8 +142,8 @@ def hendel_request(request):
                             LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
                                 product_id=item.product_id).filter(order_id=order_ins).update(Book_status=True)
                             get_status_ins = get_object_or_404(LsOrderStatus, Status_type="Done")
-                            LsOrder.objects.filter(order_id=response_dict['ORDERID']).update(payment_method="PayTm",payment_status=True,
-                                                                             order_status=get_status_ins)
+                            LsOrder.objects.filter(order_id=response_dict['ORDERID']).update(payment_method="PayTm",payment_status=True,order_status=get_status_ins)
+                    get_coines_of_order(response_dict['ORDERID'], request.user)
 
                 msg_data = "payment done of " + response_dict['ORDERID']+" order"
                 messages.info(request, msg_data)

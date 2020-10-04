@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import LsUser
 import django
+from django.contrib.auth.models import User
 from luckhunter.utils import unique_id_generator,unique_id_generator_for_coupon_code,slug_generator_for_product,slug_generator_for_category
 from django.db.models.signals import pre_save
 # Create your models here.
@@ -28,9 +29,9 @@ pre_save.connect(pre_save_create_slug_for_category, sender=LsCategoryes)
 
 class LsProduct(models.Model):
     Product_id = models.CharField(max_length=120, blank=True)
-    Product_name = models.CharField(max_length=150)
+    Product_name = models.CharField(max_length=500)
     Product_TagLine = models.CharField(max_length=150,null=True,blank=True)
-    slug = models.SlugField(max_length=120,null=True,blank=True)
+    slug = models.SlugField(max_length=500,null=True,blank=True)
     Category = models.ForeignKey(LsCategoryes, related_name='LsProduct_create_by', on_delete=models.SET_NULL, null=True,blank=True)
     ReyalPrice  = models.IntegerField()
     description = models.TextField(blank=True)
@@ -48,10 +49,13 @@ class LsProduct(models.Model):
     Meta_Keyword = models.TextField(null=True,blank=True)
     Meta_Description = models.TextField(null=True,blank=True)
     Open_status = models.BooleanField(default=False)
+    UseForSale = models.BooleanField(default=False)
+    SaleWinnerStatus = models.BooleanField(default=False)
+    Max_Coins = models.IntegerField(default=0)
     Create_date = models.DateTimeField(default=django.utils.timezone.now)
-    created_by = models.ForeignKey(LsUser, related_name='LsProduct_create_by', on_delete=models.SET_NULL, null=True,blank=True)
+    created_by = models.ForeignKey(User, related_name='LsProduct_create_by', on_delete=models.SET_NULL, null=True,blank=True)
     Update_date = models.DateTimeField(default=django.utils.timezone.now)
-    Update_by = models.ForeignKey(LsUser, related_name='LsProduct_update_by', on_delete=models.SET_NULL, null=True,blank=True)
+    Update_by = models.ForeignKey(User, related_name='LsProduct_update_by', on_delete=models.SET_NULL, null=True,blank=True)
 
     def __str__(self):
         return self.Product_name

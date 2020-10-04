@@ -1,0 +1,91 @@
+<table class="table table-bordered">
+	<tr>
+		<th>
+			Your Totla coins :<img src="/static/web/img/coins.png" style="width: 20px;height: 20px;"> {{user_info.my_coines}}
+		</th>
+	</tr>
+</table>
+<hr>
+<!--  -->
+<div class="row">
+
+	<div class="col-md-6">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th colspan="3">
+						Get Coins
+					</th>
+					
+				</tr>
+				<tr>
+					<th>
+						Order_Id 
+					</th>
+					<th>
+						Amount 
+					</th>
+					<th>
+						Coins 
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if order_info %}
+					{% for item in order_info %}
+					<tr>
+						<td>{{item.order_id}}</td>
+						<td>Rs.{{item.total_payment|floatformat:2}}</td>
+						<td><img src="/static/web/img/coins.png" style="width: 20px;height: 20px;"> {{item.coines}}</td>
+					</tr>
+					{% endfor %}
+				{% endif %}
+				
+			</tbody>
+		</table>
+	</div>
+
+
+
+		<div class="col-md-6">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th colspan="3">
+						Coins In Sale
+					</th>
+					
+				</tr>
+				<tr>
+					<th>
+						Product 
+					</th>
+					<th>
+						Sale Name
+					</th>
+					
+					<th>
+						Coins
+					</th>
+					<th>
+						Date
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if sale_bid_info %}
+					{% for item in sale_bid_info %}
+					<tr  {% if item.Winner_Status %} style="background-color: #edef70;" {% endif %}>
+						<td><img src="{{item.product_id.Image.url}}" style="width: 30px;height: 30px;"> </td>
+						<td>{{item.Sale}}</td>
+						<td><img src="/static/web/img/coins.png" style="width: 20px;height: 20px;"> {{item.Coins}}</td>
+						<td>{{item.Create_date}}</td>
+					</tr>
+					{% endfor %}
+				{% endif %}
+				
+			</tbody>
+		</table>
+	</div>
+
+</div>

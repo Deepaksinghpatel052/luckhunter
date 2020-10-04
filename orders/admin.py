@@ -9,7 +9,7 @@ class LsAddToCardAdmin(ImportExportModelAdmin):
 
 class LsOrderdAdmin(ImportExportModelAdmin):
     search_fields = ['order_id']
-    list_display = ('order_id', 'user','No_of_item', 'payment','payment_for', 'descount','descount_amount','total_payment','payment_status','Mail_send_status','payment_method','create_date')
+    list_display = ('order_id', 'user','No_of_item', 'payment','payment_for', 'descount','descount_amount','total_payment','payment_status','coines','Mail_send_status','payment_method','create_date')
     list_filter = ('descount','payment_status','payment_method','create_date','user',)
 
 class LsOrderItemsAdmin(ImportExportModelAdmin):

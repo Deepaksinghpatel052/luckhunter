@@ -67,7 +67,7 @@
          <div class="col-lg-4">
           <aside class="user-info-wrapper">
             <div class="user-cover" style="background-image: url({% static 'web/img/account/user-cover-img.jpg' %});">
-              <!-- <div class="info-label" data-toggle="tooltip" title="You currently have 290 Reward Points to spend"><i class="icon-award"></i>290 points</div> -->
+              <div class="info-label show_coins_history" data-toggle="tooltip" title="You currently have {{get_user_ins.my_coines}} Reward Coins."><i class="icon-award"></i>{{get_user_ins.my_coines}} Coins</div>
             </div>
             <div class="user-info">
 

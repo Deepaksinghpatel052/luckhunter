@@ -5,13 +5,39 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from paytm_payment.models import LsPayments
 from orders.models import LsOrder,LsOrderItems,LsOrderStatus
+from .models import LsPaykun
 from django.db.models import Q
 from django.contrib import messages
 from accounts.models import LsSettings
 import string
 import random
+from django.template.defaulttags import register
 from wallet.models import LsUserWallet,LsStatements
 # Create your views here.
+
+@register.filter(name='get_mid')
+def get_mid(dummt_data):
+    mid = ""
+    if LsPaykun.objects.filter(Type='paykun').exists():
+        get_datat = get_object_or_404(LsPaykun,Type='paykun')
+        mid = get_datat.merchantId
+    return mid
+
+@register.filter(name='get_token')
+def get_token(dummt_data):
+    get_token = ""
+    if LsPaykun.objects.filter(Type='paykun').exists():
+        get_datat = get_object_or_404(LsPaykun,Type='paykun')
+        get_token = get_datat.accessToken
+    return get_token
+
+@register.filter(name='get_livestatus')
+def get_livestatus(dummt_data):
+    live_status = "0"
+    if LsPaykun.objects.filter(Type='paykun').filter(LiveMood=True).exists():
+        live_status = "1"
+    return live_status
+
 
 @csrf_exempt
 def update_order_update_order(request):
@@ -39,11 +65,12 @@ def update_order_update_order(request):
             wallet_code = ''.join([random.choice(string.digits + string.ascii_letters) for i in range(0, 10)])
             # ---------------------SET commition amount
             get_data = LsSettings.objects.all()
-            set_commition = 20
+            set_commition = 3
             if get_data[0].Wallet_commition:
                 set_commition = get_data[0].Wallet_commition
             # ---------------------SET commition amount
-            wallet_admont = order_ins.total_payment - set_commition
+            get_commition_amount = (order_ins.total_payment*set_commition)/100
+            wallet_admont = order_ins.total_payment - get_commition_amount
             if LsUserWallet.objects.filter(user=order_ins.user).exists():
                 all_wallet = get_object_or_404(LsUserWallet, user=order_ins.user)
                 get_old_amount = all_wallet.wallet_admont

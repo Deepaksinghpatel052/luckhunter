@@ -116,6 +116,7 @@
   </head>
   <!-- Body-->
   <body>
+  	
    <input type="hidden" name="" id="get_page_title" value="{{page_title}}"> 
   <div class="se-pre-con"></div>
     <div class="customizer-backdrop"></div>
@@ -346,7 +347,7 @@
         <!-- Copyright-->
         <div class="row">
           <div class="col-md-6">
-            <p class="footer-copyright">© <span id="title_of_footer"></span>, LLC All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <a href="http://notageeks.com/" target="_blank"><u>Not A Geeks</u></a></p>
+            <p class="footer-copyright"><span id="title_of_footer"></span>, All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <a href="http://notageeks.com/" target="_blank"><u>Not A Geeks</u></a></p>
              <!-- <span id="domein_of_footer"></span> -->
           </div>
           <div class="col-md-6 text-right">
@@ -510,13 +511,13 @@
           <div class="modal-body">
             <input type="hidden" name="" id="order_id_set_for_payment" value="">
             <div class="row" >
-              <div class="col-md-6" id="add_paytm_button">
+              <div class="col-md-4" id="add_paytm_button">
               <button class="btn btn-primary">Pay with Paytm</button>
               </div>
-              <div class="col-md-4" style="display: none;"  id="add_paypal_button" >
+              <div class="col-md-4"  id="add_paypal_button" >
                  
                               </div>
-              <div class="col-md-6" id="add_wallet_button">
+              <div class="col-md-4" id="add_wallet_button">
                   
               </div>
             </div>
@@ -1056,8 +1057,9 @@ function click_to_close_payment_modal()
  function do_payment(order_id)
 {  
 
+
 // $("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
-$("#do_payments #add_paypal_button").html('<button class="btn btn-success" id="set_order_id_for_pay_pal" value="'+order_id+'" onclick="do_payment_by_paypal('+"'"+order_id+"'"+');">Pay with PayPal</button>');
+$("#do_payments #add_paypal_button").html('<button class="btn btn-success" id="set_order_id_for_paykun" value="'+order_id+'"  onclick="initPayment()">Pay With Paykun</button>');
   $("#do_payments #add_paytm_button").html('<a href="https://luckhunter.in/paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
   $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet" data-order_id="'+order_id+'">Pay with Wallet</button>');
 
@@ -1433,11 +1435,94 @@ if('{{user.id}}' != 'None')
 
 <!-- <script src="https://www.paypal.com/sdk/js?client-id=AXfkFF5BFzrueeHJhgKySSlp2c0rxy5yCd4NetoTmv7xb-8c35NKSjkSt03Z3ptCowzgUo5J_F_eGIEk=USD&disable-funding=credit"></script>
  -->
-<script src="https://www.paypal.com/sdk/js?client-id=ARgOFLmrHKY8xie_yXuKKbZx5m70qbwUEdAFCUvTQ7ERHhoqsiedfiSMNgtVfOmOG8anWe4K3Srx9usc&currency=USD&disable-funding=credit"></script>
+<script src="https://checkout.paykun.com/checkout/plugin/crypt/crypto-js.min.js"></script>
+<script src="https://checkout.paykun.com/checkout/js/paykun.js"></script>
 
 <script type="text/javascript">
-  function do_payment_by_paypal(order_id)
+
+console.log("{{''|get_livestatus}}");    // this code and function in created in stripe app
+var live_mood_status = false;
+if('{{''|get_livestatus}}' == '1')
+{
+  live_mood_status = true;	
+}
+
+
+  const pk = new PayKun({ merchantId : "890535565453650", accessToken: "AE56C807EAFADD795A08F9C5657A6D", isLive:true});
+function initPayment() {
+
+var order_id = $("#set_order_id_for_paykun").val();
+
+
+$.ajax({
+        url: 'https://luckhunter.in/user/orders/get-order-info',
+        data: {"order_id":order_id},     
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(response){
+        if(response.data.total_payment>0)
+        {
+var order_id_set =  order_id;
+
+        	 let order = {
+          amount: response.data.total_payment.toString(), // Amount to collect
+          orderId: order_id.toString()+"-"+(new Date).getTime(), 
+          productName: "LuckHunter Order", 
+          customerName: "{{user.first_name}}", 
+          customerEmail: "{{user.email}}", 
+          customerMobile: "",
+          currency: "INR", 
+          onSuccess: function (transactionId) {
+                        var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+                console.log(transaction)
+        swal('Payment is success, Your transaction ID : ' + transactionId, {
+                  icon: "success",
+                    }).then((value) => {
+                      
+
+                       $.ajax({
+                method:"POST",
+                url:"https://luckhunter.in/stripe-payment/update-order-status",
+                data: {"order_id":order_id_set,"trans_id":transactionId},
+                datraType:"JSON",
+                success:function(data)
+                {
+                  
+                 window.location.href = "https://luckhunter.in/user/orders"; 
+                                
+                }
+             });
+
+                  });
+
+
+              });
+          },
+          onCancelled: function (transactionId) {
+              var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+                  swal('Payment is cancelled, Your transaction ID : ' + transaction.transaction.payment_id, {
+                  icon: "error",
+                    });
+              });
+          }
+	      };
+	      //Init Paykun Payment and open checkout popup
+	      pk.init(order);
+        }
+		  }
+		});
+
+
+
+
+
+      
+  }
+
+
+  function pay_with_paykun(order_id)
   {
+  	
    
 $.ajax({
         url: 'https://luckhunter.in/user/orders/get-order-info',
@@ -1447,66 +1532,10 @@ $.ajax({
         success: function(response){
         if(response.data.total_payment>0)
         {
-            var order_id_set =  order_id;
-  var order_amount =  response.data.total_payment;
-		$("#myModal").modal('show');
-	var total = parseFloat(order_amount);
-        // Render the PayPal button into #paypal-button-container
-        paypal.Buttons({
-        	style:{
-             color:'blue',
-        	},
+            
+         initPayment();
 
-            // Set up the transaction
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: total
-                        }
-                    }]
-                });
-            },
-            // Finalize the transaction
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    // Show a success message to the buyer
-                    console.log("============");
-                    console.log(order_id);
-                    console.log(details.id);
-                    console.log("============");
-                 
-                    $.ajax({
-					   method:"POST",
-					   url:"https://luckhunter.in/stripe-payment/update-order-status",
-					   data: {"order_id":order_id_set,"trans_id":details.id},
-					   datraType:"JSON",
-					   success:function(data)
-					   {
-					   	
-							window.location.href = "https://luckhunter.in/user/orders"; 
-                            
-					   }
-					});
-
-
-                   // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                  $("#myModal").modal('hide');
-
-                  swal('Transaction completed by ' + details.payer.name.given_name + '!', {
-                  icon: "success",
-                    }).then((value) => {
-                    	
-                   window.location.href = "https://imratedme.com/dashboard/";
-                  });
-                  // 
-                });
-            }
-
-
-        }).render('#paypal-button-container');
-
-        }
+			}
         	else
         	{
         		 swal("Subscription successfull.", {
@@ -1516,8 +1545,7 @@ $.ajax({
                   });
         	}
 		}
-		});
-
+   });
 
    
   }
@@ -1547,6 +1575,41 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 <!--End of Tawk.to Script-->
+ 
+
+<script>
+	// Create Paykun object
+// // Currently Sandbox does not support JS checkout, and so you will not be able to test JS integration, 
+// // isLive can only be true for now
+//   const pk = new PayKun({ merchantId : "890535565453650", accessToken: "68008A039B199AF6C83BF408BA7ABAC7", isLive: true});
+// // Add this function in your javascript tag or your js file
+// // This method can be called to initialize payment, It can be any event User Generated Or system Generated
+//   function initPayment() {
+//       let order = {
+//           amount: "10", 
+//           orderId: "ORD" + (new Date).getTime(),
+//           productName: "Mobile", 
+//           customerName: "Test name", 
+//           customerEmail: "test@gmail.com", 
+//           customerMobile: "9999999999", 
+//           currency: "INR", 
+//           onSuccess: function (transactionId) {
+//               var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+//                   console.log(transaction);
+//                   alert('Payment is success, Your transaction ID : ' + transaction.transaction.payment_id);
+//               });
+//           },
+//           onCancelled: function (transactionId) {
+//               var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+//                   console.log(transaction);
+//                   alert('Payment is cancelled, Your transaction ID : ' + transaction.transaction.payment_id);
+//               });
+//           }
+//       };
+//       pk.init(order);
+//   }
+</script>
+
   </body>
 
 </html>

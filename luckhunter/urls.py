@@ -24,70 +24,73 @@ handler404 = views.handler404
 handler500 = views.handler500
 
 urlpatterns = [
-    path('superadmin/', admin.site.urls),
+    # path('superadmin/', admin.site.urls),
 
     path('', include(('home.urls','home'),namespace='home')),
-    path('account', include('accounts.urls')),
-    path('account/', include('accounts.urls')),
-    
-    path('accounts/', include('accounts.urls')),
+    # path('account', include('accounts.urls')),
+    # path('account/', include('accounts.urls')),
 
-    path('accounts/', include('allauth.urls')),
-    path('do-login-first', views.login_page,name="login_page"),
-    path('do-login-first/', views.login_page,name="login_page"),
+    # path('accounts/', include('accounts.urls')),
 
-    path('user/product-notification', include('wishlist.urls')),
-    path('user/product-notification/', include('wishlist.urls')),
+    # path('accounts/', include('allauth.urls')),                                    #500  error
+    # path('do-login-first', views.login_page,name="login_page"),
+    # path('do-login-first/', views.login_page,name="login_page"),
+    #
+    # path('user/product-notification', include('wishlist.urls')),
+    # path('user/product-notification/', include('wishlist.urls')),
 
-    path('user/my-profile', include('user_profile.urls')),
-    path('user/my-profile/', include('user_profile.urls')),
+    # path('user/my-profile', include('user_profile.urls')),
+    # path('user/my-profile/', include('user_profile.urls')),
+    #
+    # path('summernote/', include('django_summernote.urls')),
+    #
+    # path('user/orders', include('orders.urls')),
+    # path('user/orders/', include('orders.urls')),
+    #
+    # path('paytm-payment/', include('paytm_payment.urls')),
+    # path('stripe-payment/', include('stripe_payment.urls')),
+    #
+    # path('user/address', include('user_address.urls')),
+    # path('user/address/', include('user_address.urls')),
 
-    path('summernote/', include('django_summernote.urls')),
-
-    path('user/orders', include('orders.urls')),
-    path('user/orders/', include('orders.urls')),
-
-    path('paytm-payment/', include('paytm_payment.urls')),
-    path('stripe-payment/', include('stripe_payment.urls')),
-
-    path('user/address', include('user_address.urls')),
-    path('user/address/', include('user_address.urls')),
-
-    path('user/referral', include('referral_user.urls')),
-    path('user/referral/', include('referral_user.urls')),
-
-
-
-
-
-    path('blog', include('blog.urls')),
-    path('blog/<slug:product_slug>', include('blog.urls')),
-    path('blog/', include('blog.urls')),
-    path('user/', include('blog.urls')),
-
-    path('user/wallet', include('wallet.urls')),
-    path('user/wallet/', include('wallet.urls')),
-
-    path('user/complanes', include('queryes.urls')),
-    path('user/complanes/', include('queryes.urls')),
-
-    path('get-adds/', include('manage_adds.urls')),
-    path('get-adds', include('manage_adds.urls')),
-
-
-    path('sale/', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
-    path('sale', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
-
-    path('send-email', include('send_email.urls')),
-    path('send-email/', include('send_email.urls')),
-
-
-    path('password_reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_done.html'),name='password_reset_done'),
-    path('password_reset/', auth_login.PasswordResetView.as_view(template_name='web/forgot_password/password_reset_form.html'), name='password_reset'),
-
-    path('reset/<uidb64>/<token>/', auth_login.PasswordResetConfirmView.as_view(template_name='web/forgot_password/password_reset_confirm.html'), name='password_reset_confirm'),
-    path('reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_complete.html'),
-                       name='password_reset_complete'),
+    # path('user/referral', include('referral_user.urls')),
+    # path('user/referral/', include('referral_user.urls')),
+    #
+    #
+    #
+    #
+    #
+    # path('blog', include('blog.urls')),
+    # path('blog/<slug:product_slug>', include('blog.urls')),
+    # path('blog/', include('blog.urls')),
+    # path('user/', include('blog.urls')),
+    #
+    # path('user/wallet', include('wallet.urls')),
+    # path('user/wallet/', include('wallet.urls')),
+    #
+    # path('user/complanes', include('queryes.urls')),
+    # path('user/complanes/', include('queryes.urls')),
+    #
+    # path('get-adds/', include('manage_adds.urls')),
+    # path('get-adds', include('manage_adds.urls')),
+    #
+    #
+    # path('sale/', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
+    # path('sale', include(('manage_sale.urls','manage_sale'),namespace='manage_sale')),
+    #
+    # path('new-user-info/', include(('new_user_info.urls','new_user_info'),namespace='new_user_info')),
+    # path('new-user-info', include(('new_user_info.urls','new_user_info'),namespace='new_user_info')),
+    #
+    # path('send-email', include('send_email.urls')),
+    # path('send-email/', include('send_email.urls')),
+    #
+    #
+    # path('password_reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_done.html'),name='password_reset_done'),
+    # path('password_reset/', auth_login.PasswordResetView.as_view(template_name='web/forgot_password/password_reset_form.html'), name='password_reset'),
+    #
+    # path('reset/<uidb64>/<token>/', auth_login.PasswordResetConfirmView.as_view(template_name='web/forgot_password/password_reset_confirm.html'), name='password_reset_confirm'),
+    # path('reset/done/', auth_login.PasswordResetCompleteView.as_view(template_name='web/forgot_password/password_reset_complete.html'),
+    #                    name='password_reset_complete'),
 
 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -736,6 +736,21 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+var new_ser_info = "{% url 'new_user_info:new_user_info' %}";
+
+$.ajax({
+   method:"GET",
+   url:new_ser_info,
+   dataType:"html",
+   success:function(data)
+   {
+     console.log(data);
+   }
+});
+
+
+
    var url  = window.location.href;
 
    if(url.indexOf('refrral-code') != -1){

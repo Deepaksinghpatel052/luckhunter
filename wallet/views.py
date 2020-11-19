@@ -135,7 +135,7 @@ def create_wallet(request):
                             message = "Wallet created successfully."
                     else:
                         message = "Wallet created successfully."
-            messages.info(request, message)
+                    messages.info(request, message)
     else:
         message = "User is not login."
         messages.error(request, message)

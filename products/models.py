@@ -40,6 +40,8 @@ class LsProduct(models.Model):
     Price_pr_ticket = models.IntegerField()
     Image = models.ImageField(upload_to="product/%Y/%m/%d")
     Status = models.BooleanField(default=False)
+    Copy_Product = models.BooleanField(default=False)
+    Perrent_Product = models.CharField(max_length=120, blank=True,null=True)
     winner_status = models.BooleanField(default=False)
     Publich_date = models.DateField()
     Ticket_booking_start = models.DateField(default=django.utils.timezone.now)

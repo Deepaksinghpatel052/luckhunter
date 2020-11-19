@@ -134,7 +134,8 @@ def set_session_for_socila_login(request):
         set_social_image = extra_data["profile_image_url_https"]
     if set_social_image:
         LsUser.objects.filter(user=request.user).update(UserImage=set_social_image)
-    return redirect(settings.BASE_URL+"products")
+    # return redirect(settings.BASE_URL+"products")
+    return redirect(settings.BASE_URL+"user/wallet/create-wallet")
 
 @csrf_exempt
 def register(request):

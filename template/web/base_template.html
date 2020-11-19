@@ -11,17 +11,25 @@
     <!-- SEO Meta Tags-->
    {% load socialaccount %}
 {% providers_media_js %}
+
     <meta name="description" content="{{get_product.Meta_Description}}{{get_blog.Meta_Description}}" />
     <meta name="title" content="{{get_product.Meta_Title}}{{get_blog.Meta_Title}}" />
 
     <meta name="keywords" content="{{get_product.Meta_Keyword}}{{get_blog.Meta_Keyword}}" />
     <!-- Mobile Specific Meta Tag-->
+   <meta property="og:title" content="{{get_product.Product_name}}" />
+<meta property="og:type" content="video.movie" />
+<meta property="og:url" content="{{request.build_absolute_uri}}" />
+<meta property="og:image" content="{{get_product.Image.url}}" />
+<meta property="og:type" content="website" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
     <link rel="stylesheet" media="screen" href='{% static "web/css/vendor.min.css" %}' >
     <!-- Main Template Styles-->
     <link id="mainStyles" rel="stylesheet" media="screen" href='{% static "web/css/styles.min.css" %}' >
     <!-- Customizer Styles-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
 
     <link rel="stylesheet" media="screen" href='{% static "web/customizer/customizer.min.css" %}'>
 <link href='{% static "web/summernote/summernote.min.css" %}' rel="stylesheet">
@@ -32,11 +40,12 @@
 
 
 
+
     {% block styleseet %}
     {% endblock %}
 <style type="text/css">
   .se-pre-con {
-   display: none;
+   display: block;
   position: fixed;
   left: 0px;
   top: 0px;
@@ -672,7 +681,7 @@
 <script src='{% static "web/dist/js/lightbox.js" %}'></script>
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
 
 {% if set_login == "do_login" %}
 <script type="text/javascript">
@@ -902,7 +911,8 @@ event.preventDefault();
 $("#login_form_button").prop("disabled", true);
 
 
-var get_urls = $("#set_redirect_url").val();
+// var get_urls = $("#set_redirect_url").val();
+var get_urls = '{{BASE_URL}}user/wallet/create-wallet';
  $.ajax({
                method:"POST",
                url:base_url+"account/login-user",
@@ -1226,7 +1236,7 @@ $.ajax({
 
 
 $(document).on("click","a",function(){
- if($(this).data("toggle")!="modal" && $(this).data("set_attribute")!="modal" && $(this).attr('href') != '#' && $(this).attr('target') != '_blank' && $(this).attr('href') != 'javascript:;' && $(this).data("set_data")!="stop_loading")
+ if($(this).data("toggle")=="modal" && $(this).data("set_attribute")=="modal" && $(this).attr('href') == '#' && $(this).attr('target') == '_blank' && $(this).attr('href') == 'javascript:;' && $(this).data("set_data")=="stop_loading")
  {
 
    $(".se-pre-con").css("display","block");  
@@ -1234,6 +1244,9 @@ $(document).on("click","a",function(){
 
 });
 
+$(document).ready(function(){
+$(".se-pre-con").fadeOut(500);
+});
 </script>
 
 
@@ -1331,6 +1344,10 @@ $(document).on("click","a",function(){
 
 <script type="text/javascript">
 	
+
+
+
+
 
 $(document).on("submit","#add_email_id",function(){
    event.preventDefault();
@@ -1503,7 +1520,7 @@ var order_id_set =  order_id;
                 success:function(data)
                 {
                   
-                 window.location.href = "https://luckhunter.in/user/orders"; 
+                 window.location.href = "https://luckhunter.in/user/wallet"; 
                                 
                 }
              });

@@ -47,7 +47,7 @@ def update_order_update_order(request):
         order_ins = get_object_or_404(LsOrder, order_id=order_id)
         Currenct_Type = "INR"
         STATUS = "succeeded"
-        Payment_Method = "PayPal"
+        Payment_Method = "PayKun"
         Payment_status = "payment is done."
         if "trans_id" in request.POST:
             TXNID = request.POST["trans_id"]

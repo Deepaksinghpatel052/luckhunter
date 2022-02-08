@@ -8,11 +8,12 @@ from datetime import date
 from blog.models import LsBlog
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
-from orders.models import LsAddToCard ,LsOrderItems
+from orders.models import LsAddToCard ,LsOrderItems, LsWinners
 from django.template.defaulttags import register
 from django.template.loader import render_to_string
 from manage_adds.models import LsAdds,LsAddsCategory
 from .models import LsCMSPageContent
+import os
 # Create your views here.
 
 
@@ -61,6 +62,16 @@ def get_user_image(user_id):
     return str(user_image)
 
 
+
+
+@register.filter(name='image_checker')
+def image_checker(file_path):
+    if os.path.isfile(settings.BASE_DIR+file_path):
+        return file_path
+    else:
+        return "/static/web/img/default_product.png"
+
+
 @register.filter(name='get_page_link')
 def get_page_link(dummt_data):
     get_all_page = LsCMSPageContent.objects.all()
@@ -75,7 +86,6 @@ def login_page(request):
     if LsBanner.objects.filter(banner_pogition="Home page Silder").exists():
         get_banners = LsBanner.objects.filter(banner_pogition="Home page Silder")
     page_title = "Home"
-
     get_categoryes = {}
     if LsCategoryes.objects.filter(Status=True).exists():
         get_categoryes = LsCategoryes.objects.filter(Status=True)
@@ -100,16 +110,16 @@ def page_content(request,keyword):
     return render(request, 'web/home/page_content.html',{'get_page_content':get_page_content, 'page_title': page_titl,'BASE_URL': settings.BASE_URL,'ls_user':ls_user})
 
 @register.filter(name='get_winner_info')
-def get_winner_info(product_ins,ticket_no):
+def get_winner_info(winner_ins,ticket_no):
     # return str(product_id)+" = "+str(ticket_no)
     get_winner_info = None
-    if LsOrderItems.objects.filter(product_id=product_ins).filter(Ticket_no=product_ins.winner_ticket).filter(Book_status=True):
-        get_winner_info = get_object_or_404(LsOrderItems,product_id=product_ins,Ticket_no=product_ins.winner_ticket,Book_status=True)
+    if LsOrderItems.objects.filter(product_id=winner_ins.product_id).filter(Ticket_no=winner_ins.winner_ticket).filter(Product_cycle=winner_ins.Product_cycle).filter(Book_status=True).exists():
+        get_winner_info = get_object_or_404(LsOrderItems,product_id=winner_ins.product_id,Ticket_no=winner_ins.winner_ticket,Product_cycle=winner_ins.Product_cycle,Book_status=True)
 
     view_blog = False
-    if LsBlog.objects.filter(Blog_Publish=True).filter(product=product_ins).exists():
+    if LsBlog.objects.filter(Blog_Publish=True).filter(product=winner_ins.product_id).exists():
         view_blog = True
-    data_content = {'BASE_URL': settings.BASE_URL,'view_blog':view_blog, "product_ins": product_ins, "ticket_no": ticket_no,"get_winner_info":get_winner_info}
+    data_content = {'BASE_URL': settings.BASE_URL,'view_blog':view_blog, "winner_ins": winner_ins, "ticket_no": ticket_no,"get_winner_info":get_winner_info}
     return render_to_string('web/home/winner_info.html', data_content)
 
 @register.filter(name='get_product_other')
@@ -127,13 +137,12 @@ def under_construction(request):
 
 def index(request):
     get_banners = {}
-    if LsBanner.objects.filter(banner_pogition="Home page Silder").exists():
-        get_banners = LsBanner.objects.filter(banner_pogition="Home page Silder").order_by('-id')
+    if LsBanner.objects.filter(banner_pogition="Home page Silder").filter(Publish=True).exists():
+        get_banners = LsBanner.objects.filter(banner_pogition="Home page Silder").filter(Publish=True).order_by('-id')
     page_title = "Home"
     get_product = {}
-    if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(winner_status=False).exists():
-        get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).order_by("Ticket_booking_start").filter(winner_status=False)[0:12]
-
+    if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).exists():
+        get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).order_by("Ticket_booking_start")[0:12]
     get_len = len(get_product) % 4
     if get_len == 0:
         get_add_length_in_grid = 0
@@ -155,11 +164,9 @@ def index(request):
     from_month = month
     to_month = month - 1
 
-
-    if LsProduct.objects.filter(winner_status=True).filter(Ticket_open_date__month__lte=from_month,Ticket_open_date__month__gte=to_month).exists():
-        get_winner_list = LsProduct.objects.filter(winner_status=True).filter(Ticket_open_date__month__lte=from_month,Ticket_open_date__month__gte=to_month).order_by("-Ticket_open_date")[0:3]
-        get_count_of_winner = len(get_winner_list)
-
+    get_winner_list = LsWinners.objects.all().order_by("-id")[0:3]
+    get_count_of_winner = len(get_winner_list)
+    print(get_winner_list)
     get_add_length = 3 - get_count_of_winner
 
     get_list_data =  [str(i) for i in range(0,get_add_length)]
@@ -167,13 +174,13 @@ def index(request):
     get_future_publich_product = None
     if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).exists():
         get_future_publich_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).order_by("Publich_date")[0:get_add_length]
-    return render(request, 'web/home/index.html',{ 'add_product_ins_in_grid':add_product_ins_in_grid, 'get_add_list_data_in_grid':get_add_list_data_in_grid,"today":date.today(),'get_future_publich_product':get_future_publich_product, 'get_winner_list':get_winner_list,"get_list_data":get_list_data, 'get_product':get_product, 'page_title':page_title, 'get_banners':get_banners, 'BASE_URL': settings.BASE_URL})
+    return render(request, 'web/home/index.html',{'get_winner_list':get_winner_list, 'add_product_ins_in_grid':add_product_ins_in_grid, 'get_add_list_data_in_grid':get_add_list_data_in_grid,"today":date.today(),'get_future_publich_product':get_future_publich_product,"get_list_data":get_list_data, 'get_product':get_product, 'page_title':page_title, 'get_banners':get_banners, 'BASE_URL': settings.BASE_URL})
 
 
 def all_products(request,slug=""):
     page_title = "Products"
     get_product = None
-
+    get_len = 0
     if slug:
         if LsCategoryes.objects.filter(Category_slug=slug).filter(Status=True).exists():
             get_cate_ins = get_object_or_404(LsCategoryes,Category_slug=slug , Status=True)
@@ -183,8 +190,8 @@ def all_products(request,slug=""):
     else:
        if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).exists():
         get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).order_by("-Ticket_booking_start")
+        get_len = len(get_product) % 4
 
-    get_len = len(get_product) % 4
     if get_len == 0:
         get_add_length_in_grid = 0
     else:
@@ -205,8 +212,7 @@ def get_categoryes(request):
     return render(request,"web/home/show_categoryes.html",{"get_categoryes":get_categoryes,'BASE_URL': settings.BASE_URL})
 
 def winners(request):
-    if LsProduct.objects.filter(winner_status=True):
-        get_winner_list = LsProduct.objects.filter(winner_status=True).order_by('-Ticket_open_date')
+    get_winner_list = LsWinners.objects.all().order_by('-id')
     page_title = "winnerr"
     get_len = len(get_winner_list) % 3
     if get_len == 0:
@@ -236,8 +242,8 @@ def product(request,slug,product_id):
             get_all_blog = LsBlog.objects.filter(Blog_Publish=True).filter(product=get_product)[0:2]
 
     get_similar_product = None
-    if LsProduct.objects.filter(Status=True).filter(Category=get_product.Category).filter(Publich_date__lte=datetime.today()).filter(winner_status=False).exists():
-        get_similar_product = LsProduct.objects.filter(Status=True).filter(Category=get_product.Category).filter(Publich_date__lte=datetime.today()).order_by("Publich_date").filter(winner_status=False)[0:12]
+    if LsProduct.objects.filter(Category=get_product.Category).filter(Publich_date__lte=datetime.today()).exists():
+        get_similar_product = LsProduct.objects.filter(Category=get_product.Category).filter(Publich_date__lte=datetime.today()).order_by("Publich_date")[0:12]
 
     get_user_ins = None
     set_wish_list_status = False
@@ -261,8 +267,8 @@ def product(request,slug,product_id):
 
     get_ticket_of_orders = ""
     get_my_booked_ticket = ""
-    if LsOrderItems.objects.filter(product_id=get_product).filter(Book_status=True).exists():
-        get_all_order_tickets = LsOrderItems.objects.filter(product_id=get_product).filter(Book_status=True)
+    if LsOrderItems.objects.filter(product_id=get_product).filter(Book_status=True).filter(Product_cycle=get_product.Product_cycle).exists():
+        get_all_order_tickets = LsOrderItems.objects.filter(product_id=get_product).filter(Book_status=True).filter(Product_cycle=get_product.Product_cycle)
         if get_all_order_tickets:
             for item in get_all_order_tickets:
                 get_ticket_of_orders +=",,"+str(item.Ticket_no)
@@ -271,8 +277,8 @@ def product(request,slug,product_id):
 
     get_winner_info = None
     get_user_info = None
-    if LsOrderItems.objects.filter(product_id=get_product).filter(Winner=True).filter(Ticket_no=get_product.winner_ticket).exists():
-        get_winner_info = get_object_or_404(LsOrderItems,product_id=get_product,Winner=True,Ticket_no=get_product.winner_ticket)
+    # if LsOrderItems.objects.filter(product_id=get_product).filter(Ticket_no=get_product.winner_ticket).exists():
+    #     get_winner_info = get_object_or_404(LsOrderItems,product_id=get_product,Ticket_no=get_product.winner_ticket)
 
     view_blog = False
     if LsBlog.objects.filter(Blog_Publish=True).filter(product=get_product).exists():
@@ -290,11 +296,11 @@ def get_item(ticket_no):
 def running_bid(request):
     page_title = "Running-bid"
     get_product = None
-    if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).filter(winner_status=False).exists():
-        get_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).order_by("Ticket_booking_start").filter(winner_status=False)
+    get_len = 0
+    if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).exists():
+        get_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).order_by("Ticket_booking_start")
+        get_len = len(get_product) % 4
 
-
-    get_len = len(get_product) % 4
     if get_len == 0:
         get_add_length_in_grid = 0
     else:
@@ -315,8 +321,8 @@ def this_month_bid(request):
     page_title = "This-Month-bid"
     today = date.today()
     month = today.month
-    if LsProduct.objects.filter(Status=True).filter(winner_status=False).filter(Ticket_open_date__month=month).exists() or LsProduct.objects.filter(Ticket_booking_start__month=month).filter(winner_status=False).filter(Status=True).exists():
-        get_product = LsProduct.objects.filter(Status=True).order_by("Ticket_booking_start").filter(winner_status=False).filter(Ticket_open_date__month=month) | LsProduct.objects.filter(Ticket_booking_start__month=month).filter(winner_status=False).filter(Status=True)
+    if LsProduct.objects.filter(Status=True).filter(Ticket_open_date__month=month).exists() or LsProduct.objects.filter(Ticket_booking_start__month=month).filter(Status=True).exists():
+        get_product = LsProduct.objects.filter(Status=True).order_by("Ticket_booking_start").filter(Ticket_open_date__month=month) | LsProduct.objects.filter(Ticket_booking_start__month=month).filter(Status=True)
 
     get_len = len(get_product) % 4
     if get_len == 0:
@@ -336,8 +342,8 @@ def this_month_bid(request):
 def upcoming_product(request):
     page_titl = "Upcoming-products"
     get_future_publich_product = None
-    if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).exists():
-        get_future_publich_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Ticket_booking_start__gte=datetime.today()).order_by("Ticket_booking_start")
+    if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__gte=datetime.today()).exists():
+        get_future_publich_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__gte=datetime.today()).order_by("Ticket_booking_start")
     if get_future_publich_product is None:
         get_future_publich_product  = ""
     get_len = len(get_future_publich_product) % 3

@@ -12,7 +12,7 @@ class LsUserAdmin(ImportExportModelAdmin):
 class LsBannerAdmin(SummernoteModelAdmin):
     summernote_fields = ('Text2',)
     search_fields = ['banner_pogition']
-    list_display = ('banner_pogition','Text1','Create_date','created_by')
+    list_display = ('banner_pogition','Text1','Create_date','created_by','Publish')
     list_filter = ('banner_pogition',)
 
 class LsSettingsAdmin(SummernoteModelAdmin):

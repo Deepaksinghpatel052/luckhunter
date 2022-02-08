@@ -57,9 +57,9 @@
             <div class="gallery-wrapper">
 <!--              <div class="gallery-item video-btn text-center"><a href="#" data-toggle="tooltip" data-type="video" data-video="&lt;div class=&quot;wrapper&quot;&gt;&lt;div class=&quot;video-wrapper&quot;&gt;&lt;iframe class=&quot;pswp__video&quot; width=&quot;960&quot; height=&quot;640&quot; src=_https_/www.youtube.com/embed/CjNjcrQZtd8_.html frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;" title="Watch video"></a></div>-->
             </div>
-{% if get_product.winner_ticket != 0  %}
-            <span class="product-badge bg-danger">Sold</span>
-        {% endif %}    
+<!--{% if get_product.winner_ticket != 0  %}-->
+<!--            <span class="product-badge bg-danger">Sold</span>-->
+<!--        {% endif %}    -->
             <div class="product-carousel owl-carousel gallery-wrapper">
 
               {% if product_image %}
@@ -120,7 +120,7 @@
               </div>
             </div>
           </div>
-          {% if get_product.winner_ticket == 0  %}
+          {% if get_product.winner_ticket != ''  %}
               
               
 
@@ -185,7 +185,7 @@
           <div class="row align-items-end pb-4">
 
             <div class="col-sm-7">
-               {% if get_product.winner_ticket == 0  %} 
+               {% if get_product.winner_ticket != ''  %}
                {% if get_product.Ticket_booking_start < today %} 
               <div class="pt-4 hidden-sm-up"></div>
               <button class="btn btn-primary btn-block m-0 add_to_card" ><i class="icon-bag"></i> Add to Cart</button>

@@ -10,7 +10,7 @@ class AddToCardSerializers(serializers.ModelSerializer):
 class LsOrderItemsSerializers(serializers.ModelSerializer):
     class Meta:
         model = LsOrderItems
-        fields = ['id', 'order_id', 'user', 'product_id', 'Ticket_no','Book_status','Winner']
+        fields = ['id', 'order_id', 'user', 'product_id','Product_cycle', 'Ticket_no','Book_status','Winner']
         depth = 2
 
 

@@ -16,6 +16,7 @@ urlpatterns= [
   path('get-order-info', views.get_order_info, name='get_order_info'),
   path('set-winner', views.set_winner, name='set_winner'),
   path('test_order', views.test_order, name='test_order'),
+  path('check-tickets/<str:order_id>/', views.check_tickets, name='check_tickets'),
 
 
 ]

@@ -38,6 +38,7 @@ class LsBanner(models.Model):
     Text2  = models.TextField(null=True, blank=True,default="")
     Create_date =models.DateTimeField(default=django.utils.timezone.now)
     created_by = models.ForeignKey(LsUser,related_name='LsBanner_create_by',  on_delete=models.SET_NULL, null=True, blank=True)
+    Publish = models.BooleanField(default=True)
     Update_date =models.DateTimeField(default=django.utils.timezone.now)
     Update_by = models.ForeignKey(LsUser,related_name='LsBanner_update_by', on_delete=models.SET_NULL, null=True, blank=True)
 

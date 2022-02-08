@@ -28,7 +28,7 @@
 <link rel="stylesheet" href='{% static "web/cropme/croppie.css" %}'  type="text/css">
 <link rel="stylesheet" href='{% static "web/dist/css/lightbox.min.css" %}'>
     <script src='{% static "web/js/modernizr.min.js" %}'></script>
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 
@@ -346,7 +346,7 @@
         <!-- Copyright-->
         <div class="row">
           <div class="col-md-6">
-            <p class="footer-copyright">© <span id="title_of_footer"></span>, LLC All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <a href="http://notageeks.com/" target="_blank"><u>Not A Geeks</u></a></p>
+            <p class="footer-copyright">© <span id="title_of_footer"></span></p>
              <!-- <span id="domein_of_footer"></span> -->
           </div>
           <div class="col-md-6 text-right">
@@ -510,26 +510,21 @@
           <div class="modal-body">
             <input type="hidden" name="" id="order_id_set_for_payment" value="">
             <div class="row" >
-              <div class="col-md-6" id="add_paytm_button">
-              <button class="btn btn-primary">Pay with Paytm</button>
+<!--              <div class="col-md-4" id="add_paytm_button">-->
+<!--              <button class="btn btn-primary">Pay with Paytm</button>-->
+<!--              </div>-->
+              <div class="col-md-12" id="add_wallet_button">
+
               </div>
-              <div class="col-md-4" style="display: none;"  id="add_paypal_button" >
+                <div class="col-md-12"  id="add_paypal_button" >
                  
                               </div>
-              <div class="col-md-6" id="add_wallet_button">
-                  
-              </div>
+
             </div>
-            <!-- <div class="row">
-              <div class="col-md-12" id="dummy_payment">
-                
-              </div>
-            </div> -->
-           
 
           </div>
           <div class="modal-footer">
-            <a href="https://luckhunter.in/"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+            <a href="#"><button class="btn btn-outline-secondary btn-sm"  onclick="click_to_close_payment_modal();" type="button">Close</button></a>
            
           </div>
         </div>
@@ -669,6 +664,7 @@
 <script src='{% static "web/summernote/summernote.min.js" %}'></script>
 <script src='{% static "web/custom.js" %}'></script>
 <script src='{% static "web/dist/js/lightbox.js" %}'></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 
@@ -706,7 +702,11 @@
     </div>
 
 
+ <!-- <div class="row">
+              <div class="col-md-12" id="dummy_payment">
 
+              </div>
+            </div> -->
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -1053,16 +1053,44 @@ function click_to_close_payment_modal()
   location.reload();
 }
 
- function do_payment(order_id)
+ function do_payment(order_id,amount)
 {  
+console.log(amount);
+https://luckhunter.in/user/orders/check-tickets/5QMNK9JDJ8/
+$.ajax({
+                url:base_url+"user/orders/check-tickets/"+order_id,
+               data:{"order_id_set":$(this).data("order_id")},
+               dataTyep:"json",
+               success:function(data){
 
-// $("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
-$("#do_payments #add_paypal_button").html('<button class="btn btn-success" id="set_order_id_for_pay_pal" value="'+order_id+'" onclick="do_payment_by_paypal('+"'"+order_id+"'"+');">Pay with PayPal</button>');
-  $("#do_payments #add_paytm_button").html('<a href="https://luckhunter.in/paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
-  $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet" data-order_id="'+order_id+'">Pay with Wallet</button>');
+               if(data.status=="1")
+               {
 
- $("#do_payments #dummy_payment").html('<button data-order_id="'+order_id+'" class="btn btn-primary btn-block order_by_dummy">Do Payment</button>');
-  $("#do_payments").modal('show');
+                  $("#do_payments #add_wallet_button").html('<h4>'+data.messge+'</h4>');
+                  $("#do_payments #add_paypal_button").html('');
+               }
+               else
+               {
+               // $("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
+                if(parseFloat(amount)>10)
+                {
+                $("#do_payments #add_paypal_button").html('<button class="btn btn-success btn-block" id="set_order_id_for_paykun" value="'+order_id+'"  onclick="initPayment()">Pay With Others</button>');
+                 }
+                  $("#do_payments #add_paytm_button").html('<a href="https://luckhunter.in/paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary ">Pay with Paytm</button></a>');
+                  $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet btn-block" data-order_id="'+order_id+'">Pay with Wallet And Get Discount</button>');
+
+                 $("#do_payments #dummy_payment").html('<button data-order_id="'+order_id+'" class="btn btn-primary btn-block order_by_dummy">Do Payment</button>');
+               }
+
+               $("#do_payments").modal('show');
+
+
+               }
+});
+
+
+
+
 } 
 
 
@@ -1159,15 +1187,16 @@ setInterval(function(){
 
 setInterval(function(){ 
 
-   //   $.ajax({
-   //          method:"POST",
-   //          url:"https://luckhunter.in/send-email",
-   //          dataTyep:"html",
-   //          success:function(data)
-   //          {
-   //            console.log(data);
-   //          }
-   // });
+console.log("gfbgfvbfggv");
+      $.ajax({
+             method:"POST",
+             url:"https://luckhunter.in/send-email",
+             dataTyep:"html",
+             success:function(data)
+             {
+               console.log(data);
+             }
+    });
 
  $(".alert").fadeOut("fast");
 
@@ -1430,6 +1459,123 @@ if('{{user.id}}' != 'None')
 
   </div>
 </div>
+
+
+  <script src="https://checkout.paykun.com/checkout/plugin/crypt/crypto-js.min.js"></script>
+<script src="https://checkout.paykun.com/checkout/js/paykun.js"></script>
+
+   <script type="text/javascript">
+
+console.log("{{''|get_livestatus}}");    // this code and function in created in stripe app
+var live_mood_status = false;
+if('{{''|get_livestatus}}' == '1')
+{
+  live_mood_status = true;
+}
+
+
+  const pk = new PayKun({ merchantId : "{{''|get_merchantId}}", accessToken: "{{''|get_accessToken}}", isLive:true});
+function initPayment() {
+var order_id = $("#set_order_id_for_paykun").val();
+
+
+$.ajax({
+        url: 'https://luckhunter.in/user/orders/get-order-info',
+        data: {"order_id":order_id},
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(response){
+        if(response.data.total_payment>0)
+        {
+var order_id_set =  order_id;
+        	 let order = {
+          amount: response.data.total_payment.toString(), // Amount to collect
+          orderId: order_id.toString()+"-"+(new Date).getTime(),
+          productName: "LuckHunter Order",
+          customerName: "{{user.first_name}}",
+          customerEmail: "{{user.email}}",
+          customerMobile: "",
+          currency: "INR",
+          onSuccess: function (transactionId) {
+                        var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+                console.log(transaction)
+        swal('Payment is success, Your transaction ID : ' + transactionId, {
+                  icon: "success",
+                    }).then((value) => {
+
+
+                       $.ajax({
+                method:"POST",
+                url:"https://luckhunter.in/stripe-payment/update-order-status",
+                data: {"order_id":order_id_set,"trans_id":transactionId},
+                datraType:"JSON",
+                success:function(data)
+                {
+
+                 window.location.href = "https://luckhunter.in/user/wallet";
+
+                }
+             });
+
+                  });
+
+
+              });
+          },
+          onCancelled: function (transactionId) {
+              var transaction = pk.getTransactionDetail(transactionId, function(transaction) {
+                  swal('Payment is cancelled, Your transaction ID : ' + transaction.transaction.payment_id, {
+                  icon: "error",
+                    });
+              });
+          }
+	      };
+	      //Init Paykun Payment and open checkout popup
+	      pk.init(order);
+        }
+		  }
+		});
+
+
+
+
+
+
+  }
+
+
+  function pay_with_paykun(order_id)
+  {
+
+
+$.ajax({
+        url: 'https://luckhunter.in/user/orders/get-order-info',
+        data: {"order_id":order_id},
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(response){
+        if(response.data.total_payment>0)
+        {
+
+         initPayment();
+
+			}
+        	else
+        	{
+        		 swal("Subscription successfull.", {
+                  icon: "success",
+                    }).then((value) => {
+                   window.location.href = "{{BASE_URL}}dashboard/";
+                  });
+        	}
+		}
+   });
+
+
+  }
+</script>
+
+
 
 <!-- <script src="https://www.paypal.com/sdk/js?client-id=AXfkFF5BFzrueeHJhgKySSlp2c0rxy5yCd4NetoTmv7xb-8c35NKSjkSt03Z3ptCowzgUo5J_F_eGIEk=USD&disable-funding=credit"></script>
  -->

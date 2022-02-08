@@ -19,10 +19,11 @@ class LsProductAdmin(SummernoteModelAdmin):
     form = LsProductForm
     search_fields = ['Product_name','Product_id']
     summernote_fields = ('description',)
-    list_display = ('Product_id','slug','Product_name','Category','ReyalPrice','No_of_ticket','Price_pr_ticket','Status','winner_status','winner_ticket','Publich_date','Ticket_open_date','UseForSale','Open_status','created_by','Update_by')
+    list_display = ('Product_id','slug','Product_name','Category','ReyalPrice','No_of_ticket','Price_pr_ticket','Status','Product_cycle','Publich_date','Ticket_open_date','UseForSale','created_by','Update_by')
     list_editabl = ['Status']
-    list_filter = ('UseForSale','Category','Publich_date','winner_status','Ticket_open_date','Open_status','created_by',)
-    readonly_fields = ["Product_id",'slug']
+    list_filter = ('UseForSale','Category','Publich_date','Ticket_open_date','created_by',)
+    readonly_fields = ["Product_id",'slug','Product_cycle']
+
 
 
     def get_form(self, request, obj=None, **kwargs):
@@ -32,6 +33,8 @@ class LsProductAdmin(SummernoteModelAdmin):
         is_superuser = request.user.is_superuser
 
         if not is_superuser:
+            form.base_fields['Price_pr_ticket'].disabled = True
+            form.base_fields['Max_Coins'].disabled = True
             form.base_fields['created_by'].disabled = True
             form.base_fields['Update_by'].disabled = True
         return form

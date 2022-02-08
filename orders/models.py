@@ -36,7 +36,7 @@ class LsOrder(models.Model):
     No_of_item = models.IntegerField(default=0)
     payment = models.FloatField(default=0)
     descount = models.BooleanField(default=False)
-    descount_amount = models.IntegerField(default=0)
+    descount_amount = models.FloatField(default=0)
     total_payment = models.FloatField(default=0)
     payment_status = models.BooleanField(default=False)
     Mail_send_status = models.BooleanField(default=False)
@@ -63,6 +63,7 @@ class LsOrderItems(models.Model):
     order_id = models.ForeignKey(LsOrder, related_name='LsOrdeerItem_order', on_delete=models.SET_NULL, null=True,blank=True)
     user = models.ForeignKey(LsUser, related_name='LsOrdeerItem_user', on_delete=models.SET_NULL, null=True,blank=True)
     product_id = models.ForeignKey(LsProduct, related_name='LsOrderItems_LsProduct', on_delete=models.SET_NULL, null=True,blank=True)
+    Product_cycle = models.IntegerField(default=0)
     Ticket_no = models.IntegerField()
     Book_status = models.BooleanField(default=False)
     Winner = models.BooleanField(default=False)
@@ -92,3 +93,22 @@ class LsUseDescount(models.Model):
 
 
 
+
+class LsWinners(models.Model):
+    product_id = models.ForeignKey(LsProduct, related_name='LsWinners_LsProduct', on_delete=models.SET_NULL,
+                                   null=True, blank=True)
+    Product_cycle = models.IntegerField(default=0)
+    order_id = models.ForeignKey(LsOrder, related_name='LsWinners_order', on_delete=models.SET_NULL, null=True,
+                                 blank=True)
+    user = models.ForeignKey(LsUser, related_name='LsWinners_user', on_delete=models.SET_NULL, null=True, blank=True)
+    winner_ticket = models.IntegerField(default=0)
+
+    create_date = models.DateTimeField(default=django.utils.timezone.now)
+
+    def __str__(self):
+        return str(self.product_id)+"("+str(self.Product_cycle)+")"+str(self.winner_ticket)
+
+    class Meta:
+        verbose_name_plural = "Ls Winners"
+
+    

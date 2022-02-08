@@ -4,6 +4,7 @@ import django
 from django.contrib.auth.models import User
 from luckhunter.utils import unique_id_generator,unique_id_generator_for_coupon_code,slug_generator_for_product,slug_generator_for_category
 from django.db.models.signals import pre_save
+from accounts.models import LsSettings
 # Create your models here.
 
 class LsCategoryes(models.Model):
@@ -37,20 +38,20 @@ class LsProduct(models.Model):
     description = models.TextField(blank=True)
     product_link = models.URLField()
     No_of_ticket = models.IntegerField()
-    Price_pr_ticket = models.IntegerField()
+    Price_pr_ticket = models.IntegerField(default=0)
     Image = models.ImageField(upload_to="product/%Y/%m/%d")
     Status = models.BooleanField(default=False)
-    winner_status = models.BooleanField(default=False)
+    # winner_status = models.BooleanField(default=False)
     Publich_date = models.DateField()
     Ticket_booking_start = models.DateField(default=django.utils.timezone.now)
     Ticket_open_date = models.DateField()
-    winner_ticket = models.IntegerField(default=0)
+    Product_cycle = models.IntegerField(default=0)
     Meta_Title = models.CharField(max_length=120, null=True,blank=True)
     Meta_Keyword = models.TextField(null=True,blank=True)
     Meta_Description = models.TextField(null=True,blank=True)
-    Open_status = models.BooleanField(default=False)
+    # Open_status = models.BooleanField(default=False)
     UseForSale = models.BooleanField(default=False)
-    SaleWinnerStatus = models.BooleanField(default=False)
+    # SaleWinnerStatus = models.BooleanField(default=False)
     Max_Coins = models.IntegerField(default=0)
     Create_date = models.DateTimeField(default=django.utils.timezone.now)
     created_by = models.ForeignKey(User, related_name='LsProduct_create_by', on_delete=models.SET_NULL, null=True,blank=True)
@@ -67,6 +68,12 @@ def pre_save_create_product_id(sender, instance, *args, **kwargs):
     if not instance.Product_id:
         instance.Product_id= unique_id_generator(instance)
 
+def pre_save_create_price_of_ticket(sender, instance, *args, **kwargs):
+    price  = (instance.ReyalPrice + (instance.ReyalPrice/2))/instance.No_of_ticket
+    instance.Price_pr_ticket = price
+    get_data = LsSettings.objects.all()
+    if get_data[0].Coines_rate:
+        instance.Max_Coins = get_data[0].Coines_rate * instance.ReyalPrice
 
 def pre_save_create_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
@@ -74,6 +81,7 @@ def pre_save_create_slug(sender, instance, *args, **kwargs):
 
 pre_save.connect(pre_save_create_product_id, sender=LsProduct)
 pre_save.connect(pre_save_create_slug, sender=LsProduct)
+pre_save.connect(pre_save_create_price_of_ticket, sender=LsProduct)
 
 class lsProductImage(models.Model):
     Product = models.ForeignKey(LsProduct, related_name='lsProductImage_create_by', on_delete=models.SET_NULL, null=True,blank=True)

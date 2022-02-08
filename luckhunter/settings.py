@@ -189,17 +189,20 @@ BASE_URL = 'https://luckhunter.in/'
 # BASE_URL = 'http://127.0.0.1:8000/'
 
 
-
-MEDIA_ROOT = MEDIA_DIR
-MEDIA_URL ='/media/'
+if DEBUG:
+    MEDIA_ROOT = MEDIA_DIR
+    MEDIA_URL ='/media/'
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtpout.secureserver.net'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'deepakpatel@digimonk.in'
+EMAIL_HOST_USER = 'no-replay@luckhunter.in'
 EMAIL_HOST_PASSWORD = 'Deepak@123'
 
 

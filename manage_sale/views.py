@@ -12,6 +12,7 @@ from django.db.models import Sum
 from django.db.models import F
 from django.template.loader import render_to_string
 from django.template.defaulttags import register
+import os
 # Create your views here.
 
 
@@ -35,12 +36,15 @@ def SetWinnersForSale(request):
         if LsUserApplayInSale.objects.filter(Sale=get_sale_ins).exists():
             get_all_bids = LsUserApplayInSale.objects.filter(Sale=get_sale_ins).order_by('-Coins')
             create_product_id_list  = []
-            for item in get_all_bids:
-                if item.product_id.id in create_product_id_list:
-                    test = ""
-                else:
-                    create_product_id_list.append(item.product_id.id)
-                    LsUserApplayInSale.objects.filter(id=item.id).update(Winner_Status=True)
+            if get_all_bids:
+                for item in get_all_bids:
+                    if item == None or item.product_id == None:
+                        test = ""
+                    elif item.product_id.id in create_product_id_list:
+                        test = ""
+                    else:
+                        create_product_id_list.append(item.product_id.id)
+                        LsUserApplayInSale.objects.filter(id=item.id).update(Winner_Status=True)
     return HttpResponse(True)
 
 @register.filter(name='get_product_coins_status')
@@ -120,7 +124,12 @@ def get_product_coin_info(request,product_id,sale_id):
         product_max_coin = get_ins.Max_Coins
         youcan_add = get_ins.Max_Coins
         product_name = get_ins.Product_name
-        Product_image = get_ins.Image.url
+
+        if os.path.isfile(settings.BASE_DIR + get_ins.Image.url):
+            Product_image = get_ins.Image.url
+        else:
+            Product_image =  "/static/web/img/default_product.png"
+
     if LsUserApplayInSale.objects.filter(product_id__Product_id=product_id).filter(Winner_Status=False).filter(Sale__id=sale_id).exists():
         get_add_coins_data = LsUserApplayInSale.objects.filter(product_id__Product_id=product_id).filter(Winner_Status=False).filter(Sale__id=sale_id).aggregate(Sum('Coins'))
         submited_coins = get_add_coins_data['Coins__sum']
@@ -128,15 +137,15 @@ def get_product_coin_info(request,product_id,sale_id):
     return JsonResponse({"you_have_coine": you_have_coine, "product_max_coin": product_max_coin,"youcan_add":youcan_add,'product_name':product_name,'Product_image':Product_image})
 
 def show_salse(request,slug=""):
-    get_product = None
+    get_product = ""
     if slug:
         if LsCategoryes.objects.filter(Category_slug=slug).filter(Status=True).exists():
             get_cate_ins = get_object_or_404(LsCategoryes, Category_slug=slug, Status=True)
-            if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Category=get_cate_ins).filter(UseForSale=True).filter(SaleWinnerStatus=False).exists():
-                get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Category=get_cate_ins).filter(UseForSale=True).filter(SaleWinnerStatus=False).order_by("-id")
+            if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Category=get_cate_ins).filter(UseForSale=True).exists():
+                get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(Category=get_cate_ins).filter(UseForSale=True).order_by("-id")
     else:
-        if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(UseForSale=True).filter(SaleWinnerStatus=False).exists():
-            get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(UseForSale=True).filter(SaleWinnerStatus=False).order_by(
+        if LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(UseForSale=True).exists():
+            get_product = LsProduct.objects.filter(Status=True).filter(Publich_date__lte=datetime.today()).filter(UseForSale=True).order_by(
                 "-id")
     get_len = len(get_product) % 4
     if get_len == 0:
@@ -172,5 +181,5 @@ def show_salse(request,slug=""):
             if LsAdds.objects.filter(Pogition=category).filter(Status=True).exists():
                 add_product_ins_in_grid = LsAdds.objects.filter(Pogition=category).filter(Status=True)[0:get_add_length_in_grid]
         if LsSaleInfo.objects.filter(Running_Status=True).exists():
-            next_sale = LsSaleInfo.objects.filter(Running_Status=True).first()
+            next_sale = LsSaleInfo.objects.filter(Running_Status=True).order_by("-id").first()
     return render(request, page_url,{'next_sale':next_sale, 'get_all_sale_product':get_all_sale_product,'sale_info':sale_info,'add_product_ins_in_grid':add_product_ins_in_grid,'slug':slug,'get_product':get_product, "today":date.today(),'page_title':page_title, 'BASE_URL': settings.BASE_URL})

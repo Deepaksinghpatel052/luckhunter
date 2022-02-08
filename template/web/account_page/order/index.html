@@ -155,7 +155,7 @@
                 {% if my_order_data %}
                 {% for item in my_order_data %}
 <tr>
-                  <td><a class="navi-link show_product" href="#" data-payment_status="{{item.payment_status}}"  data-payment="{{item.payment}}"  data-total_payment="{{item.total_payment}}" data-descount="{{item.descount_amount}}" data-order_id="{{item.order_id}}"><u>{{item.order_id}}</u></a></td>
+                  <td><a class="navi-link show_product" href="#" data-order_status="{{item.order_status.Status_type}}" data-payment_status="{{item.payment_status}}"  data-payment="{{item.payment}}"  data-total_payment="{{item.total_payment}}" data-descount="{{item.descount_amount}}" data-order_id="{{item.order_id}}"><u>{{item.order_id}}</u></a></td>
                   <td>{{item.create_date}}</td>
                   <td>
                   {% if item.order_status.Status_type == "Done" or item.order_status.Status_type == "add_in_wallet" or item.order_status.Status_type == "order_by_wallet" %}
@@ -171,12 +171,18 @@
                    {% if item.order_status.Status_type == "luser" %}
                   <span class="text-danger">{{item.order_status}}</span></td>
                    {% endif %}
+
+                   {% if item.order_status.Status_type == "order_cancel" %}
+                  <span class="text-danger">{{item.order_status}}</span></td>
+                   {% endif %}
                   <td><span>Rs.{{item.total_payment}}</span></td>
                   <td>
                     {% if item.payment_status %}
                     <span class="badge badge-success badge-pill">Payment Done</span>
+                    {% elif item.order_status.Status_type == "order_cancel" %}
+                      <span class="badge badge-danger badge-pill">{{item.order_status}}</span>
                     {% else %}
-                    <button type="button" onclick="do_payment('{{item.order_id}}');"  class="btn btn-primary btn-sm"> Do payment</button>
+                    <button type="button" onclick="do_payment('{{item.order_id}}','{{item.total_payment}}');"  class="btn btn-primary btn-sm"> Do payment</button>
                     {% endif %}
                   </td>
                 </tr>
@@ -247,6 +253,7 @@
 $(document).on("click",".show_product",function(){
 
   var order_id = $(this).data("order_id");
+  var order_status = $(this).data("order_status");
   var total_payment = $(this).data("total_payment");
   var payment = $(this).data("payment");
   var descount = $(this).data("descount");
@@ -291,10 +298,14 @@ $.ajax({
             }
 });
 
-var set_payment_status = '<button type="button" onclick="do_payment('+"'"+order_id+"'"+');" class="btn btn-primary btn-sm"> Do payment</button>';
+var set_payment_status = '<button type="button" onclick="do_payment('+"'"+order_id+"'"+','+"'"+payment+"'"+');" class="btn btn-primary btn-sm"> Do payment</button>';
 if(payment_status == "True")
 {
   set_payment_status = '<span class="badge badge-success badge-pill">Payment Done</span>';
+}
+if(order_status == 'order_cancel' )
+{
+ set_payment_status = '<span class="badge badge-danger badge-pill">Order is canceled.</span>';
 }
 
 $("#orderDetails #show_payment_status").html(set_payment_status);

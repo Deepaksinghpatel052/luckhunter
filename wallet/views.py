@@ -416,7 +416,8 @@ def order_by_wallet(request):
                                     for item in get_all_items:
                                         if LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
                                                 product_id=item.product_id).filter(
-                                                Book_status=True).filter(~Q(order_id=get_order_ins)).exists():
+                                                Book_status=True).filter(Product_cycle=item.product_id.Product_cycle).\
+                                                filter(~Q(order_id=get_order_ins)).exists():
                                             text = ""
                                         else:
                                             LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(

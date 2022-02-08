@@ -122,5 +122,10 @@
 {% endblock %}
 
 {% block javascript %}
-
+<script>
+    // In your Javascript (external .js resource or <script> tag)
+$(document).ready(function() {
+    $('#id_product').select2();
+});
+</script>
 {% endblock %}

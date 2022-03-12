@@ -67,11 +67,7 @@
                   </ul>
                   <div class="row">
                     <div class="col-md-4">
-                    {% if item.product.Image %}
-                    <img src='{{item.product.Image.url}}'>
-                    {% else %}
-                       <img src='{% static "web/img/blog/03.jpg" %}'>
-                    {% endif %}
+                    <img src='{{item.product.Image.url|image_checker}}'>
                     </div>
                     <div class="col-md-8">
                       <h3 class="post-title"><a href="{{BASE_URL}}blog/view-blog/{{item.id}}/{{item.slug}}">{{item.Blog_Title}} ({{item.product}})</a></h3>

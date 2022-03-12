@@ -10,8 +10,38 @@ from django.contrib import messages
 from accounts.models import LsSettings
 import string
 import random
+from django.template.defaulttags import register
 from wallet.models import LsUserWallet,LsStatements
+from .models import LsPaykun
+from orders.views import get_coines_of_order
 # Create your views here.
+
+
+@register.filter(name='get_livestatus')
+def get_livestatus(dummt_data):
+    live_status = "0"
+    if LsPaykun.objects.filter(Type='paykun').filter(LiveMood=True).exists():
+        live_status = "1"
+    return live_status
+
+@register.filter(name='get_merchantId')
+def get_merchantId(dummt_data):
+    live_status = ""
+    if LsPaykun.objects.filter(Type='paykun').filter(LiveMood=True).exists():
+        get_data = get_object_or_404(LsPaykun,Type='paykun',LiveMood=True)
+        live_status = get_data.merchantId
+    return live_status
+
+
+@register.filter(name='get_accessToken')
+def get_accessToken(dummt_data):
+    live_status = ""
+    if LsPaykun.objects.filter(Type='paykun').filter(LiveMood=True).exists():
+        get_data = get_object_or_404(LsPaykun,Type='paykun',LiveMood=True)
+        live_status = get_data.accessToken
+    return live_status
+
+
 
 @csrf_exempt
 def update_order_update_order(request):
@@ -87,13 +117,16 @@ def update_order_update_order(request):
             if LsOrderItems.objects.filter(order_id=order_ins).exists():
                 get_all_items = LsOrderItems.objects.filter(order_id=order_ins)
                 for item in get_all_items:
-                    if LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(product_id=item.product_id).filter(Book_status=True).filter(~Q(order_id=order_ins)).exists():
+                    if LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(product_id=item.product_id).\
+                            filter(Book_status=True).filter(Product_cycle=item.product_id.Product_cycle).\
+                            filter(~Q(order_id=order_ins)).exists():
                         text  = ""
                     else:
                         LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
                             product_id=item.product_id).filter(order_id=order_ins).update(Book_status=True)
                         get_status_ins = get_object_or_404(LsOrderStatus, Status_type="Done")
                         LsOrder.objects.filter(order_id=order_id).update(payment_method="Stripe", payment_status=True,order_status=get_status_ins)
+                get_coines_of_order(order_ins.order_id, request.user)
                 status = "1"
                 message = "payment done of this "+order_id+" order."
                 messages.info(request, message)

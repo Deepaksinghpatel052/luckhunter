@@ -423,7 +423,7 @@ var add_amount_in_int = parseInt($("#add_amount").val());
                         backdrop: 'static',
                         keyboard: false
                       }); 
-                    do_payment(data.data.order_id);
+                    do_payment(data.data.order_id,data.data.order_payment);
                     $("#do_payments #add_wallet_button").html('');
            }
 

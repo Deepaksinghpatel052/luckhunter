@@ -35,14 +35,7 @@
 
              <div class="row">
                <div class="col-md-4">
-               
-                 
-                {% if items.Image %}
-                <img style="height: 60px;" class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
-                {% else %}
-                <img style="height: 60px;" class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
-                {% endif %}
-                
+                <img style="height: 60px;" class="d-block w-100" src='{{items.Image.url|image_checker}}'  alt="Image">
                </div>
                <div class="col-md-8">
                  <a href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}"><h5>
@@ -63,10 +56,9 @@
                  <div class="blog-post">
                 <div class="post-body">  
                  <div class="row">
-                   
+
 {{items|get_product_other}}
 
-                   
                  </div>
                  <br>
                  <p class="card-text"><span class="badge badge-danger badge-pill">sale</span>. Ticket Cost is <span class="badge badge-success badge-pill">Rs. {{items.Price_pr_ticket}}.</span> Ticket Booking Will Start From <span class="badge badge-success badge-pill">{{items.Ticket_booking_start}}</span> and winner will announced on <span class="badge badge-success badge-pill">{{items.Ticket_open_date}}</span></p>

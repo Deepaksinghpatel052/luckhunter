@@ -1,0 +1,1147 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{page_title}} | LuckHunter
+    </title>
+ <link rel="shortcut icon" id="favicon" href="https://luckhunter.in/media/project/favicon/2020/06/14/touch-icon-iphone.png" type="image/vnd.microsoft.icon" />
+    <!-- SEO Meta Tags-->
+   {% load socialaccount %}
+{% providers_media_js %}
+    <meta name="description" content="{{get_product.Meta_Description}}" />
+    <meta name="title" content="{{get_product.Meta_Title}}" />
+
+    <meta name="keywords" content="{{get_product.Meta_Keyword}}" />
+    <!-- Mobile Specific Meta Tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
+    <link rel="stylesheet" media="screen" href='{% static "web/css/vendor.min.css" %}' >
+    <!-- Main Template Styles-->
+    <link id="mainStyles" rel="stylesheet" media="screen" href='{% static "web/css/styles.min.css" %}' >
+    <!-- Customizer Styles-->
+
+    <link rel="stylesheet" media="screen" href='{% static "web/customizer/customizer.min.css" %}'>
+<link href='{% static "web/summernote/summernote.min.css" %}' rel="stylesheet">
+<link rel="stylesheet" href='{% static "web/cropme/croppie.css" %}'  type="text/css">
+    <script src='{% static "web/js/modernizr.min.js" %}'></script>
+    {% block styleseet %}
+    {% endblock %}
+<style type="text/css">
+  .se-pre-con {
+   display: none;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 99999999999;
+  background: url({{BASE_URL}}media/loader.gif) center no-repeat rgba(0,0,0,0.5);
+}
+
+   .scrollbar_atc
+{
+  margin-top: 8px;
+  float: left;
+  height: 387px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+.force-overflow_atc
+{
+  min-height: 387px;
+}
+#wrapper_atc
+{
+
+  width: 100%;
+
+}
+</style>
+  <style>
+  .footer-new{
+  background-position: center bottom;
+    background-color: #232323;
+    background-repeat: no-repeat;
+  padding:15px 0px;
+  }
+
+  .copyright {
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 5px 0px;
+}
+
+.footer-menu {
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+}
+
+.footer-menu li {
+    list-style: none;
+    display: inline-block;
+    padding: 5px;
+}
+
+.footer-menu li a {
+    list-style: none;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0px 10px;
+}
+
+.footer-menu li a:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+  </style>
+  </head>
+  <!-- Body-->
+  <body>
+   <input type="hidden" name="" id="get_page_title" value="{{page_title}}">
+  <div class="se-pre-con"></div>
+    <div class="customizer-backdrop"></div>
+    <div class="customizer">
+<!--      <div class="customizer-toggle"><i class="icon-settings"></i></div>-->
+      <div class="customizer-body">
+        <div class="btn-group mb-4">
+          <button class="btn btn-white btn-rounded btn-block dropdown-toggle my-0" type="button" data-toggle="dropdown">Choose Template</button>
+          <div class="dropdown-menu"><a class="dropdown-item" href="http://themes.rokaux.com/unishop/v3.2.1/template-1/index.html">Template 1 (Clothing)</a><a class="dropdown-item" href="http://themes.rokaux.com/unishop/v3.2.1/template-2/index.html">Template 2 (Furniture)</a><a class="dropdown-item" href="index.html">Template 3 (Electronics)</a></div>
+        </div>
+        <div class="customizer-title">Choose color</div>
+        <div class="customizer-color-switch"><a class="active" href="#" data-color="default" style="background-color: #0055ff;"></a><a href="#" data-color="a0cd32" style="background-color: #a0cd32;"></a><a href="#" data-color="e61923" style="background-color: #e61923;"></a><a href="#" data-color="ff9900" style="background-color: #ff9900;"></a></div>
+        <div class="customizer-title">Header option</div>
+        <div class="form-group">
+          <select class="form-control form-control-rounded input-light" id="header-option">
+            <option value="sticky">Sticky</option>
+            <option value="static">Static</option>
+          </select>
+        </div>
+        <div class="customizer-title">Footer option</div>
+        <div class="form-group">
+          <select class="form-control form-control-rounded input-light" id="footer-option">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </div><a class="btn btn-primary btn-rounded btn-block margin-bottom-none" href="https://wrapbootstrap.com/theme/unishop-universal-e-commerce-template-WB0148688/?ref=rokaux">Buy Unishop</a>
+      </div>
+    </div>
+    <!-- Header-->
+    <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
+    <header class="site-header navbar-sticky">
+      <!-- Topbar-->
+      <div class="topbar d-flex justify-content-between">
+        <!-- Logo-->
+        <div class="site-branding d-flex"><a class="site-logo align-self-center" href="{{BASE_URL}}" id="show_logo_image">
+          <img src='{% static "web/img/logo/logo.png" %}'  alt="Unishop">
+        </a></div>
+        <!-- Search / Categories-->
+        <div class="search-box-wrap d-flex show_header_banner" >
+
+        </div>
+        <!-- Toolbar-->
+        <div class="toolbar d-flex">
+          <div class="toolbar-item visible-on-mobile mobile-menu-toggle"><a href="#">
+              <div><i class="icon-menu"></i><span class="text-label">Menu</span></div></a></div>
+
+
+
+
+           <div class="toolbar-item hidden-on-mobile"><a href="#" data-toggle="modal" data-target="#">
+              <div><i class="icon-user"></i><span class="text-label">Sign In / Up</span></div></a>
+            <!-- <div class="toolbar-dropdown text-center px-3">
+              <p class="text-xs mb-3 pt-2">Sign in to your account or register new one to have full control over your orders, receive bonuses and more.</p><a class="btn btn-primary btn-sm btn-block" href="#" data-toggle="modal" data-target="#modalCentered">Sign In</a>
+              <p class="text-xs text-muted mb-2">New customer?&nbsp;<a href="#" data-toggle="modal" data-target="#modalCenteredRegistration">Register</a></p>
+            </div> -->
+          </div>
+
+
+          <div class="toolbar-item"><a href="#">
+              <div><span class="cart-icon"><i class="icon-shopping-cart"></i><span class="count-label " >0</span></span><span class="text-label">Cart</span></div></a>
+
+           <!--  <div class="toolbar-dropdown cart-dropdown widget-cart hidden-on-mobile show_product_of_add_to_card">
+
+
+
+              <div class="text-right">
+                <p class="text-gray-dark py-2 mb-0 show_total_amount"></p>
+              </div>
+              <div class="d-flex">
+                <div class="pr-2 w-50"><a class="btn btn-secondary btn-sm btn-block mb-0" href="cart.html">Expand Cart</a></div>
+                <div class="pl-2 w-50"><a class="btn btn-primary btn-sm btn-block mb-0" href="checkout.html">Checkout</a></div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+          </div>
+        </div>
+        <!-- Mobile Menu-->
+        <div class="mobile-menu">
+          <!-- Search Box-->
+          <div class="mobile-search show_header_banner" style="padding-right: 10px; padding-bottom: 0px;padding-left: 10px;">
+
+          </div>
+
+          <!-- Toolbar-->
+          <div class="toolbar">
+            <div class="toolbar-item"><a href="#" data-toggle="modal" data-target="#">
+                <div><i class="icon-user"></i><span class="text-label">Sign In</span></div></a></div>
+                <div class="toolbar-item"><a href="#" data-toggle="modal" data-target="#">
+                <div><i class="icon-user"></i><span class="text-label">Sign Up</span></div></a></div>
+          </div>
+          <!-- Slideable (Mobile) Menu-->
+
+          <!-- <nav class="slideable-menu">
+            <ul class="menu" data-initial-height="385">
+              <li class="has-submenu page_Home" ><a href="{{BASE_URL}}">Home</a></li>
+            <li class="has-submenu page_Products"  data-page=""><a href="{{BASE_URL}}products">Products</a></li>
+            <li class="has-submenu page_Running"><a href="{{BASE_URL}}running-bid">Running bid</a></li>
+            <li class="has-submenu page_This_Month" ><a href="{{BASE_URL}}this-month-bid">This Month Bid</a></li>
+            <li class="has-submenu page_Winners" ><a href="{{BASE_URL}}winners">Winners</a></li>
+             {% if user.username == ""  %}
+              <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
+             {% else %}
+              <li class="has-submenu page_Account" ><a href="{{BASE_URL}}user/my-profile">Account</a></li>
+             {% endif %}
+
+
+            <li class="has-submenu page_Blog" ><a href="{{BASE_URL}}blog">Blog</a></li>
+            <li class="has-submenu page_upcoming_product" ><a href="{{BASE_URL}}upcoming-products">
+              <button type="button" class="btn btn-success btn-sm">Upcoming-Products</button>
+            </a></li>
+
+            </ul>
+          </nav> -->
+        </div>
+      </div>
+      <!-- Navbar-->
+      <div class="navbar">
+        <!-- <div class="btn-group categories-btn">
+          <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="icon-menu text-lg"></i>&nbsp;Categories</button>
+          <div class="dropdown-menu mega-dropdown">
+            <div class="row" id="show_categoryes">
+
+            </div>
+          </div>
+        </div> -->
+        <!-- Main Navigation-->
+        <!-- <nav class="site-menu">
+          <ul>
+            <li class="has-submenu page_Home" ><a href="{{BASE_URL}}">Home</a></li>
+            <li class="has-submenu page_Products"data-page=""><a href="{{BASE_URL}}products">Products</a></li>
+            <li class="has-submenu page_Running" ><a href="{{BASE_URL}}running-bid">Running bid</a></li>
+            <li class="has-submenu page_This_Month"><a href="{{BASE_URL}}this-month-bid">This Month Bid</a></li>
+            <li class="has-submenu page_Winners" ><a href="{{BASE_URL}}winners">Winners</a></li>
+             {% if user.username == ""  %}
+              <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
+             {% else %}
+              <li class="has-submenu page_Account"><a href="{{BASE_URL}}user/my-profile">Account</a></li>
+             {% endif %}
+
+
+            <li class="has-submenu page_Blog" ><a href="{{BASE_URL}}blog">Blog</a></li>
+            <li class="has-submenu page_upcoming_product"><a href="{{BASE_URL}}upcoming-products">
+              <button type="button" class="btn btn-success btn-sm">Upcoming-Products</button>
+            </a></li>
+
+          </ul>
+        </nav> -->
+        <!-- Toolbar ( Put toolbar here only if you enable sticky navbar )-->
+        <div class="toolbar">
+          <div class="toolbar-inner">
+             <div class="toolbar-item hidden-on-mobile"><a href="#" data-toggle="modal" data-target="#modalCentered">
+              <div><i class="icon-user"></i><span class="text-label">Sign In / Up</span></div></a>
+            <div class="toolbar-dropdown text-center px-3">
+              <p class="text-xs mb-3 pt-2">Sign in to your account or register new one to have full control over your orders, receive bonuses and more.</p><a class="btn btn-primary btn-sm btn-block" href="#" data-toggle="modal" data-target="#">Sign In</a>
+              <p class="text-xs text-muted mb-2">New customer?&nbsp;<a href="#" data-toggle="modal" data-target="#">Register</a></p>
+            </div>
+          </div>
+
+
+            <div class="toolbar-item"><a href="{{BASE_URL}}user/orders/my-card">
+                <div><span class="cart-icon"><i class="icon-shopping-cart"></i><span class="count-label set_count_of_add_to_card_product">3   </span></span><span class="text-label">Cart</span></div></a>
+              <!-- <div class="toolbar-dropdown cart-dropdown widget-cart show_product_of_add_to_card">
+
+
+                <div class="text-right">
+                  <p class="text-gray-dark py-2 mb-0 show_total_amount"></p>
+                </div>
+                <div class="d-flex">
+                  <div class="pr-2 w-50"><a class="btn btn-secondary btn-sm btn-block mb-0" href="cart.html">Expand Cart</a></div>
+                  <div class="pl-2 w-50"><a class="btn btn-primary btn-sm btn-block mb-0" href="checkout.html">Checkout</a></div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Page Content-->
+
+
+
+<section style="width: 100%; max-width: 98%;">
+
+    <div class="row">
+  <div class="col-md-12">
+    {% if messages %}
+                   {% for message in messages %}
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color: crimson!important">&times;</a>
+                      <strong>{{message}}</strong>
+                    </div>
+                       {% endif %}
+
+                   {% endfor %}
+               {% endif %}
+  </div>
+</div>
+
+
+<div class="row">
+                <div class="col-md-8" style="text-align:center;" >
+                    <video width="320" height="240" poster='{% static "web/img/account/constraction_image.png" %}' controls>
+                      <source src='{% static "web/videos/demo_unboxing_video.mp4" %}' type="video/mp4">
+                      Your browser does not support the video tag.
+
+                    </video>
+<!--                     <img src='{% static "web/img/account/constraction_image.png" %}' style="width: 100%; ">-->
+                </div>
+                <div class="col-md-4">
+                     <form action="" method="post">
+                                {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                            <h2><u>Product Form</u></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <lavel>Your name</lavel>
+                                {{form_data.Your_name}}
+                            </div>
+
+                            <div class="col-md-12">
+                                <lavel>Email</lavel>
+                                {{form_data.Email}}
+                            </div>
+                            <div class="col-md-12">
+                                <lavel>Contact No.</lavel>
+                                {{form_data.Contact_no}}
+                            </div>
+                            <div class="col-md-12">
+                                <lavel>Product name</lavel>
+                                {{form_data.Product_name}}
+                            </div>
+                            <div class="col-md-12">
+                                <lavel>Product URL (whereever you want to buy from.)</lavel>
+                                {{form_data.Product_URL}}
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-block" type="button"><i class="socicon-whatsapp"></i> +91700771661</button>
+
+                            </div>
+                        </div>
+                    </div>
+                     </form>
+                </div>
+            </div>
+</section>
+
+
+
+
+
+    <!-- Site Footer-->
+    <footer class="site-footer" style="background-image: url(img/footer-bg.png);">
+      <div class="container">
+        <!-- Copyright-->
+        <div class="row">
+          <div class="col-md-6">
+            <p class="footer-copyright"><span id="title_of_footer"></span>,All Rights Reserved <i class="icon-heart text-danger"></i> &nbsp; by <span id="domein_of_footer"></span></p>
+          </div>
+          <div class="col-md-6 text-right">
+            <ul class="footer-menu">
+
+
+ <li><a href="#">About Us</a></li>
+
+ <li><a href="#">Privacy Policy</a></li>
+
+ <li><a href="#">Contact Us</a></li>
+
+ <li><a href="#">Term &amp; Condition</a></li>
+
+
+
+
+
+
+            </ul>
+           <!--  <ul class="footer-menu">
+               {{"dummt_data"|get_page_link}}
+
+
+            </ul> -->
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Back To Top Button--><a class="scroll-to-top-btn" href="#"><i class="icon-chevron-up"></i></a>
+
+
+
+
+
+<!-- registration Centered Modal-->
+    <div class="modal fade" style="z-index: 99999;" id="modalCenteredRegistration" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">No Account? Register</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+
+            <h4 class="margin-bottom-1x">Registration takes less than a minute but gives you full control over your orders.</h4>
+          <form  action="#" method="post" id="sign_up_data">
+           <div class="row">
+              <div class="col-sm-6">
+              <div class="form-group">
+                <div class="form-group input-group">
+                <input class="form-control" type="text" name="first_name" required="true" placeholder="First Name" required=""><span class="input-group-addon"><i class="icon-user"></i></span>
+              </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="form-group input-group">
+                <input class="form-control" type="text" name="last_name" required="true" placeholder="Last Name" required=""><span class="input-group-addon"><i class="icon-user"></i></span>
+              </div>
+              </div>
+            </div>
+           </div>
+           <div class="row">
+             <div class="col-sm-6">
+              <div class="form-group">
+                <div class="form-group input-group">
+                <input class="form-control" type="email" name="email" required="true" placeholder="email address" required=""><span class="input-group-addon"><i class="icon-mail"></i></span>
+              </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+               <div class="form-group input-group">
+                <input class="form-control" type="number" name="phone_no" required="true" placeholder="Phone No." required=""><span class="input-group-addon"><i class="icon-phone"></i></span>
+              </div>
+              </div>
+            </div>
+           </div>
+           <div class="row">
+               <div class="col-sm-6">
+              <div class="form-group">
+                <div class="form-group input-group">
+                <input class="form-control" type="password" id="pass_1" name="password" placeholder="Password" required=""><span class="input-group-addon"><i class="icon-lock"></i></span>
+              </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+               <div class="form-group input-group">
+                <input class="form-control" type="password" id="pass_2"  name="confirm_password" placeholder="Confirm Password" required=""><span class="input-group-addon"><i class="icon-lock"></i></span>
+              </div>
+              </div>
+            </div>
+           </div>
+            <div class="row">
+              <div class="col-md-8" id="show_message"></div>
+             <div class="col-4 text-center text-sm-right">
+              <button class="btn btn-primary margin-bottom-none" id="set_sign_up_button" type="submit">Register</button>
+            </div>
+            </div>
+
+          </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="modalCentered" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Login User</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4">
+                <a class="btn btn-sm btn-block facebook-btn" href='{% provider_login_url "facebook" method="js_sdk" %}'><i class="socicon-facebook"></i>&nbsp;Facebook login</a>
+              </div>
+              <div class="col-md-4">
+                <a class="btn btn-sm btn-block twitter-btn" href='{% provider_login_url "twitter" %}'><i class="socicon-twitter"></i>&nbsp;Twitter login</a>
+              </div>
+              <div class="col-md-4">
+                <a class="btn btn-sm btn-block google-btn" href='{% provider_login_url "google" %}'><i class="socicon-googleplus"></i>&nbsp;Google+ login</a>
+              </div>
+            </div>
+            <h4 class="margin-bottom-1x">Or using form below</h4>
+            <form action="#" method="post" id="login_form">
+              <input type="hidden" name="set_redirect_url" id="set_redirect_url" value="">
+              <div class="form-group input-group">
+                <input class="form-control" type="email" placeholder="Email" name="email" required=""><span class="input-group-addon"><i class="icon-mail"></i></span>
+              </div>
+              <div class="form-group input-group">
+                <input class="form-control" type="password" name="password" placeholder="Password" required=""><span class="input-group-addon"><i class="icon-lock"></i></span>
+              </div>
+              <div class="d-flex flex-wrap justify-content-between padding-bottom-1x">
+                <a class="navi-link" href="account-password-recovery.html">Forgot password?</a>
+                <p class="text-xs text-muted mb-2">New customer?&nbsp;<a href="#" data-toggle="modal" data-target="#modalCenteredRegistration">Register</a></p>
+              </div>
+
+              <div class="row">
+                <div class="col-md-9" id="show_login_form_error"></div>
+                <div class="col-md-3">
+                  <div class="text-center text-sm-right">
+                <button class="btn btn-primary margin-bottom-none" id="login_form_button" type="submit">Login</button>
+              </div>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="do_payments" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Payments Method</h4>
+            <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="" id="order_id_set_for_payment" value="">
+            <div class="row" >
+              <div class="col-md-6" id="add_paytm_button">
+              <button class="btn btn-primary">Pay with Paytm</button>
+              </div>
+              <div class="col-md-4" style="display: none;" id="add_stripe_button">
+
+                              </div>
+              <div class="col-md-6" id="add_wallet_button">
+
+              </div>
+            </div>
+            <!-- <div class="row">
+            	<div class="col-md-12" id="dummy_payment">
+
+            	</div>
+            </div> -->
+
+
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="share_payments" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Payments Share <span id="show_amount"></span></h4>
+            <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="share_payment" id="share_payment" value="">
+            <input type="hidden" name="walet_id" id="walet_id" value="">
+            <input type="hidden" name="walet_code" id="walet_code" value="">
+            <div class="row">
+              <div class="col-md-12" id="show_message_for_share_payment"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" id="show_input_box_wallet_id"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" id="show_input_show_wallet_info"></div>
+            </div>
+             <div class="row">
+              <div class="col-md-12" id="show_input_box_wallet_code"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Vertically Centered Modal-->
+    <div class="modal fade" id="wallet_code_modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Order Id<span id="order_id_set_2"></span></h6>
+            <a href="#"><button class="close " onclick="click_to_close_payment_modal();" type="button" ><span aria-hidden="true">&times;</span></button></a>
+          </div>
+          <div class="modal-body">
+
+
+            <div class="row">
+              <div class="col-md-12" id="show_error_for_order_by_walllet_"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <form class="input-group form-group" id="order_by_my_wallet" method="get"><span class="input-group-btn">
+                  <input type="hidden" name="order_id_set" id="order_id_set" value="">
+                  <button type="submit"><i class="icon-send"></i></button></span>
+                <input class="form-control" required="" type="text" name="wallet_code" placeholder="Enter your wallet code">
+              </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div id="uploadimageModal_edit" class="modal" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Upload & Crop Image</h4>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-md-8 text-center">
+                  <div id="image_demo_edit" style="width:350px; margin-top:30px"></div>
+               </div>
+               <div class="col-md-4" style="padding-top:30px;">
+                  <br />
+                  <br />
+                  <br/>
+                  <div class="row">
+                     <div class="col-md-12 set_loader"></div>
+                  </div>
+                  <!--<button class="btn btn-success crop_image_edit">Crop Image</button>-->
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+             <button class="btn btn-success crop_image_edit">Save Image</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<form class="form-horizontal" method="POST" id="payment-form" style="display: none;">
+
+
+<input type="hidden" id="stripe_amount" name="amount" value="{{amounte_get}}" class="form-control cpy">
+<input type="hidden" id="package_id" name="order_id" value="{{packeg_id_get}}" class="form-control cpy">
+<input type="hidden" id="access_token" name="stripeToken"  class="form-control cpy">
+<input type="hidden" id="description" name="description" value="{{get_package.Package_name}}"  class="form-control cpy">
+
+
+</form>
+    <!-- Backdrop-->
+    <div class="site-backdrop"></div>
+    <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
+ <script type="text/javascript">
+   var base_url = "{{BASE_URL}}";
+ </script>
+
+    <script src='{% static "web/js/vendor.min.js" %}' ></script>
+    <script src='{% static "web/js/scripts.min.js" %}'></script>
+    <!-- Customizer scripts-->
+    <script src='{% static "web/customizer/customizer.min.js" %}'></script>
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+ <script src='{% static "web/cropme/croppie.js" %}' ></script>
+  <script src='{% static "web/cropme/croppie_user_image.js" %}' ></script>
+<script src='{% static "web/summernote/summernote.min.js" %}'></script>
+<script src='{% static "web/custom.js" %}'></script>
+{% if set_login == "do_login" %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#modalCentered").modal("show");
+  });
+</script>
+{% endif %}
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('#id_Blog_description').summernote({
+    height: 300
+  });
+});
+
+
+
+var handler = StripeCheckout.configure({
+  key: 'pk_test_tZXpspfm9G7Mp99iMRpS7qNv00gClY03dl',
+  image: '{{BASE_URL}}static/web/img/logo/logo.png',
+  locale: 'auto',
+  token: function(token,args) {
+     $(".se-pre-con").css("display","block");
+    // You can access the token ID with `token.id`.
+    $('#access_token').val(token.id);
+    $.ajax({
+      url: '{{BASE_URL}}stripe-payment/do-payments',
+      data: $('#payment-form').serialize(),
+      type: 'POST',
+      dataType: 'JSON',
+      success: function(response){
+               console.log(response);
+         // ---------------update order_status start--------
+       if(response.status == "succeeded")
+       {
+        $.ajax({
+          url: '{{BASE_URL}}stripe-payment/update-order-status',
+          data: {"order_id":response.order_id,"trans_id":response.trans_id},
+          type: 'POST',
+          dataType: 'JSON',
+          success: function(response){
+             if(response.set_root=="wallet")
+            {
+               window.location.href = "{{BASE_URL}}user/wallet";
+            }
+            else{
+              window.location.href = "{{BASE_URL}}user/orders";
+            }
+
+
+             }
+           });
+        }
+       else
+       {
+          alert("payment is not done.");
+       }
+        // ---------------update order_status END--------
+      },
+
+      error: function(error){
+        //console.log(error);
+      }
+
+    });
+
+  }
+
+});
+
+
+function do_payment_by_stripe(order_id)
+{
+      $(".se-pre-con").css("display","block");
+      $.ajax({
+        url: '{{BASE_URL}}user/orders/get-order-info',
+        data: {"order_id":order_id},
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(response){
+          console.log(response.status);
+          $(".se-pre-con").css("display","none");
+          if(response.status == "1")
+          {
+
+var amount = parseInt(response.data.total_payment)*100;
+            $("#stripe_amount").val(amount);
+            $("#package_id").val(response.data.order_id);
+            $("#description").val("Payment for "+response.data.order_id);
+                handler.open({
+                   name: "{{BASE_URL}}",
+                   description: response.data.order_id,
+                   amount:  amount,
+                   currency:'INR'
+                 });
+          }
+          else
+          {
+            alert(response.message);
+          }
+        }
+      });
+
+}
+
+
+
+
+  $(document).ready(function(){
+
+
+
+
+
+$("#login_form").submit(function(event) {
+  $(".se-pre-con").css("display","block");
+event.preventDefault();
+$("#login_form_button").prop("disabled", true);
+
+
+var get_urls = $("#set_redirect_url").val();
+ $.ajax({
+               method:"POST",
+               url:base_url+"account/login-user",
+               data:$('#login_form').serializeArray(),
+               dataTyep:"json",
+               success:function(data)
+               {
+                $(".se-pre-con").css("display","none");
+               $("#set_sign_up_button").prop("disabled", false);
+                 if(data.status=="0")
+                 {
+                    $("#show_login_form_error").html('<div class="alert alert-danger"><strong></strong>'+data.message+'</div>');
+                 }
+                 else
+                 {
+                  if(get_urls != '')
+                  {
+                    window.location.href = get_urls;
+                  }
+                  else
+                  {
+                    // window.location.href = base_url+"dashboard";
+                    window.location.href = base_url+"user/my-profile";
+
+                  }
+
+
+
+                 }
+                 $("#login_form_button").prop("disabled", false);
+                 $("#set_sign_up_button").text('Sign Up Now');
+                }
+              });
+});
+
+
+
+
+         $("#sign_up_data").submit(function(event) {
+      $(".se-pre-con").css("display","block");
+       event.preventDefault();
+       $("#set_sign_up_button").prop("disabled", true);
+
+          var pass1= $("#pass_1").val();
+          var pass2= $("#pass_2").val();
+          if(pass1 == pass2)
+           {
+             $.ajax({
+               method:"POST",
+               url:base_url+"account/register",
+               data:$('#sign_up_data').serializeArray(),
+               dataTyep:"json",
+               success:function(data)
+               {
+                $(".se-pre-con").css("display","none");
+               $("#set_sign_up_button").prop("disabled", false);
+                 if(data.status=="0")
+                 {
+                    $("#show_message").html('<div class="alert alert-danger"><strong></strong> '+data.message+'</div>');
+                 }
+                 else
+                 {
+                   $("#show_message").html('<div class="alert alert-success"><strong></strong> '+data.message+'</div>');
+
+                 }
+                }
+              });
+           }
+           else
+           {
+            $(".se-pre-con").css("display","none");
+               $("#set_sign_up_button").prop("disabled", false);
+            $("#show_message").html('<div class="alert alert-danger"><strong>Confirm password is not match.</strong></div>');
+           }
+
+
+     });
+  })
+
+
+  function create_wallet(urls,message,done,fail)
+         {
+
+         swal({
+            title: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+             window.location.href = urls;
+            } else {
+              swal(fail);
+            }
+          });
+         }
+
+
+  function remove_product(urls,message,done,fail)
+         {
+
+         swal({
+            title: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+             window.location.href = urls;
+            } else {
+              swal(fail);
+            }
+          });
+         }
+</script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+// set_count_of_add_to_card_product
+get_all_product_of_add_to_card();
+
+  });
+
+  function get_all_product_of_add_to_card()
+  {
+    var get_total_amount = 0;
+
+    $.ajax({
+              method:"POST",
+               url:"{{BASE_URL}}user/orders/get-add-to-card-product",
+               dataTyep:"json",
+               success:function(data){
+                  if(data.data)
+                  {
+                    if(data.data["0"]=="" ||  data.data["0"]==undefined)
+                    {
+                   $(".set_count_of_add_to_card_product").html('<span>0</span');
+                    }
+                    else
+                    {
+                      $(".set_count_of_add_to_card_product").html('<span>'+data.data.length+'</span');
+                    }
+
+
+                    for(var i=0; i<data.data.length; i++)
+                    {
+                       get_total_amount +=data.data[i].Product.Price_pr_ticket;
+                      // console.log(data.data[i].Ticket_no);
+                       $(".show_product_of_add_to_card").prepend('<div class="entry"><div class="entry-thumb"><a href="{{BASE_URL}}product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'"><img src="'+data.data[i].Product.Image+'" alt="Product"></a></div><div class="entry-content"><h4 class="entry-title"><a href="{{BASE_URL}}product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'">'+data.data[i].Product.Product_name+'</a></h4><span class="entry-meta">Rs. '+data.data[i].Product.Price_pr_ticket+' For '+data.data[i].Ticket_no+' </span></div><div class="entry-delete" onclick="remove_product('+"'"+'{{BASE_URL}}user/orders/remove-product/'+data.data[i].id+''+"'"+','+"'"+'Do you want to remove this product ?'+"'"+','+"'"+'Product removed from add to card.'+"'"+','+"'"+'Product not removed.'+"'"+');"><i class="icon-x"></i></div></div>');
+                    }
+                    console.log(get_total_amount);
+                    $(".show_total_amount").html('<span class="text-muted "">Subtotal:</span> &nbsp;Rs. '+get_total_amount.toString());
+                  }
+               }
+    });
+  }
+
+function click_to_close_payment_modal()
+{
+  location.reload();
+}
+
+ function do_payment(order_id)
+{
+
+$("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
+  $("#do_payments #add_paytm_button").html('<a href="{{BASE_URL}}paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
+  $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet" data-order_id="'+order_id+'">Pay with Wallet</button>');
+
+ $("#do_payments #dummy_payment").html('<button data-order_id="'+order_id+'" class="btn btn-primary btn-block order_by_dummy">Do Payment</button>');
+  $("#do_payments").modal('show');
+}
+
+
+
+$(document).on("click",".order_by_wallet",function(){
+
+var order_id = $(this).data("order_id");
+$("#wallet_code_modal #order_id_set_2").text(order_id);
+$("#wallet_code_modal #order_id_set").val(order_id);
+$("#wallet_code_modal").modal('show');
+});
+
+
+
+$(document).on("click",".order_by_dummy",function(){
+
+     $(".se-pre-con").css("display","block");
+$.ajax({
+      		   method:"POST",
+               url:base_url+"user/wallet/fake-payment",
+               data:{"order_id_set":$(this).data("order_id")},
+               dataTyep:"json",
+               success:function(data){
+                  $(".se-pre-con").css("display","none");
+                 if(data.status=="0")
+                 {
+                    swal("Cancelled", data.message, "error");
+                     // $("#show_error_for_order_by_walllet_").html('<span class="badge badge-danger badge-pill">'+data.message+'.</span>');
+                 }
+                 else
+                 {
+                 	// console.log(data);
+                     window.location.href = "{{BASE_URL}}user/orders";
+                 }
+               }
+});
+
+});
+
+
+$(document).on("submit","#order_by_my_wallet",function(){
+   event.preventDefault();
+     $(".se-pre-con").css("display","block");
+$("#show_error_for_order_by_walllet_").html('');
+$.ajax({
+      method:"POST",
+               url:base_url+"user/wallet/order-by-wallet",
+               data:$('#order_by_my_wallet').serializeArray(),
+               dataTyep:"json",
+               success:function(data){
+                  $(".se-pre-con").css("display","none");
+                 if(data.status=="0")
+                 {
+                     $("#show_error_for_order_by_walllet_").html('<span class="badge badge-danger badge-pill">'+data.message+'.</span>');
+                 }
+                 else
+                 {
+                     window.location.href = "{{BASE_URL}}user/orders";
+                 }
+               }
+});
+
+});
+
+$(document).ready(function(){
+
+
+setInterval(function(){
+
+     $.ajax({
+            method:"POST",
+            url:"{{BASE_URL}}user/orders/set-winner",
+            dataTyep:"json",
+            success:function(data)
+            {
+              console.log(data);
+            }
+   });
+
+ $(".alert").fadeOut("fast");
+
+}, 60000);
+
+setInterval(function(){
+
+     $.ajax({
+            method:"POST",
+            url:"{{BASE_URL}}send-email",
+            dataTyep:"html",
+            success:function(data)
+            {
+              console.log(data);
+            }
+   });
+
+ $(".alert").fadeOut("fast");
+
+}, 60000);
+
+
+});
+
+
+$(document).ready(function(){
+
+
+
+$.ajax({
+   method:"POST",
+   url:"{{BASE_URL}}get-adds",
+   dataType:"json",
+   success:function(data)
+   {
+
+      $(".show_header_banner").html(data.data.Description);
+
+   }
+});
+
+
+
+$.ajax({
+   method:"POST",
+   url:"{{BASE_URL}}get_categoryes",
+   dataType:"html",
+   success:function(data)
+   {
+      $("#show_categoryes").html(data);
+   }
+});
+
+});
+
+
+</script>
+
+    {% block javascript %}
+    {% endblock %}
+  </body>
+
+</html>

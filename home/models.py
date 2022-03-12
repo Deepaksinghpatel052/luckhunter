@@ -18,3 +18,17 @@ class LsCMSPageContent(models.Model):
         return self.keyword
     class Meta:
         verbose_name_plural = "Ls CMS Page Content"
+
+class lsUserProduct(models.Model):
+    Your_name = models.CharField(max_length=120)
+    Email = models.CharField(max_length=120)
+    Contact_no = models.CharField(max_length=120)
+    Product_name = models.CharField(max_length=120)
+    Product_URL = models.CharField(max_length=200)
+    Status = models.BooleanField(default=False)
+    Create_date = models.DateTimeField(default=django.utils.timezone.now)
+
+    def __str__(self):
+        return self.Product_name
+    class Meta:
+        verbose_name_plural = "ls User Product"

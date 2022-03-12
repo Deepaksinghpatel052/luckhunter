@@ -43,7 +43,7 @@
                <div class="col-md-4">
                 <div class="product-badge bg-danger">Winner</div>
                  
-                <img class="d-block w-100" style="width: 86px; height: 86px;" src="{{item.product_id.Image.url}}" alt="Image">
+                <img class="d-block w-100" style="width: 86px; height: 86px;" src="{{item.product_id.Image.url|image_checker}}" alt="Image">
                 
                </div>
                <div class="col-md-8">
@@ -65,10 +65,10 @@
                       <h6 class="card-title">
 
  {% if item.user_Info.Image %}
-               <img src='{{item.user_Info.Image.url}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
+               <img src='{{item.user_Info.Image.url|image_checker}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
             {% else %}
                {% if item.user_Info.UserImage %}
-               <img src='{{item.user_Info.UserImage}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
+               <img src='{{item.user_Info.UserImage|image_checker}}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
                {% else %}
                 <img src='{% static "web/img/account/user-ava.jpg" %}' style="width: 50px; height: 50px;"  alt="{{item.user_Info.name}}">
                 {% endif %}

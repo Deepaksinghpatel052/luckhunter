@@ -21,11 +21,32 @@ def test_email(request):
     status = send_email_for_order_booking()
     status = send_email_for_register_user()
     status = send_email_for_booking_start_notification()
-    
-    
-   
+    # status =  test_mail_sent()
     return HttpResponse("test")
 
+
+
+
+def test_mail_sent():
+    get_system_info = LsSettings.objects.all().first()
+    yourname = "Deepak"
+    item = "get_emails"
+
+    content = {'get_system_info': get_system_info, "yourname": yourname, "BASE_URL": settings.BASE_URL,
+               "get_emails": item}
+    email_content = render_to_string("email_template/email_send_for_winners.html", content)
+    msg = email.message.Message()
+    msg['Subject'] = 'Winner' + get_system_info.Title
+    msg['From'] = settings.EMAIL_HOST_USER
+    msg['To'] = "deepaksinghpatel052@gmail.com"
+    password = settings.EMAIL_HOST_PASSWORD
+    msg.add_header('Content-Type', 'text/html')
+    msg.set_payload(email_content)
+    s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+    s.starttls()
+    s.login(msg['From'], password)
+    s.sendmail(msg['From'], [msg['To']], msg.as_string())
+    return True
 
 
 def send_email_for_winner_information():
@@ -44,12 +65,15 @@ def send_email_for_winner_information():
                 msg['From'] = settings.EMAIL_HOST_USER
                 msg['To'] = item.email_id
                 password =settings.EMAIL_HOST_PASSWORD
-                msg.add_header('Content-Type', 'text/html')
-                msg.set_payload(email_content)
-                s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                s.starttls()
-                s.login(msg['From'], password)
-                s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                try:
+                    msg.add_header('Content-Type', 'text/html')
+                    msg.set_payload(email_content)
+                    s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                    s.starttls()
+                    s.login(msg['From'], password)
+                    s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                except:
+                    print("except")
             LsEmailForSend.objects.filter(id=item.id).update(Email_status=True)
             ################################################ EMAL SEND CODE END ##############
     return True
@@ -74,13 +98,16 @@ def send_email_for_order_booking():
                 msg['Subject'] = 'Order summary'
                 msg['From'] = settings.EMAIL_HOST_USER
                 msg['To'] = get_user_info.user.email
-                password = settings.EMAIL_HOST_PASSWORD
-                msg.add_header('Content-Type', 'text/html')
-                msg.set_payload(email_content)
-                s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                s.starttls()
-                s.login(msg['From'], password)
-                s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                try:
+                    password = settings.EMAIL_HOST_PASSWORD
+                    msg.add_header('Content-Type', 'text/html')
+                    msg.set_payload(email_content)
+                    s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                    s.starttls()
+                    s.login(msg['From'], password)
+                    s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                except:
+                    print("except")
             LsOrder.objects.filter(id=item.id).update(Mail_send_status=True, update_date=datetime.now())
             ################################################ EMAL SEND CODE END ##############
     return True
@@ -93,12 +120,12 @@ def send_email_for_booking_start_notification():
         if get_users:
             for user_id in get_users:
                 get_user_info = get_object_or_404(LsUser , id=user_id["user"])
-                if LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today()).filter(Product__winner_status=False).exists():
+                if LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today()).exists():
                     
                     if get_user_info.user.email == "":
                         test = ""    
                     else:
-                        get_product = LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today()).filter(Product__winner_status=False)
+                        get_product = LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today())
                         print(get_product)
                         ################################################ EMAL SEND CODE START ##############
                         content = {'get_system_info': get_system_info, "yourname": get_user_info.name,"BASE_URL": settings.BASE_URL, "get_product": get_product}
@@ -108,13 +135,16 @@ def send_email_for_booking_start_notification():
                         msg['From'] = settings.EMAIL_HOST_USER
                         msg['To'] = get_user_info.user.email
                         password = settings.EMAIL_HOST_PASSWORD
-                        msg.add_header('Content-Type', 'text/html')
-                        msg.set_payload(email_content)
-                        s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                        s.starttls()
-                        s.login(msg['From'], password)
-                        s.sendmail(msg['From'], [msg['To']], msg.as_string())
-                    LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today()).filter(Product__winner_status=False).update(Wishlist_mail_status=True,Update_date=datetime.now())
+                        try:
+                            msg.add_header('Content-Type', 'text/html')
+                            msg.set_payload(email_content)
+                            s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                            s.starttls()
+                            s.login(msg['From'], password)
+                            s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                        except:
+                            print("except")
+                    LsWishlist.objects.filter(user_id=user_id["user"]).filter(Wishlist_mail_status=False).filter(Product__Ticket_booking_start__lte=datetime.today()).update(Wishlist_mail_status=True,Update_date=datetime.now())
                     ################################################ EMAL SEND CODE END ##############
     return True
 
@@ -126,14 +156,16 @@ def send_email_for_register_user():
         today = date.today()
         month = today.month
         get_product = None
-        if LsProduct.objects.filter(Status=True).filter(winner_status=False).filter(Ticket_open_date__month=month).exists() or LsProduct.objects.filter(Ticket_booking_start__month=month).filter(winner_status=False).filter(Status=True).exists():
-            get_product = LsProduct.objects.filter(Status=True).order_by("Publich_date").filter(winner_status=False).filter(Ticket_open_date__month=month) | LsProduct.objects.filter(Ticket_booking_start__month=month).filter(winner_status=False).filter(Status=True)[0:4]
+        if LsProduct.objects.filter(Status=True).filter(Ticket_open_date__month=month).exists() or LsProduct.objects.filter(Ticket_booking_start__month=month).filter(Status=True).exists():
+            get_product = LsProduct.objects.filter(Status=True).order_by("Publich_date").filter(Ticket_open_date__month=month) | LsProduct.objects.filter(Ticket_booking_start__month=month).filter(Status=True)[0:4]
         get_system_info = LsSettings.objects.all().first()
         get_user = LsUser.objects.filter(status=True).filter(Mail_status=False)[0:2]
         for user in get_user:
-            if user.user.email == "":
+            if user.user == "" or user.user == None:
                 test = ""
-            else:    
+            elif user.user.email == "" or user.user.email == None:
+                test = ""
+            else:
                 content = {'get_system_info':get_system_info,"yourname":user.name,"BASE_URL":settings.BASE_URL,"get_product":get_product}
                 email_content = render_to_string("email_template/email_send_for_create_new_account.html",content)
                 msg = email.message.Message()
@@ -141,12 +173,15 @@ def send_email_for_register_user():
                 msg['From'] = settings.EMAIL_HOST_USER
                 msg['To'] = user.user.email
                 password = settings.EMAIL_HOST_PASSWORD
-                msg.add_header('Content-Type', 'text/html')
-                msg.set_payload(email_content)
-                s = smtplib.SMTP(settings.EMAIL_HOST , settings.EMAIL_PORT)
-                s.starttls()
-                s.login(msg['From'], password)
-                s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                try:
+                    msg.add_header('Content-Type', 'text/html')
+                    msg.set_payload(email_content)
+                    s = smtplib.SMTP(settings.EMAIL_HOST , settings.EMAIL_PORT)
+                    s.starttls()
+                    s.login(msg['From'], password)
+                    s.sendmail(msg['From'], [msg['To']], msg.as_string())
+                except:
+                    print("except")
             LsUser.objects.filter(id=user.id).update(Mail_status=True)
     ################################################ EMAL SEND CODE END ##############
     return True

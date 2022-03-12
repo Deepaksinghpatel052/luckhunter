@@ -27,22 +27,18 @@
              <div class="row">
                <div class="col-md-4">
                 <div class="product-badge bg-danger">Sold</div>
-                 {% if items.Image %}
-                <img  class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
-                {% else %}
-                <img  class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
-                {% endif %}
+                 <img  class="d-block w-100" src='{{items.product_id.Image.url|image_checker}}'  alt="Image">
                </div>
                <div class="col-md-8">
-                 <a href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}"><h5>{{items.Product_name|slice:"0:15"}}..</h5></a>
+                 <a href="{{BASE_URL}}product/{{items.product_id.slug}}/{{items.product_id.Product_id}}"><h5>{{items.id}} {{items.product_id.Product_name|slice:"0:15"}}..</h5></a>
                 <p>
-                  {{items.Ticket_open_date}}
+                  {{items.create_date}}
                   In 
-                  Rs.{{items.Price_pr_ticket}}
+                  Rs.{{items.product_id.Price_pr_ticket}}
                   </p>
                </div>
              </div>
-             {{items|get_winner_info:items.winner_ticket}}
+                {{items|get_winner_info:items.winner_ticket}}
             
   
             </div>

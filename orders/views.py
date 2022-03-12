@@ -4,7 +4,7 @@ from products.models import LsProduct,LsCoupons
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from .models import LsAddToCard,LsOrder,LsOrderItems,LsUseDescount,LsOrderStatus
+from .models import LsAddToCard,LsOrder,LsOrderItems,LsUseDescount,LsOrderStatus,LsWinners
 from .serializear import AddToCardSerializers,LsOrderItemsSerializers,LsOrderSerializers
 from products.serializear import Couponerializers
 from products.models import LsProduct
@@ -15,6 +15,7 @@ from django.db.models import F
 from django.template.defaulttags import register
 from datetime import datetime
 from django.db.models import Q
+import datetime as dt
 from datetime import date
 import random
 # Create your views here.
@@ -42,10 +43,53 @@ def get_coines_of_order(order_id,user_ins):
     return True
 
 
+
 def test_order(request):
-    order_id = "ZDLBGYD423"
-    res = get_coines_of_order(order_id,request.user)
-    return HttpResponse(res)
+    status="1"
+    messge="test"
+    order_id_set= "ML8KKD3KR4"
+
+    get_order_ins = get_object_or_404(LsOrder, order_id=order_id_set)
+    amount_after_descount = get_order_ins
+    if LsOrderItems.objects.filter(order_id=get_order_ins).exists():
+        get_all_items = LsOrderItems.objects.filter(order_id=get_order_ins)
+        for item in get_all_items:
+            print("kjdfvjhfvbfgvhb")
+            if LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
+                    product_id=item.product_id).filter(
+                Book_status=True).filter(Product_cycle=item.product_id.Product_cycle).filter(~Q(order_id=get_order_ins)).exists():
+                text = ""
+            else:
+                LsOrderItems.objects.filter(Ticket_no=item.Ticket_no).filter(
+                    product_id=item.product_id).filter(order_id=get_order_ins).update(
+                    Book_status=True)
+                get_status_ins = get_object_or_404(LsOrderStatus, Status_type="order_by_wallet")
+                LsOrder.objects.filter(order_id=get_order_ins.order_id).update(
+                    payment_status=True, descount=True,
+                    order_status=get_status_ins, total_payment=amount_after_descount,
+                    descount_amount=get_total_descount, payment_method="Wallet")
+    return JsonResponse({"status": status,"messge":messge})
+
+
+
+def check_tickets(request,order_id):
+    booked_item = []
+    status = "0"
+    messge = ""
+    order_id = order_id
+    order_items = LsOrderItems.objects.filter(order_id__order_id=order_id)
+    for item in order_items:
+        if LsOrderItems.objects.filter(product_id=item.product_id).filter(Product_cycle=item.Product_cycle).filter(
+                Ticket_no=item.Ticket_no).filter(Book_status=True).exists():
+            status = "1"
+            booked_item.append(item)
+            messge = "Some tickets No. of this order is already bought by another user, so this order is going " \
+                     "to discard."
+            if LsOrderStatus.objects.filter(Status_type='order_cancel').exists():
+                status_ins = LsOrderStatus.objects.get(Status_type='order_cancel')
+                LsOrder.objects.filter(order_id=order_id).update(order_status=status_ins)
+            break
+    return JsonResponse({"status": status, "messge": messge})
 
 
 
@@ -53,29 +97,39 @@ def test_order(request):
 def set_winner(request):
     status = "1"
     message = "done"
-    get_product = LsProduct.objects.filter(winner_status=False).filter(Status=True).filter(Ticket_open_date__lte=datetime.today())
+    get_product = LsProduct.objects.filter(Status=True).filter(Ticket_open_date__lte=datetime.today())
     order_status_for_winner = get_object_or_404(LsOrderStatus,Status_type='winner')
     order_status_for_loser = get_object_or_404(LsOrderStatus,Status_type='luser')
+
     for item in get_product:
+        order_id = None
+        user_set = None
         winner_ticket = random.randint(1,item.No_of_ticket)
-        print("winner_ticket "+str(winner_ticket))
-        LsProduct.objects.filter(id=item.id).update(winner_status=True,winner_ticket=winner_ticket)
-        if LsOrderItems.objects.filter(product_id=item).filter(Book_status=True).filter(Ticket_no=winner_ticket).exists():
-            get_data = get_object_or_404(LsOrderItems , product_id=item,Book_status=True,Ticket_no=winner_ticket)
+        if LsOrderItems.objects.filter(product_id=item).filter(Book_status=True).filter(Ticket_no=winner_ticket).filter(Product_cycle=item.Product_cycle).exists():
+            get_data = get_object_or_404(LsOrderItems , product_id=item,Book_status=True,Ticket_no=winner_ticket,Product_cycle=item.Product_cycle)
+            order_id = get_data.order_id
+            user_set = get_data.user
             email_for = "winner"
             LsOrder.objects.filter(order_id=get_data.order_id).update(order_status=order_status_for_winner)
-            get_res = LsOrderItems.objects.filter(order_id=get_data.order_id).filter(Book_status=True).filter(Ticket_no=winner_ticket).update(Winner=True,Winner_date=datetime.now())
-        else:
-            email_for = "luser"
-            if LsOrderItems.objects.filter(product_id=item).filter(Book_status=True).filter(~Q(Ticket_no=winner_ticket)).exists():
-                LsOrder.objects.filter(order_id=get_data.order_id).update(order_status=order_status_for_loser)
-        add_email = LsEmailForSend(
-            user=get_data.user,
-            email_id=get_data.user.user.username,
-            email_for=email_for,
-            product_id=item
-        )
-        add_email.save()
+            get_res = LsOrderItems.objects.filter(order_id=get_data.order_id).filter(Book_status=True).filter(Ticket_no=winner_ticket).filter(Product_cycle=item.Product_cycle).update(Winner=True,Winner_date=datetime.now())
+            add_email = LsEmailForSend(
+                user=get_data.user,
+                email_id=get_data.user.user.username,
+                email_for=email_for,
+                product_id=item
+            )
+            add_email.save()
+        if not LsWinners.objects.filter(product_id=item).filter(Product_cycle=item.Product_cycle).exists():
+            winner_save = LsWinners.objects.create(product_id=item, Product_cycle=item.Product_cycle, order_id=order_id,
+                                user=user_set, winner_ticket=winner_ticket)
+        new_product_cycle  =  item.Product_cycle+1
+        Ticket_booking_start = datetime.today() + dt.timedelta(days=2)
+        Ticket_open_date = datetime.today() + dt.timedelta(days=15)
+        LsProduct.objects.filter(id=item.id).update(Product_cycle=new_product_cycle,Ticket_booking_start=Ticket_booking_start,Ticket_open_date=Ticket_open_date)
+        # else:
+        #     email_for = "luser"
+        #     if LsOrderItems.objects.filter(product_id=item).filter(Book_status=True).filter(Product_cycle=item.Product_cycle).filter(~Q(Ticket_no=winner_ticket)).exists():
+        #         LsOrder.objects.filter(order_id=get_data.order_id).update(order_status=order_status_for_loser)
     return JsonResponse({"status": status, "message": message})
 
 @csrf_exempt
@@ -206,8 +260,8 @@ def my_card(request):
             for item in get_add_to_card_product:
                 get_total_amount +=item.Product.Price_pr_ticket
         get_similar_product = None
-        if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).filter(winner_status=False).exists():
-            get_similar_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).order_by("Publich_date").filter(winner_status=False)
+        if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).exists():
+            get_similar_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).order_by("Publich_date")
 
         return render(request, 'web/account_page/my_card/index.html',
                   {'get_similar_product':get_similar_product, 'get_total_amount':get_total_amount, 'get_add_to_card_product':get_add_to_card_product, 'get_user_ins':get_user_ins,'page_title': page_title,
@@ -287,7 +341,8 @@ def plased_order(request):
                                 order_id = add_order,
                                 user = get_user_ins,
                                 product_id = item.Product,
-                                Ticket_no = item.Ticket_no
+                                Ticket_no = item.Ticket_no,
+                                Product_cycle = item.Product.Product_cycle
                                 )
                             add_order_item.save()
                         if get_coupon_ins is not None:

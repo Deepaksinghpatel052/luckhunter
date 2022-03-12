@@ -13,6 +13,8 @@ from django.template.defaulttags import register
 from django.template.loader import render_to_string
 from manage_adds.models import LsAdds,LsAddsCategory
 from .models import LsCMSPageContent
+from .forms import lsUserProductForm
+from django.contrib import messages
 import os
 # Create your views here.
 
@@ -134,6 +136,18 @@ def get_product_other(product_ins):
 
 def under_construction(request):
     return render(request, 'web/home/under_construction.html')
+
+def form_page(request):
+    if request.method == "POST":
+        lsUserProductForm_data = lsUserProductForm(request.POST)
+        if lsUserProductForm_data.is_valid():
+            data = lsUserProductForm_data.save(commit=False)
+            data.save()
+            lsUserProductForm_data.save()
+            messages.info(request, "Your request is submitted successfully. we will contact you soon.")
+    lsUserProductForm_data = lsUserProductForm()
+    return render(request, 'web/home/request_page.html',{"form_data":lsUserProductForm_data})
+
 
 def index(request):
     get_banners = {}

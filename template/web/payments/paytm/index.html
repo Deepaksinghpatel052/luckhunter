@@ -12,7 +12,7 @@
 <body>
 <h1>Redirecting you to the merchant....</h1>
 <h2>Please do not refresh this page....</h2>
-<form action="https://securegw.paytm.in/order/process" method="post" name="paytm">
+<form action="{{ paytm_gateway_url }}" method="post" name="paytm">
     {% for key , val  in parem_dict.items %}
     <input type="hidden" name="{{key}}" value="{{val}}">
     {% endfor %}

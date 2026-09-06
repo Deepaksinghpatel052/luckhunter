@@ -114,12 +114,8 @@ def do_payments(request):
     # -----------------Stripe Payment Gateway ---------------
 
     login_data = ""
-    # key = StripeAccount_ins.STRIPE_PUBLISHABLE_KEY
-    # key = 'pk_test_51HN2PqH6hHDHhJZuKS19qsR1fITVxFrIKhpQS6jazfv7o0dvTnvMKoIkC8Vle3WPdyZTBwfJlJBzwH57QCvRaMO200QCtwtrBf'
-    key = 'pk_live_51HN2PqH6hHDHhJZuSfBhpm2U2fUuIkgaLkLHde7qRMKEvE8HSYstgHlme42PGpQYIAZNrJuqzrsgXVdC7VafKVv600CkRezgxf'
-    # key1 = StripeAccount_ins.STRIPE_SECRET_KEY
-    # key1 = 'sk_test_51HN2PqH6hHDHhJZuCta4TmpFlXZDpqRHVMyLum4kWLH94w3Ge8AqCvl7MA4uMAihIxiDjA4vz23cfPb1v2s6046d00bs2b5jwW'
-    key1 = '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'
+    key = settings.STRIPE_PUBLISHABLE_KEY
+    key1 = settings.STRIPE_SECRET_KEY
     stripe.api_key = key1
 
     # -----------------Stripe Payment Gateway code After Payment Process---------------

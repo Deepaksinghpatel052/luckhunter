@@ -25,10 +25,9 @@ class LsOrderStatus(models.Model):
     class Meta:
         verbose_name_plural = "LS Order Status"
 
-DEFAULT_EXAM_ID = 1
-if LsOrderStatus.objects.filter(Status_type="Pending").exists():
-    get_data = LsOrderStatus.objects.get(Status_type="Pending")
-    DEFAULT_EXAM_ID = get_data.id
+def get_default_order_status():
+    get_data = LsOrderStatus.objects.filter(Status_type="Pending").first()
+    return get_data.id if get_data else 1
 
 class LsOrder(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
@@ -40,7 +39,7 @@ class LsOrder(models.Model):
     total_payment = models.FloatField(default=0)
     payment_status = models.BooleanField(default=False)
     Mail_send_status = models.BooleanField(default=False)
-    order_status = models.ForeignKey(LsOrderStatus, null=True,blank=True, default=DEFAULT_EXAM_ID,on_delete=models.SET_NULL)
+    order_status = models.ForeignKey(LsOrderStatus, null=True,blank=True, default=get_default_order_status,on_delete=models.SET_NULL)
     payment_method = models.CharField(max_length=30,null=True,blank=True)
     payment_for = models.CharField(max_length=30,null=True,blank=True)
     coines = models.IntegerField(default=0)

@@ -14,10 +14,10 @@ import random
 from orders.views import get_coines_of_order
 # Create your views here.
 
-get_data = get_object_or_404(LsPaytm_credentials,Type='PayTm')
+def get_paytm_credentials():
+    return get_object_or_404(LsPaytm_credentials,Type='PayTm')
 
-# marchint_key = 'FerulJWtJQrZbgm&'
-marchint_key = get_data.marchint_key
+
 def index(request):
     return "text"
 
@@ -28,7 +28,8 @@ def send_request_to_paytm_for_get_amount(request,order_id):
    if order_id:
        if LsOrder.objects.filter(order_id=order_id).exists():
            get_order_info = get_object_or_404(LsOrder,order_id=order_id)
-           # ""
+           get_data = get_paytm_credentials()
+           marchint_key = get_data.marchint_key
            parem_dict = {
                 "MID": str(get_data.MID),
                 "ORDER_ID": str(get_order_info.order_id),
@@ -40,7 +41,7 @@ def send_request_to_paytm_for_get_amount(request,order_id):
                 "CALLBACK_URL":settings.BASE_URL+"paytm-payment/hendel-request/"
             }
            parem_dict['CHECKSUMHASH'] = checksum.generate_checksum(parem_dict,marchint_key)
-           return render(request,"web/payments/paytm/index.html",{"parem_dict":parem_dict})
+           return render(request,"web/payments/paytm/index.html",{"parem_dict":parem_dict,"paytm_gateway_url":settings.PAYTM_GATEWAY_URL})
        else:
            msg_data = "order_id in incorrect."
            messages.error(request, msg_data)
@@ -57,6 +58,7 @@ def hendel_request(request):
         response_dict[i]  = form[i]
         if i == "CHECKSUMHASH":
             checksumhash = form[i]
+    marchint_key = get_paytm_credentials().marchint_key
     verify = checksum.verify_checksum(response_dict,marchint_key,checksumhash)
     if verify:
         print(response_dict)

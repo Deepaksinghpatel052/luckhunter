@@ -2,3 +2,4 @@
 luckhunterenv/
 venv/
 media/
+.env

@@ -1,13 +1,6 @@
 import os
 
-from django.conf import settings
 from django.templatetags.static import static
-
-
-def base_url(request):
-    """Fallback BASE_URL for any view that forgets to pass it explicitly.
-    An explicit 'BASE_URL' in a view's own context still takes precedence."""
-    return {'BASE_URL': settings.BASE_URL}
 
 
 def product_placeholder(request):

@@ -106,7 +106,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'luckhunter.context_processors.base_url',
                 'luckhunter.context_processors.product_placeholder',
             ],
         },

@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <title>{{page_title}} | LuckHunter
     </title>
- <link rel="shortcut icon" id="favicon" href="{{BASE_URL}}media/project/favicon/2020/06/14/touch-icon-iphone.png" type="image/vnd.microsoft.icon" />
+ <link rel="shortcut icon" id="favicon" href="https://luckhunter.in/media/project/favicon/2020/06/14/touch-icon-iphone.png" type="image/vnd.microsoft.icon" />
     <!-- SEO Meta Tags-->
    {% load socialaccount %}
 {% providers_media_js %}
@@ -43,7 +43,7 @@
   width: 100%;
   height: 100%;
   z-index: 99999999999;
-  background: url({{BASE_URL}}media/loader.gif) center no-repeat rgba(0,0,0,0.5);
+  background: url(https://luckhunter.in/media/loader.gif) center no-repeat rgba(0,0,0,0.5);
 }
 
    .scrollbar_atc
@@ -150,7 +150,7 @@
       <!-- Topbar-->
       <div class="topbar d-flex justify-content-between">
         <!-- Logo-->
-        <div class="site-branding d-flex"><a class="site-logo align-self-center" href="{{BASE_URL}}" id="show_logo_image">
+        <div class="site-branding d-flex"><a class="site-logo align-self-center" href="https://luckhunter.in/" id="show_logo_image">
           <img src='{% static "web/img/logo/logo.png" %}'  alt="Unishop">
         </a></div>
         <!-- Search / Categories-->
@@ -174,20 +174,20 @@
             </div>
           </div>
           {% else %}
-          <div class="toolbar-item hidden-on-mobile"><a href="{{BASE_URL}}user/my-profile">
+          <div class="toolbar-item hidden-on-mobile"><a href="https://luckhunter.in/user/my-profile">
               <div>
               	<img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  >
 		
               	<span class="text-label">{{user.first_name}}</span></div></a>
             <div class="toolbar-dropdown text-center px-3">
              
-              <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="{{BASE_URL}}user/my-profile">Dasktop</a></p>
-              <p class="text-xs mb-3 pt-2"></p><a class="btn btn-primary btn-sm btn-block" href="{{BASE_URL}}account/logout" >Logout</a>
+              <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="https://luckhunter.in/user/my-profile">Dasktop</a></p>
+              <p class="text-xs mb-3 pt-2"></p><a class="btn btn-primary btn-sm btn-block" href="https://luckhunter.in/account/logout" >Logout</a>
             </div>
           </div>
           {% endif %}
 
-          <div class="toolbar-item"><a href="{{BASE_URL}}user/orders/my-card">
+          <div class="toolbar-item"><a href="https://luckhunter.in/user/orders/my-card">
               <div><span class="cart-icon"><i class="icon-shopping-cart"></i><span class="count-label set_count_of_add_to_card_product" >0</span></span><span class="text-label">Cart</span></div></a>
 
            <!--  <div class="toolbar-dropdown cart-dropdown widget-cart hidden-on-mobile show_product_of_add_to_card">
@@ -222,9 +222,9 @@
                 <div class="toolbar-item"><a href="#" data-toggle="modal" data-target="#modalCentered">
                 <div><i class="icon-user"></i><span class="text-label">Sign Up</span></div></a></div>
               {% else %}
-              <div class="toolbar-item"><a href="{{BASE_URL}}user/my-profile" >
+              <div class="toolbar-item"><a href="https://luckhunter.in/user/my-profile" >
                 <div><img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  ><span class="text-label">{{user.first_name}}</span></div></a></div>
-                <div class="toolbar-item"><a href="{{BASE_URL}}account/logout" >
+                <div class="toolbar-item"><a href="https://luckhunter.in/account/logout" >
                 <div><i class="icon-log-out"></i><span class="text-label">Logout</span></div></a></div>
                 {% endif %}
           </div>
@@ -241,13 +241,13 @@
              {% if user.username == ""  %}
               <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
              {% else %}
-              <li class="has-submenu page_Account" ><a href="{{BASE_URL}}user/my-profile">Account</a></li>
+              <li class="has-submenu page_Account" ><a href="https://luckhunter.in/user/my-profile">Account</a></li>
              {% endif %}
            
             
-            <li class="has-submenu page_Blog" ><a href="{{BASE_URL}}blog">Blog</a></li>
-            <li class="has-submenu page_Sale" ><a href="{{BASE_URL}}sale">Sale</a></li>
-            <li class="has-submenu page_upcoming_product" ><a href="{{BASE_URL}}upcoming-products">
+            <li class="has-submenu page_Blog" ><a href="https://luckhunter.in/blog">Blog</a></li>
+            <li class="has-submenu page_Sale" ><a href="https://luckhunter.in/sale">Sale</a></li>
+            <li class="has-submenu page_upcoming_product" ><a href="https://luckhunter.in/upcoming-products">
               <button type="button" class="btn btn-success btn-sm">Upcoming-Products</button>
             </a></li>
               
@@ -276,13 +276,13 @@
              {% if user.username == ""  %}
               <li class="has-submenu page_Account" ><a href="#" data-toggle="modal" data-target="#modalCentered">Account</a></li>
              {% else %}
-              <li class="has-submenu page_Account"><a href="{{BASE_URL}}user/my-profile">Account</a></li>
+              <li class="has-submenu page_Account"><a href="https://luckhunter.in/user/my-profile">Account</a></li>
              {% endif %}
            
             
-            <li class="has-submenu page_Blog" ><a href="{{BASE_URL}}blog">Blog</a></li>
-             <li class="has-submenu page_Sale" ><a href="{{BASE_URL}}sale">Sale</a></li>
-            <li class="has-submenu page_upcoming_product"><a href="{{BASE_URL}}upcoming-products">
+            <li class="has-submenu page_Blog" ><a href="https://luckhunter.in/blog">Blog</a></li>
+             <li class="has-submenu page_Sale" ><a href="https://luckhunter.in/sale">Sale</a></li>
+            <li class="has-submenu page_upcoming_product"><a href="https://luckhunter.in/upcoming-products">
               <button type="button" class="btn btn-success btn-sm">Upcoming-Products</button>
             </a></li>
             
@@ -303,21 +303,21 @@
             </div>
           </div>
           {% else %}
-          <div class="toolbar-item hidden-on-mobile"><a href="{{BASE_URL}}user/my-profile">
+          <div class="toolbar-item hidden-on-mobile"><a href="https://luckhunter.in/user/my-profile">
               <div>
 				<img src="{{user.id|get_user_image}}"  class="set_image_size_dsp"  >
 
               	<span class="text-label">{{user.first_name}}</span></div></a>
             <div class="toolbar-dropdown text-center px-3">
              
-              <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="{{BASE_URL}}user/my-profile">Dasktop</a></p>
-              <p class="text-xs mb-3 pt-2"></p><a class="btn btn-primary btn-sm btn-block" href="{{BASE_URL}}account/logout" >Logout</a>
+              <p class="text-xs text-muted mb-2">Go to ?&nbsp;<a href="https://luckhunter.in/user/my-profile">Dasktop</a></p>
+              <p class="text-xs mb-3 pt-2"></p><a class="btn btn-primary btn-sm btn-block" href="https://luckhunter.in/account/logout" >Logout</a>
             </div>
           </div>
           {% endif %}
 
                 
-            <div class="toolbar-item"><a href="{{BASE_URL}}user/orders/my-card">
+            <div class="toolbar-item"><a href="https://luckhunter.in/user/orders/my-card">
                 <div><span class="cart-icon"><i class="icon-shopping-cart"></i><span class="count-label set_count_of_add_to_card_product">3   </span></span><span class="text-label">Cart</span></div></a>
               <!-- <div class="toolbar-dropdown cart-dropdown widget-cart show_product_of_add_to_card">
              
@@ -473,7 +473,7 @@
                 <input class="form-control" type="password" name="password" placeholder="Password" required=""><span class="input-group-addon"><i class="icon-lock"></i></span>
               </div>
               <div class="d-flex flex-wrap justify-content-between padding-bottom-1x">
-                <!-- <a class="navi-link" href="{{BASE_URL}}password_reset/">Forgot password?</a> -->
+                <!-- <a class="navi-link" href="https://luckhunter.in/password_reset/">Forgot password?</a> -->
                 <p class="text-xs text-muted mb-2">New customer?&nbsp;<a href="#" data-toggle="modal" data-target="#modalCenteredRegistration">Register</a></p>
               </div>
 
@@ -529,7 +529,7 @@
 
           </div>
           <div class="modal-footer">
-            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+            <a href="https://luckhunter.in/"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
            
           </div>
         </div>
@@ -563,7 +563,7 @@
             </div> 
           </div>
           <div class="modal-footer">
-            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+            <a href="https://luckhunter.in/"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
            
           </div>
         </div>
@@ -594,10 +594,10 @@
               </form>
               </div>
             </div>
-           <a href="{{BASE_URL}}user/wallet" target="_blank" data-set_attribute="modal" >Go to wallet <img style="height: 25px; width: 25px;" src="/static/web/img/user-wallet.png" alt="deepak singh patel"></a>
+           <a href="https://luckhunter.in/user/wallet" target="_blank" data-set_attribute="modal" >Go to wallet <img style="height: 25px; width: 25px;" src="/static/web/img/user-wallet.png" alt="deepak singh patel"></a>
           </div>
           <div class="modal-footer">
-            <a href="{{BASE_URL}}"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
+            <a href="https://luckhunter.in/"><button class="btn btn-outline-secondary btn-sm" type="button">Close</button></a>
            
           </div>
         </div>
@@ -653,7 +653,7 @@
     <div class="site-backdrop"></div>
     <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
  <script type="text/javascript">
-   var base_url = "{{BASE_URL}}";
+   var base_url = "https://luckhunter.in/";
  </script>
 
 
@@ -715,7 +715,7 @@
              
          $.ajax({
              method:"GET",
-             url:"{{BASE_URL}}account/coins-history",
+             url:"https://luckhunter.in/account/coins-history",
              data:'html',
              success:function(data)
              {
@@ -741,7 +741,7 @@
     var url_split = url.split('=');
          $.ajax({
           method:"GET",
-          url:"{{BASE_URL}}set_cookes/"+url_split[1],
+          url:"https://luckhunter.in/set_cookes/"+url_split[1],
           dataType:"htnml",
           success:function(data)
           {
@@ -775,14 +775,14 @@ $(document).ready(function() {
 
 // var handler = StripeCheckout.configure({
 //   key: 'dfjkgdfhjkguiogfjknj',
-//   image: '{{BASE_URL}}static/web/img/logo/logo.png',
+//   image: 'https://luckhunter.in/static/web/img/logo/logo.png',
 //   locale: 'auto',
 //   token: function(token,args) {
 //      $(".se-pre-con").css("display","block");
 //     // You can access the token ID with `token.id`.
 //     $('#access_token').val(token.id);
 //     $.ajax({
-//       url: '{{BASE_URL}}stripe-payment/do-payments',
+//       url: 'https://luckhunter.in/stripe-payment/do-payments',
 //       data: $('#payment-form').serialize(),     
 //       type: 'POST',
 //       dataType: 'JSON',
@@ -792,17 +792,17 @@ $(document).ready(function() {
 //        if(response.status == "succeeded")
 //        {
 //         $.ajax({
-//           url: '{{BASE_URL}}stripe-payment/update-order-status',
+//           url: 'https://luckhunter.in/stripe-payment/update-order-status',
 //           data: {"order_id":response.order_id,"trans_id":response.trans_id},     
 //           type: 'POST',
 //           dataType: 'JSON',
 //           success: function(response){
 //              if(response.set_root=="wallet")
 //             {
-//                window.location.href = "{{BASE_URL}}user/wallet";
+//                window.location.href = "https://luckhunter.in/user/wallet";
 //             }
 //             else{
-//               window.location.href = "{{BASE_URL}}user/orders";
+//               window.location.href = "https://luckhunter.in/user/orders";
 //             }
 
                
@@ -841,7 +841,7 @@ function do_payment_by_stripe(order_id)
 {
       $(".se-pre-con").css("display","block");
       $.ajax({
-        url: '{{BASE_URL}}user/orders/get-order-info',
+        url: 'https://luckhunter.in/user/orders/get-order-info',
         data: {"order_id":order_id},     
         type: 'POST',
         dataType: 'JSON',
@@ -856,7 +856,7 @@ var amount = parseInt(response.data.total_payment)*100;
             $("#package_id").val(response.data.order_id);
             $("#description").val("Payment for "+response.data.order_id);
                 // handler.open({
-                //    name: "{{BASE_URL}}",
+                //    name: "https://luckhunter.in/",
                 //    description: response.data.order_id,
                 //    amount:  amount,
                 //    currency:'INR'
@@ -1020,7 +1020,7 @@ get_all_product_of_add_to_card();
 
     $.ajax({
               method:"POST",
-               url:"{{BASE_URL}}user/orders/get-add-to-card-product",
+               url:"https://luckhunter.in/user/orders/get-add-to-card-product",
                dataTyep:"json",
                success:function(data){
                   if(data.data)
@@ -1039,7 +1039,7 @@ get_all_product_of_add_to_card();
                     {
                        get_total_amount +=data.data[i].Product.Price_pr_ticket;
                       // console.log(data.data[i].Ticket_no);
-                       $(".show_product_of_add_to_card").prepend('<div class="entry"><div class="entry-thumb"><a href="{{BASE_URL}}product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'"><img src="'+data.data[i].Product.Image+'" alt="Product"></a></div><div class="entry-content"><h4 class="entry-title"><a href="{{BASE_URL}}product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'">'+data.data[i].Product.Product_name+'</a></h4><span class="entry-meta">Rs. '+data.data[i].Product.Price_pr_ticket+' For '+data.data[i].Ticket_no+' </span></div><div class="entry-delete" onclick="remove_product('+"'"+'{{BASE_URL}}user/orders/remove-product/'+data.data[i].id+''+"'"+','+"'"+'Do you want to remove this product ?'+"'"+','+"'"+'Product removed from add to card.'+"'"+','+"'"+'Product not removed.'+"'"+');"><i class="icon-x"></i></div></div>');
+                       $(".show_product_of_add_to_card").prepend('<div class="entry"><div class="entry-thumb"><a href="https://luckhunter.in/product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'"><img src="'+data.data[i].Product.Image+'" alt="Product"></a></div><div class="entry-content"><h4 class="entry-title"><a href="https://luckhunter.in/product/'+data.data[i].Product.slug+'/'+data.data[i].Product.Product_id+'">'+data.data[i].Product.Product_name+'</a></h4><span class="entry-meta">Rs. '+data.data[i].Product.Price_pr_ticket+' For '+data.data[i].Ticket_no+' </span></div><div class="entry-delete" onclick="remove_product('+"'"+'https://luckhunter.in/user/orders/remove-product/'+data.data[i].id+''+"'"+','+"'"+'Do you want to remove this product ?'+"'"+','+"'"+'Product removed from add to card.'+"'"+','+"'"+'Product not removed.'+"'"+');"><i class="icon-x"></i></div></div>');
                     }
                     console.log(get_total_amount);
                     $(".show_total_amount").html('<span class="text-muted "">Subtotal:</span> &nbsp;Rs. '+get_total_amount.toString());
@@ -1058,7 +1058,7 @@ function click_to_close_payment_modal()
 
 // $("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
 $("#do_payments #add_paypal_button").html('<button class="btn btn-success" id="set_order_id_for_pay_pal" value="'+order_id+'" onclick="do_payment_by_paypal('+"'"+order_id+"'"+');">Pay with PayPal</button>');
-  $("#do_payments #add_paytm_button").html('<a href="{{BASE_URL}}paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
+  $("#do_payments #add_paytm_button").html('<a href="https://luckhunter.in/paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
   $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet" data-order_id="'+order_id+'">Pay with Wallet</button>');
 
  $("#do_payments #dummy_payment").html('<button data-order_id="'+order_id+'" class="btn btn-primary btn-block order_by_dummy">Do Payment</button>');
@@ -1095,7 +1095,7 @@ $.ajax({
                  else
                  {
                   // console.log(data);
-                     window.location.href = "{{BASE_URL}}user/orders";
+                     window.location.href = "https://luckhunter.in/user/orders";
                  }
                }
 });
@@ -1120,7 +1120,7 @@ $.ajax({
                  }
                  else
                  {
-                     window.location.href = "{{BASE_URL}}user/orders";
+                     window.location.href = "https://luckhunter.in/user/orders";
                  }
                }
 });
@@ -1134,7 +1134,7 @@ setInterval(function(){
 
      $.ajax({
             method:"POST",
-            url:"{{BASE_URL}}user/orders/set-winner",
+            url:"https://luckhunter.in/user/orders/set-winner",
             dataTyep:"json",
             success:function(data)
             {
@@ -1145,7 +1145,7 @@ setInterval(function(){
 
  $.ajax({
             method:"GET",
-            url:"{{BASE_URL}}sale/set-winners-for-sale",
+            url:"https://luckhunter.in/sale/set-winners-for-sale",
             dataTyep:"html",
             success:function(data)
             {
@@ -1161,7 +1161,7 @@ setInterval(function(){
 
    //   $.ajax({
    //          method:"POST",
-   //          url:"{{BASE_URL}}send-email",
+   //          url:"https://luckhunter.in/send-email",
    //          dataTyep:"html",
    //          success:function(data)
    //          {
@@ -1183,7 +1183,7 @@ $(document).ready(function(){
 
 $.ajax({
    method:"POST",
-   url:"{{BASE_URL}}get-adds",
+   url:"https://luckhunter.in/get-adds",
    dataType:"json",
    success:function(data)
    {
@@ -1197,7 +1197,7 @@ $.ajax({
 
 $.ajax({
    method:"POST",
-   url:"{{BASE_URL}}get_categoryes",
+   url:"https://luckhunter.in/get_categoryes",
    dataType:"html",
    success:function(data)
    {
@@ -1244,7 +1244,7 @@ $(document).on("click","a",function(){
             	<div class="col-md-12">
             		<div class="checkbox">
 					  <label>
-	<input type="checkbox" value="" class="condition_accept"> I accept the all <a href="{{BASE_URL}}page/term-and-condition" target="_blank">Terms & Conditions.</a></label>
+	<input type="checkbox" value="" class="condition_accept"> I accept the all <a href="https://luckhunter.in/page/term-and-condition" target="_blank">Terms & Conditions.</a></label>
 					</div>
             	</div>
             </div>
@@ -1357,7 +1357,7 @@ function check_tern_and_condition(user_id)
 
   	$.ajax({
       method:"POST",
-          url:"{{BASE_URL}}account/check_condition_status",
+          url:"https://luckhunter.in/account/check_condition_status",
           data:{"user_id":user_id},
           dataType:"json",
           success:function(data)
@@ -1384,7 +1384,7 @@ $(".condition_accept").change(function(){
      	 $(".se-pre-con").css("display","block");
      	  $.ajax({
      	  method:"GET",
-          url:"{{BASE_URL}}account/update_condition_status",
+          url:"https://luckhunter.in/account/update_condition_status",
           dataType:"html",
           success:function(data)
           {
@@ -1440,7 +1440,7 @@ if('{{user.id}}' != 'None')
   {
    
 $.ajax({
-        url: '{{BASE_URL}}user/orders/get-order-info',
+        url: 'https://luckhunter.in/user/orders/get-order-info',
         data: {"order_id":order_id},     
         type: 'POST',
         dataType: 'JSON',
@@ -1478,13 +1478,13 @@ $.ajax({
                  
                     $.ajax({
 					   method:"POST",
-					   url:"{{BASE_URL}}stripe-payment/update-order-status",
+					   url:"https://luckhunter.in/stripe-payment/update-order-status",
 					   data: {"order_id":order_id_set,"trans_id":details.id},
 					   datraType:"JSON",
 					   success:function(data)
 					   {
 					   	
-							window.location.href = "{{BASE_URL}}user/orders"; 
+							window.location.href = "https://luckhunter.in/user/orders"; 
                             
 					   }
 					});

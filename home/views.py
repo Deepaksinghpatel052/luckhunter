@@ -49,7 +49,7 @@ def is_past_due(self):
 
 @register.filter(name='get_user_image')
 def get_user_image(user_id):
-    user_image = "https://luckhunter.in/static/web/img/account/user-ava.jpg"
+    user_image = f"{settings.BASE_URL}static/web/img/account/user-ava.jpg"
     name = "user"
     if LsUser.objects.filter(user__id=user_id).exists():
         get_user_info = get_object_or_404(LsUser,user__id=user_id)
@@ -289,7 +289,7 @@ def get_item(ticket_no):
 
 def running_bid(request):
     page_title = "Running-bid"
-    get_product = None
+    get_product = LsProduct.objects.none()
     if LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).filter(winner_status=False).exists():
         get_product = LsProduct.objects.filter(Status=True).filter(Ticket_booking_start__lte=datetime.today()).order_by("Ticket_booking_start").filter(winner_status=False)
 

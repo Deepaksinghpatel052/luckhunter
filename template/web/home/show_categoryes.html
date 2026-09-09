@@ -1,5 +1,5 @@
  {% if get_categoryes %}
                 {% for item in get_categoryes %}
-                 <div class="col-sm-3"><a class="d-block navi-link text-center mb-30" href="{{BASE_URL}}products/{{item.Category_slug}}"><img class="d-block" src='{{item.Image.url}}'><span class="text-gray-dark">{{item.Category_name}}</span></a></div>
+                 <div class="col-sm-3"><a class="d-block navi-link text-center mb-30" href="{{BASE_URL}}products/{{item.Category_slug}}"><img class="d-block" src='{{item.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"><span class="text-gray-dark">{{item.Category_name}}</span></a></div>
                 {% endfor %}
                 {% endif %}

@@ -49,7 +49,7 @@ def is_past_due(self):
 
 @register.filter(name='get_user_image')
 def get_user_image(user_id):
-    user_image = "https://luckhunter.in/static/web/img/account/user-ava.jpg"
+    user_image = settings.BASE_URL + "static/web/img/account/user-ava.jpg"
     name = "user"
     if LsUser.objects.filter(user__id=user_id).exists():
         get_user_info = get_object_or_404(LsUser,user__id=user_id)
@@ -123,7 +123,7 @@ def get_product_other(product_ins):
 
 
 def under_construction(request):
-    return render(request, 'web/home/under_construction.html')
+    return render(request, 'web/home/under_construction.html', {'BASE_URL': settings.BASE_URL})
 
 def index(request):
     get_banners = {}

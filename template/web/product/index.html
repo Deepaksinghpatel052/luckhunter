@@ -468,7 +468,7 @@ if(user_id=="None")
 
 $.ajax({
       method:"POST",
-          url:"https://luckhunter.in/account/check_condition_status",
+          url:"{{BASE_URL}}account/check_condition_status",
           data:{"user_id":user_id},
           dataType:"json",
           success:function(data)

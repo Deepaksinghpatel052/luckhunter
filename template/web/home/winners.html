@@ -28,9 +28,9 @@
                <div class="col-md-4">
                 <div class="product-badge bg-danger">Sold</div>
                  {% if items.Image %}
-                <img  class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
+                <img  class="d-block w-100" src='{{items.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"  alt="Image">
                 {% else %}
-                <img  class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
+                <img  class="d-block w-100" src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}'  alt="Image">
                 {% endif %}
                </div>
                <div class="col-md-8">

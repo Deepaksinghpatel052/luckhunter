@@ -68,7 +68,7 @@
                   <div class="row">
                     <div class="col-md-4">
                     {% if item.product.Image %}
-                    <img src='{{item.product.Image.url}}'>
+                    <img src='{{item.product.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';">
                     {% else %}
                        <img src='{% static "web/img/blog/03.jpg" %}'>
                     {% endif %}

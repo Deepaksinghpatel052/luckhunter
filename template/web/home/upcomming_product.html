@@ -38,9 +38,9 @@
                
                  
                 {% if items.Image %}
-                <img style="height: 60px;" class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
+                <img style="height: 60px;" class="d-block w-100" src='{{items.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"  alt="Image">
                 {% else %}
-                <img style="height: 60px;" class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
+                <img style="height: 60px;" class="d-block w-100" src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}'  alt="Image">
                 {% endif %}
                 
                </div>

@@ -58,16 +58,16 @@
                <div class="col-md-4">
                 <div class="product-badge bg-danger">Sold</div>
                  {% if items.Image %}
-                <img style="" class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
+                <img style="" class="d-block w-100" src='{{items.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"  alt="Image">
                 {% else %}
-                <img style="" class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
+                <img style="" class="d-block w-100" src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}'  alt="Image">
                 {% endif %}
                </div>
                <div class="col-md-8">
                  <a href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}"><h5>{{items.Product_name|slice:"0:15"}}..</h5></a>
                 <p>
                   {{items.Ticket_open_date}}
-                  In 
+                  In
                   Rs.{{items.Price_pr_ticket}}
                   </p>
                </div>
@@ -93,11 +93,11 @@
                
                  
                 {% if items.Image %}
-                <img  class="d-block w-100" src='{{items.Image.url}}'  alt="Image">
+                <img  class="d-block w-100" src='{{items.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"  alt="Image">
                 {% else %}
-                <img  class="d-block w-100" src='{% static "web/img/shop/categories/29.png" %}'  alt="Image">
+                <img  class="d-block w-100" src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}'  alt="Image">
                 {% endif %}
-                
+
                </div>
                <div class="col-md-8">
                  <a href="{{BASE_URL}}product/{{items.slug}}/{{items.Product_id}}"><h5>
@@ -157,7 +157,7 @@
             {% endif %}
             
 
-            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src='{{item.Image.url}}'  style="width:100%; height:215px;" alt="Product"></a>
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src='{{item.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';"  style="width:100%; height:215px;" alt="Product"></a>
             <div class="product-card-body">
               <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
               <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>

@@ -157,7 +157,7 @@
                 {% for item in get_blogs %}
 <tr>
                   <td style="width: 200px;"> 
-                    <img src='{{item.product.Image.url}}'  style="width: 100px;">
+                    <img src='{{item.product.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" style="width: 100px;">
                     
                   </td>
                   <td>

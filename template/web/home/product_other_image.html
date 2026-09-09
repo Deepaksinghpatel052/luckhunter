@@ -4,7 +4,7 @@
 {% if item.Image %}
 <div class="col-md-3">
 <img style="height: 50px;
-    width: 50px;" class="img-circle" src="{{item.Image.url}}" alt="">
+    width: 50px;" class="img-circle" src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="">
  </div>
 {% endif %}
 

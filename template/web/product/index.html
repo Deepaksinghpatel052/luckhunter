@@ -64,7 +64,7 @@
 
               {% if product_image %}
               {% for item in product_image %}
-               <div class="gallery-item" data-hash="image_{{forloop.counter}}"><a href="{{item.Image.url}}" data-set_data="stop_loading" data-size="1000x667"><img  src="{{item.Image.url}}" alt="Product"></a></div>
+               <div class="gallery-item" data-hash="image_{{forloop.counter}}"><a href="{{item.Image.url}}" data-set_data="stop_loading" data-size="1000x667"><img  src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="Product"></a></div>
               {% endfor %}
               {% endif %}
 
@@ -74,9 +74,9 @@
               {% if product_image %}
               {% for item in product_image %}
               {% if forloop.counter == 1 %}
-              <li class="active"><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" alt="Product"></a></li>
+              <li class="active"><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="Product"></a></li>
                {% else %}
-               <li class=""><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" alt="Product"></a></li>
+               <li class=""><a href="#image_{{forloop.counter}}" data-set_data="stop_loading"><img src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="Product"></a></li>
               {% endif %}
               {% endfor %}
               {% endif %}
@@ -245,7 +245,7 @@
             <div class="product-badge bg-danger">Arrival</div>
             {% endif %}
 
-            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" style="width:260px; height:215px;" alt="Product"></a>
           <div class="product-card-body">
             <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
             <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>
@@ -290,7 +290,7 @@
                   <div class="row">
                     <div class="col-md-4">
                     {% if item.product.Image %}
-                    <img src='{{item.product.Image.url}}'>
+                    <img src='{{item.product.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';">
                     {% else %}
                        <img src='{% static "web/img/blog/03.jpg" %}'>
                     {% endif %}

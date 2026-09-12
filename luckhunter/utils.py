@@ -1,6 +1,35 @@
+import os
 import random
 import string
+
+from django.templatetags.static import static
 from django.utils.text import slugify
+
+
+def get_absolute_media_url(image_field, request=None):
+    """Return an absolute URL for an ImageField, falling back to
+    PRODUCT_PLACEHOLDER_IMAGE_URL (env var) when the DB points at a file
+    that is no longer present on disk. Shared by any app's API
+    serializers that expose image fields."""
+    url = None
+    if image_field and image_field.name:
+        try:
+            if image_field.storage.exists(image_field.name):
+                url = image_field.url
+        except (ValueError, OSError):
+            url = None
+
+    if url is None:
+        placeholder = os.environ.get(
+            'PRODUCT_PLACEHOLDER_IMAGE_URL',
+            'static/product_placeholder/placeholder.png',
+        )
+        if placeholder.startswith(('http://', 'https://', '/')):
+            url = placeholder
+        else:
+            url = static(placeholder.split('static/', 1)[-1])
+
+    return request.build_absolute_uri(url) if request is not None else url
 
 def random_string_generator(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))

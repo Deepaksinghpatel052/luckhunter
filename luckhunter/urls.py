@@ -26,6 +26,8 @@ handler500 = views.handler500
 urlpatterns = [
     path('superadmin/', admin.site.urls),
 
+    path('api/', include('api.urls')),
+
     path('', include(('home.urls','home'),namespace='home')),
     path('account', include('accounts.urls')),
     path('account/', include('accounts.urls')),

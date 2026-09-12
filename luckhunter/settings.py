@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'user_profile',
     'orders',
     'paytm_payment',
+    'payment',
     'stripe_payment',
     'user_address',
     'emails',
@@ -237,6 +238,10 @@ PAYTM_GATEWAY_URL = os.environ.get(
     'PAYTM_GATEWAY_URL',
     'https://securegw-stage.paytm.in/order/process' if DEBUG else 'https://securegw.paytm.in/order/process'
 )
+
+
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', "") 
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', "")
 
 
 SITE_ID = os.environ.get('SITE_ID', 2)

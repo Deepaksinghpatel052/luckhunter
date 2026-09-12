@@ -480,8 +480,8 @@
           <div class="modal-body">
             <input type="hidden" name="" id="order_id_set_for_payment" value="">
             <div class="row" >
-              <div class="col-md-6" id="add_paytm_button">
-              <button class="btn btn-primary">Pay with Paytm</button>
+              <div class="col-md-6" id="add_razorpay_button">
+              <button class="btn btn-primary">Pay with Razorpay</button>
               </div>
               <div class="col-md-4" style="display: none;" id="add_stripe_button">
                  
@@ -925,7 +925,7 @@ function click_to_close_payment_modal()
 {  
 
 $("#do_payments #add_stripe_button").html('<button class="btn btn-success" onclick="do_payment_by_stripe('+"'"+order_id+"'"+');">Pay with Stripe</button>');
-  $("#do_payments #add_paytm_button").html('<a href="{{BASE_URL}}paytm-payment/paytm-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Paytm</button></a>');
+  $("#do_payments #add_razorpay_button").html('<a href="{{BASE_URL}}payment/razorpay-payment-request/'+order_id+'"><button class="btn btn-primary">Pay with Razorpay</button></a>');
   $("#do_payments #add_wallet_button").html('<button class="btn btn-info order_by_wallet" data-order_id="'+order_id+'">Pay with Wallet</button>');
 
  $("#do_payments #dummy_payment").html('<button data-order_id="'+order_id+'" class="btn btn-primary btn-block order_by_dummy">Do Payment</button>');

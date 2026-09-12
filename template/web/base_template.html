@@ -43,7 +43,7 @@
   width: 100%;
   height: 100%;
   z-index: 99999999999;
-  background: url(http://127.0.0.1:8000/media/loader.gif) center no-repeat rgba(0,0,0,0.5);
+  background: url({% static "web/img/loader.gif" %}) center no-repeat rgba(0,0,0,0.5);
 }
 
    .scrollbar_atc
@@ -257,7 +257,7 @@
       </div>
       <!-- Navbar-->
       <div class="navbar">
-        <div class="btn-group categories-btn">
+        <div class="btn-group categories-btn" style="top: 12px;">
           <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="icon-menu text-lg"></i>&nbsp;Categories</button>
           <div class="dropdown-menu mega-dropdown">
             <div class="row" id="show_categoryes">

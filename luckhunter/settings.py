@@ -234,6 +234,6 @@ PAYTM_GATEWAY_URL = os.environ.get(
 )
 
 
-SITE_ID = 1
+SITE_ID = os.environ.get('SITE_ID', 2)
 
 

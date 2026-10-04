@@ -49,8 +49,10 @@ urlpatterns = [
     path('user/orders', include('orders.urls')),
     path('user/orders/', include('orders.urls')),
 
-    path('paytm-payment/', include('paytm_payment.urls')),
+    # PayTm deactivated in favor of Razorpay; paytm_payment app/model/table kept for payment history.
+    # path('paytm-payment/', include('paytm_payment.urls')),
     path('stripe-payment/', include('stripe_payment.urls')),
+    path('payment/', include('payment.urls')),
 
     path('user/address', include('user_address.urls')),
     path('user/address/', include('user_address.urls')),

@@ -26,6 +26,8 @@ handler500 = views.handler500
 urlpatterns = [
     path('superadmin/', admin.site.urls),
 
+    path('api/', include('api.urls')),
+
     path('', include(('home.urls','home'),namespace='home')),
     path('account', include('accounts.urls')),
     path('account/', include('accounts.urls')),
@@ -47,8 +49,10 @@ urlpatterns = [
     path('user/orders', include('orders.urls')),
     path('user/orders/', include('orders.urls')),
 
-    path('paytm-payment/', include('paytm_payment.urls')),
+    # PayTm deactivated in favor of Razorpay; paytm_payment app/model/table kept for payment history.
+    # path('paytm-payment/', include('paytm_payment.urls')),
     path('stripe-payment/', include('stripe_payment.urls')),
+    path('payment/', include('payment.urls')),
 
     path('user/address', include('user_address.urls')),
     path('user/address/', include('user_address.urls')),

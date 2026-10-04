@@ -156,7 +156,7 @@
                   <td>
                     <div class="product-item"><a class="product-thumb" href="shop-single.html">
    {% if item.Product.Image %}
-   <img src='{{item.Product.Image.url}}'  alt="{{item.Product_name}}">
+   <img src='{{item.Product.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="{{item.Product_name}}">
    {% else %}
     <img src='{% static "web/img/shop/cart/01.jpg" %}'  alt="Product">
    {% endif %}                

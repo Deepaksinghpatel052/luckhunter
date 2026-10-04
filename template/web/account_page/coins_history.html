@@ -76,7 +76,7 @@
 				{% if sale_bid_info %}
 					{% for item in sale_bid_info %}
 					<tr  {% if item.Winner_Status %} style="background-color: #edef70;" {% endif %}>
-						<td><img src="{{item.product_id.Image.url}}" style="width: 30px;height: 30px;"> </td>
+						<td><img src="{{item.product_id.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" style="width: 30px;height: 30px;"> </td>
 						<td>{{item.Sale}}</td>
 						<td><img src="/static/web/img/coins.png" style="width: 20px;height: 20px;"> {{item.Coins}}</td>
 						<td>{{item.Create_date}}</td>

@@ -69,7 +69,7 @@
                 <div class="product-item"><a class="product-thumb" href="{{BASE_URL}}product/{{item.Product.slug}}/{{item.Product.Product_id}}">
 
 		   {% if item.Product.Image %}
-		<img src='{{item.Product.Image.url}}'  alt="{{item.Product.Product_name}}">        
+		<img src='{{item.Product.Image.url}}' onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" alt="{{item.Product.Product_name}}">
 		        {% else %}
 		<img src='{% static "web/img/account/user-ava.jpg" %}'  alt="{{item.Product.Product_name}}">
 		        {% endif %}
@@ -154,7 +154,7 @@
             <div class="product-badge bg-danger">Arivel</div>
             {% endif %}
 
-            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" style="width:260px; height:215px;" alt="Product"></a>
+            <a class="product-thumb" href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}"><img src="{{item.Image.url}}" onerror="this.onerror=null;this.src='{{ PRODUCT_PLACEHOLDER_IMAGE_URL }}';" style="width:260px; height:215px;" alt="Product"></a>
           <div class="product-card-body">
             <div class="product-category"><a href="{{BASE_URL}}products/{{item.Category.Category_slug}}">{{item.Category}}</a></div>
             <h3 class="product-title"><a href="{{BASE_URL}}product/{{item.slug}}/{{item.Product_id}}">{{item.Product_name|slice:"0:20"}}..</a></h3>

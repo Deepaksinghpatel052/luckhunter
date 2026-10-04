@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,17 +21,23 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'template')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 
+# Load variables from a local .env file (git-ignored) if present. Real
+# environment variables set by the OS/host already take precedence.
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4ak8qr3f_ok91vbh2fwam_-fqmv&7ramg0b@ce&o_=p@$2c&13'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-dev-only-CHANGE-ME-not-for-production'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').strip().lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -44,11 +53,15 @@ INSTALLED_APPS = [
     'accounts',
     'import_export',
     'django_summernote',
+    'rest_framework',
+    'drf_spectacular',
+    'api',
     'products',
     'wishlist',
     'user_profile',
     'orders',
     'paytm_payment',
+    'payment',
     'stripe_payment',
     'user_address',
     'emails',
@@ -99,6 +112,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'luckhunter.context_processors.product_placeholder',
             ],
         },
     },
@@ -110,12 +124,27 @@ WSGI_APPLICATION = 'luckhunter.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+DB_ENGINE = os.environ.get('DB_ENGINE')
+# DB_ENGINE = ""
+
+if DB_ENGINE:
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,  # e.g. 'django.db.backends.postgresql'
+            'NAME': os.environ.get('DB_NAME', 'luckhunter'),
+            'USER': os.environ.get('DB_USER', ''),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -148,8 +177,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
+TIME_ZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -184,9 +214,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 
-# BASE_URL = 'http://3.18.106.210/'
-BASE_URL = 'https://luckhunter.in/'
-# BASE_URL = 'http://127.0.0.1:8000/'
+BASE_URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8000/')
 
 
 if DEBUG:
@@ -199,13 +227,57 @@ else:
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtpout.secureserver.net'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'no-replay@luckhunter.in'
-EMAIL_HOST_PASSWORD = 'Deepak@123'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').strip().lower() in ('true', '1', 'yes')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# ---- Payment gateways ----
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+
+PAYTM_GATEWAY_URL = os.environ.get(
+    'PAYTM_GATEWAY_URL',
+    'https://securegw-stage.paytm.in/order/process' if DEBUG else 'https://securegw.paytm.in/order/process'
+)
 
 
-SITE_ID = 1
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', "") 
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', "")
+
+
+SITE_ID = os.environ.get('SITE_ID', 2)
+
+
+# ---- REST API (app/mobile clients) ----
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'LuckHunter API',
+    'DESCRIPTION': 'REST API for the LuckHunter lucky-draw/lottery platform (mobile & external clients).',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]+/',
+}
 
 
